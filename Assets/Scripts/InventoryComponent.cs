@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class InventoryComponent : MonoBehaviour
 {
@@ -12,9 +13,31 @@ public class InventoryComponent : MonoBehaviour
     private int activeItemIndex = 0;
 
     private List<ItemSlot> items = new List<ItemSlot>(INVENTORY_SIZE);
-    //private ItemSlot[] items = new ItemSlot[ITEMS_SLOTS];
-    private ItemSlot[] tools = new ItemSlot[TOOLS_SLOTS];
 
+    public void BindInput(InputComponent input)
+    {
+        input.equipTool1Event.AddListener(() => EquipItem(0));
+        input.equipTool2Event.AddListener(() => EquipItem(1));
+        input.equipTool3Event.AddListener(() => EquipItem(2));
+        input.equipWeaponEvent.AddListener(() => EquipItem(3));
+        input.equipTorchEvent.AddListener(() => EquipItem(4));
+        input.equipItem1Event.AddListener(() => EquipItem(5));
+        input.equipItem2Event.AddListener(() => EquipItem(6));
+        input.equipItem3Event.AddListener(() => EquipItem(7));
+        input.equipItem4Event.AddListener(() => EquipItem(8));
+        input.equipItem5Event.AddListener(() => EquipItem(9));
+        input.equipNextItemEvent.AddListener(EquipNextItem);
+        input.equipPreviousItemEvent.AddListener(EquipPreviousItem);
+
+    }
+
+    public void Start()
+    {
+        for (int i = 0; i < INVENTORY_SIZE; i++)
+        {
+            items.Add(new ItemSlot());
+        }
+    }
 
     public ItemComponent GetActiveItem()
     {
@@ -46,6 +69,14 @@ public class InventoryComponent : MonoBehaviour
         return true;
     }
 
+    public void EquipItem(int index)
+    {
+        if (index < 0 || index >= INVENTORY_SIZE) return;
+
+        activeItemIndex = index;
+        Debug.Log("Objeto con id (" + GetActiveItem().id + ") equipado.");
+    }
+
     public void EquipNextItem()
     {
         int nextIndex = activeItemIndex;
@@ -56,7 +87,7 @@ public class InventoryComponent : MonoBehaviour
 
             if (items[nextIndex].item != null)
             {
-                activeItemIndex = nextIndex;
+                EquipItem(nextIndex);
                 break;
             }
         } while (nextIndex != activeItemIndex);
@@ -72,7 +103,7 @@ public class InventoryComponent : MonoBehaviour
 
             if (items[previousIndex].item != null)
             {
-                activeItemIndex = previousIndex;
+                EquipItem(previousIndex);
                 break;
             }
         } while (previousIndex != activeItemIndex);

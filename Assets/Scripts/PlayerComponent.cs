@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(InputComponent))]
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(InventoryComponent))]
 public class PlayerComponent : MonoBehaviour
 {
     // Components
@@ -25,6 +26,8 @@ public class PlayerComponent : MonoBehaviour
         walkingState = new PlayerWalkingState(this);
 
         ChangeState(walkingState);
+
+        GetComponent<InventoryComponent>().BindInput(inputComponent);
     }
 
     // Update is called once per frame

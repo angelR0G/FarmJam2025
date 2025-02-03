@@ -6,7 +6,7 @@ using UnityEngine;
 public class ItemComponent : MonoBehaviour
 {
     public ItemType type { get; private set; } = ItemType.Default;
-    public int id { get; private set; } = -1;
+    public int id { get;  set; } = -1;
     public int maxStack { get; private set; } = 1;
 }
 
