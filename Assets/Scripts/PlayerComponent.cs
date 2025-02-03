@@ -7,41 +7,38 @@ using UnityEngine;
 public class PlayerComponent : MonoBehaviour
 {
     // Components
-    private InputComponent inputComponent;
-    private Rigidbody2D body;
+    public InputComponent inputComponent;
+    public Rigidbody2D body;
 
-    // Movement atributes
-    const float MOV_ACCELERATION = 20f;
-    const float STOP_ACCELERATION = 40f;
-    const float MAX_SPEED = 5f;
-    private float currentSpeed = 0f;
+    // States
+    public IState currentState = null;
+    private PlayerWalkingState walkingState = null;
 
     // Start is called before the first frame update
     void Start()
     {
+        // Get components
         inputComponent = GetComponent<InputComponent>();
         body = GetComponent<Rigidbody2D>();
+
+        // Init player states
+        walkingState = new PlayerWalkingState(this);
+
+        ChangeState(walkingState);
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateMovement();
+        currentState.UpdateState();
     }
 
-    private void UpdateMovement()
+    public void ChangeState(IState newState)
     {
-        bool isMoving = inputComponent.movementDirection != Vector2.zero;
+        if (currentState != null) currentState.ExitState();
 
-        if (isMoving)
-        {
-            currentSpeed = Mathf.Min(currentSpeed + MOV_ACCELERATION * Time.deltaTime, MAX_SPEED);
-            body.velocity = inputComponent.movementDirection * currentSpeed;
-        }
-        else
-        {
-            currentSpeed = Mathf.Max(currentSpeed - STOP_ACCELERATION * Time.deltaTime, 0f);
-            body.velocity = body.velocity.normalized * currentSpeed;
-        }
+        currentState = newState;
+
+        if (currentState != null) currentState.EnterState();
     }
 }
