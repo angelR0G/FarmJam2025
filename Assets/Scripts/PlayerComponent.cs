@@ -23,7 +23,7 @@ public class PlayerComponent : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
 
         // Init player states
-        walkingState = new PlayerWalkingState(this);
+        walkingState = gameObject.AddComponent<PlayerWalkingState>();
 
         ChangeState(walkingState);
 
@@ -34,6 +34,11 @@ public class PlayerComponent : MonoBehaviour
     void Update()
     {
         currentState.UpdateState();
+    }
+
+    private void FixedUpdate()
+    {
+        currentState.FixedUpdateState();
     }
 
     public void ChangeState(IState newState)
