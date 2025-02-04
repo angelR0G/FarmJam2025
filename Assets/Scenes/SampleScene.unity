@@ -350,14 +350,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: -4478420365102256175, guid: 3d8320bde268b4e428fdb4272a41cf62, type: 3}
-      propertyPath: m_Actions
-      value: 
-      objectReference: {fileID: -944628639613478452, guid: ca0f931acf1487e4cb2fd4c94e210444, type: 3}
-    - target: {fileID: -4478420365102256175, guid: 3d8320bde268b4e428fdb4272a41cf62, type: 3}
-      propertyPath: m_DefaultActionMap
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 3350008827769284635, guid: 3d8320bde268b4e428fdb4272a41cf62, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -396,14 +388,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3350008827769284635, guid: 3d8320bde268b4e428fdb4272a41cf62, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4702580740167502835, guid: 3d8320bde268b4e428fdb4272a41cf62, type: 3}
-      propertyPath: m_Constraints
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4702580740167502835, guid: 3d8320bde268b4e428fdb4272a41cf62, type: 3}
-      propertyPath: m_GravityScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8056225281700849657, guid: 3d8320bde268b4e428fdb4272a41cf62, type: 3}
