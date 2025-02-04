@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
         light.color = gradient.Evaluate(PercentOfDay());
         if(currentTime.ToString(@"mm")=="00")
         {
-            hourChanged?.Invoke(this, currentTime.TotalHours);
+            hourChanged?.Invoke(this, int.Parse(currentTime.ToString(@"hh")));
         }
         
         if (PercentOfDay() == 0) 
