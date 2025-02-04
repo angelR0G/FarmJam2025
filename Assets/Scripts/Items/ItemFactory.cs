@@ -17,7 +17,7 @@ public class ItemFactory : MonoBehaviour
         return newItem;
     }
 
-    private void Start()
+    private void Awake()
     {
         Instance = this;
 

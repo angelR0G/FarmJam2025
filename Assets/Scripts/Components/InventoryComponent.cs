@@ -28,7 +28,6 @@ public class InventoryComponent : MonoBehaviour
         input.equipItem5Event.AddListener(() => EquipItem(9));
         input.equipNextItemEvent.AddListener(EquipNextItem);
         input.equipPreviousItemEvent.AddListener(EquipPreviousItem);
-
     }
 
     public void Start()
@@ -39,7 +38,7 @@ public class InventoryComponent : MonoBehaviour
         }
     }
 
-    public ItemComponent GetActiveItem()
+    public ItemComponent GetEquipedItem()
     {
         // Check if it is a valid index
         if (activeItemIndex < 0 || activeItemIndex >= INVENTORY_SIZE) return null;
@@ -74,8 +73,12 @@ public class InventoryComponent : MonoBehaviour
         if (index < 0 || index >= INVENTORY_SIZE) return;
 
         activeItemIndex = index;
+
         #if UNITY_EDITOR
-        Debug.Log("Objeto con id (" + GetActiveItem().Id + ") equipado.");
+        if (GetEquipedItem() != null)
+            Debug.Log("Objeto con id (" + GetEquipedItem().Id + ") equipado.");
+        else
+            Debug.Log("Equipada ranura vacía");
         #endif
     }
 
@@ -115,10 +118,18 @@ public class InventoryComponent : MonoBehaviour
     {
         if (index < 0 || index > items.Count) return;
 
-        if (items[index].amount == 1) 
+        if (items[index].amount == 1)
+        {
+            Destroy(items[index].item.gameObject);
             items[index].SetItem(null);
-        else 
+        }
+        else
             items[index].AddAmount(-1);
+    }
+
+    public void RemoveEquipedItem()
+    {
+        RemoveItemByIndex(activeItemIndex);
     }
 
 
