@@ -30,10 +30,10 @@ public class InteractionTriggerComponent : MonoBehaviour
     {
         if (interactionCallback != null)
         {
+            #if UNITY_EDITOR
+            Debug.Log("Interacting with " + gameObject.name);
+            #endif
             interactionCallback.Invoke(interactingPlayer);
         }
-        #if UNITY_EDITOR
-        Debug.Log("Interacting with " + gameObject.name);
-        #endif
     }
 }

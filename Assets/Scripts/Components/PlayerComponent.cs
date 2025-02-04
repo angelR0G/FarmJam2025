@@ -12,6 +12,7 @@ public class PlayerComponent : MonoBehaviour
     public InputComponent inputComponent;
     public Rigidbody2D body;
     public SpriteRenderer sprite;
+    public InventoryComponent inventory;
 
     // States
     public IState currentState = null;
@@ -28,6 +29,7 @@ public class PlayerComponent : MonoBehaviour
         inputComponent = GetComponent<InputComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        inventory = GetComponent<InventoryComponent>();
 
         // Init player states
         walkingState = gameObject.AddComponent<PlayerWalkingState>();
@@ -35,7 +37,7 @@ public class PlayerComponent : MonoBehaviour
         ChangeState(walkingState);
 
         // Bind inputs
-        GetComponent<InventoryComponent>().BindInput(inputComponent);
+        inventory.BindInput(inputComponent);
         inputComponent.interactInputEvent.AddListener(Interact);
     }
 
