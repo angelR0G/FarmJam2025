@@ -74,7 +74,9 @@ public class InventoryComponent : MonoBehaviour
         if (index < 0 || index >= INVENTORY_SIZE) return;
 
         activeItemIndex = index;
-        Debug.Log("Objeto con id (" + GetActiveItem().id + ") equipado.");
+        #if UNITY_EDITOR
+        Debug.Log("Objeto con id (" + GetActiveItem().Id + ") equipado.");
+        #endif
     }
 
     public void EquipNextItem()
