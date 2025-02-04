@@ -64,5 +64,7 @@ public enum ItemId
 {
     Default,
     CornSeed,
-    Dagger
+    Dagger,
+    Hoe,
+    WaterCan,
 }
