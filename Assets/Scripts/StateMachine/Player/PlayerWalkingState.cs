@@ -2,31 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWalkingState : MonoBehaviour, IState
+public class PlayerWalkingState : PlayerBaseState
 {
-    private PlayerComponent player;
-
     // Movement atributes
     public float acceleration = 4f;
     public float stopAcceleration = 8f;
     public float maxSpeed = 1f;
     private float currentSpeed = 0f;
 
-    public void Awake()
-    {
-        player = GetComponentInParent<PlayerComponent>();
-    }
-
-    public void EnterState()
+    public override void EnterState()
     {
         currentSpeed = 0f;
     }
 
-    public void ExitState() { }
-
-    public void UpdateState() { }
-
-    public void FixedUpdateState()
+    public override void FixedUpdateState()
     {
         UpdateMovement();
     }
