@@ -11,11 +11,11 @@ public class CropState : MonoBehaviour, IState
         crop = GetComponentInParent<CropComponent>();
     }
 
-    public void EnterState() { }
+    public virtual void EnterState() { }
 
-    public void ExitState() { }
+    public virtual void ExitState() { }
 
-    public void UpdateState() { }
+    public virtual void UpdateState() { }
 
-    public void FixedUpdateState() { }
+    public virtual void FixedUpdateState() { }
 }

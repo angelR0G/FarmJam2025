@@ -22,10 +22,12 @@ public class PlayerComponent : MonoBehaviour
     public PlayerState currentState = null;
     [HideInInspector] public PlayerWalkingState walkingState = null;
     [HideInInspector] public PlayerDiggingState diggingState = null;
+    [HideInInspector] public PlayerWateringState wateringState = null;
 
     // Other variables
     [Header("Player properties")]
     public bool isInteractionEnabled = true;
+    public Vector2 facingDirection = Vector2.down;
     private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
 
 
@@ -39,14 +41,19 @@ public class PlayerComponent : MonoBehaviour
         inventory = GetComponent<InventoryComponent>();
 
         // Init player states
-        walkingState = gameObject.GetComponentInChildren<PlayerWalkingState>();
-        diggingState = gameObject.GetComponentInChildren<PlayerDiggingState>();
+        walkingState = statesContainer.GetComponent<PlayerWalkingState>();
+        diggingState = statesContainer.GetComponent<PlayerDiggingState>();
+        wateringState = statesContainer.GetComponent<PlayerWateringState>();
 
         ChangeState(walkingState);
 
         // Bind inputs
         inventory.BindInput(inputComponent);
         inputComponent.interactInputEvent.AddListener(Interact);
+
+        inventory.AddItem(ItemFactory.CreateItem(ItemId.Hoe).GetComponent<ItemComponent>());
+        inventory.AddItem(ItemFactory.CreateItem(ItemId.WaterCan).GetComponent<ItemComponent>());
+        inventory.AddItem(ItemFactory.CreateItem(ItemId.CornSeed).GetComponent<ItemComponent>());
     }
 
     // Update is called once per frame
@@ -85,10 +92,17 @@ public class PlayerComponent : MonoBehaviour
         if (equipedTool.Id == ItemId.Hoe)
         {
             ChangeState(diggingState);
-            return true;
+        }
+        else if (equipedTool.Id == ItemId.WaterCan)
+        {
+            ChangeState(wateringState);
+        }
+        else
+        {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     private void InteractWithWorld()

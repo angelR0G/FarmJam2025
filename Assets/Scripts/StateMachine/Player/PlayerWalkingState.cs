@@ -31,14 +31,14 @@ public class PlayerWalkingState : PlayerState
         if (isMoving)
         {
             // Accelerating
+            player.facingDirection = inputComponent.movementDirection;
             currentSpeed = Mathf.Min(currentSpeed + acceleration * Time.fixedDeltaTime, maxSpeed);
-            body.MovePosition(playerPos + inputComponent.movementDirection * currentSpeed * Time.fixedDeltaTime);
         }
         else
         {
             // Stoping
             currentSpeed = Mathf.Max(currentSpeed - stopAcceleration * Time.fixedDeltaTime, 0f);
-            body.MovePosition(playerPos + body.velocity.normalized * currentSpeed * Time.fixedDeltaTime);
         }
+        body.MovePosition(playerPos + player.facingDirection * currentSpeed * Time.fixedDeltaTime);
     }
 }

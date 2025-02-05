@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CropWateredState : MonoBehaviour
+public class CropWateredState : CropState
 {
     
 }

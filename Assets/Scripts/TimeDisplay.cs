@@ -31,6 +31,6 @@ public class TimeDisplay : MonoBehaviour
     }
     private void OnHourChanged(object sender, double newHour)
     {
-        Debug.Log("Hora + " + newHour);
+        //Debug.Log("Hora + " + newHour);
     }
 }

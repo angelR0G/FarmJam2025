@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CropComponent : MonoBehaviour
 {
+    // Components
+    [Header("Components References")]
+    public Collider2D cropCollider;
+
     // States
     [Header("State Machine")]
     [SerializeField, Tooltip("Game Object that contains crop's states. Should be a child of crop game object so that states can update their references correctly.")]
@@ -16,10 +20,13 @@ public class CropComponent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Get components
+        cropCollider = GetComponent<Collider2D>();
+
         // Init crop states
-        dryState = gameObject.GetComponentInChildren<CropDryState>();
-        wateredState = gameObject.GetComponentInChildren<CropWateredState>();
-        grownState = gameObject.GetComponentInChildren<CropGrownState>();
+        dryState = statesContainer.GetComponent<CropDryState>();
+        wateredState = statesContainer.GetComponent<CropWateredState>();
+        grownState = statesContainer.GetComponent<CropGrownState>();
 
         ChangeState(dryState);
     }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5698309372245582408}
   - component: {fileID: 6240767759633924104}
   - component: {fileID: 1863546355494935491}
+  - component: {fileID: 5604335683603138453}
   m_Layer: 0
   m_Name: StatesContainer
   m_TagString: Untagged
@@ -61,6 +62,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   plotPrefab: {fileID: 3956755207969174849, guid: 4cca875e0f3939d4eaf1a71f6fc8b87b, type: 3}
+--- !u!114 &5604335683603138453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109259853284597907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d169d01951058f746bd36aecc26f3a90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8056225281700849657
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +211,12 @@ MonoBehaviour:
   sprite: {fileID: 0}
   inventory: {fileID: 0}
   statesContainer: {fileID: 2109259853284597907}
+  currentState: {fileID: 0}
+  walkingState: {fileID: 0}
+  diggingState: {fileID: 0}
+  wateringState: {fileID: 0}
   isInteractionEnabled: 1
+  facingDirection: {x: 0, y: -1}
 --- !u!212 &4321393230077232236
 SpriteRenderer:
   m_ObjectHideFlags: 0
