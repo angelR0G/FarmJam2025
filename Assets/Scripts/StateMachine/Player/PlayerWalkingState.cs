@@ -7,14 +7,14 @@ public class PlayerWalkingState : MonoBehaviour, IState
     private PlayerComponent player;
 
     // Movement atributes
-    const float MOV_ACCELERATION = 4f;
-    const float STOP_ACCELERATION = 8f;
-    const float MAX_SPEED = 1f;
+    public float acceleration = 4f;
+    public float stopAcceleration = 8f;
+    public float maxSpeed = 1f;
     private float currentSpeed = 0f;
 
     public void Awake()
     {
-        player = GetComponent<PlayerComponent>();
+        player = GetComponentInParent<PlayerComponent>();
     }
 
     public void EnterState()
@@ -42,13 +42,13 @@ public class PlayerWalkingState : MonoBehaviour, IState
         if (isMoving)
         {
             // Accelerating
-            currentSpeed = Mathf.Min(currentSpeed + MOV_ACCELERATION * Time.fixedDeltaTime, MAX_SPEED);
+            currentSpeed = Mathf.Min(currentSpeed + acceleration * Time.fixedDeltaTime, maxSpeed);
             body.MovePosition(playerPos + inputComponent.movementDirection * currentSpeed * Time.fixedDeltaTime);
         }
         else
         {
             // Stoping
-            currentSpeed = Mathf.Max(currentSpeed - STOP_ACCELERATION * Time.fixedDeltaTime, 0f);
+            currentSpeed = Mathf.Max(currentSpeed - stopAcceleration * Time.fixedDeltaTime, 0f);
             body.MovePosition(playerPos + body.velocity.normalized * currentSpeed * Time.fixedDeltaTime);
         }
     }
