@@ -19,7 +19,7 @@ public class PlayerComponent : MonoBehaviour
     [Header("State Machine")]
     [SerializeField, Tooltip("Game Object that contains player's states. Should be a child of player game object so that states can update their references correctly.")]
     private GameObject statesContainer = null;
-    public IState currentState = null;
+    public PlayerState currentState = null;
     [HideInInspector] public PlayerWalkingState walkingState = null;
     [HideInInspector] public PlayerDiggingState diggingState = null;
 
@@ -60,7 +60,7 @@ public class PlayerComponent : MonoBehaviour
         currentState.FixedUpdateState();
     }
 
-    public void ChangeState(IState newState)
+    public void ChangeState(PlayerState newState)
     {
         if (currentState != null) currentState.ExitState();
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWalkingState : PlayerBaseState
+public class PlayerWalkingState : PlayerState
 {
     // Movement atributes
     public float acceleration = 4f;

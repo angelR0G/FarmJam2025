@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerDiggingState : PlayerBaseState
+public class PlayerDiggingState : PlayerState
 {
     [SerializeField]
     private GameObject plotPrefab;
