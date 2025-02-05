@@ -17,7 +17,8 @@ public class PlayerDiggingState : MonoBehaviour, IState
     { 
         if (HasSpaceToDig())
         {
-            Instantiate(plotPrefab);
+            GameObject newPlot = Instantiate(plotPrefab);
+            newPlot.transform.position = player.transform.position;
         }
 
         player.ChangeState(player.walkingState);

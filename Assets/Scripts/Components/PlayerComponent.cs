@@ -73,13 +73,15 @@ public class PlayerComponent : MonoBehaviour
     {
         ItemComponent equipedItem = inventory.GetEquipedItem();
 
-        if (equipedItem.Type == ItemType.Tool && UseTool(equipedItem)) return;
+        if (UseTool(equipedItem)) return;
 
         InteractWithWorld();
     }
 
     private bool UseTool(ItemComponent equipedTool)
     {
+        if (equipedTool == null || equipedTool.Type != ItemType.Tool) return false;
+
         if (equipedTool.Id == ItemId.Hoe)
         {
             ChangeState(diggingState);
