@@ -48,7 +48,8 @@ public class PlotComponent : MonoBehaviour
 
     public void PlantCrop(ItemComponent seed)
     {
-        crop = gameObject;
+        crop = Instantiate(seed.GetComponent<SeedComponent>().cropPrefab, transform);
+        crop.transform.position += new Vector3(0, 0.001f, 0);
     }
 
     public bool IsPlanted()
