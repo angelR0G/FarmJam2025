@@ -9,18 +9,25 @@ using UnityEngine;
 public class PlayerComponent : MonoBehaviour
 {
     // Components
+    [Header("Components References")]
     public InputComponent inputComponent;
     public Rigidbody2D body;
     public SpriteRenderer sprite;
     public InventoryComponent inventory;
 
     // States
+    [Header("State Machine")]
+    [SerializeField, Tooltip("Game Object that contains player's states. Should be a child of player game object so that states can update their references correctly.")]
+    private GameObject statesContainer = null;
     public IState currentState = null;
-    private PlayerWalkingState walkingState = null;
+    [HideInInspector] public PlayerWalkingState walkingState = null;
+    [HideInInspector] public PlayerDiggingState diggingState = null;
 
     // Other variables
-    private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
+    [Header("Player properties")]
     public bool isInteractionEnabled = true;
+    private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +39,8 @@ public class PlayerComponent : MonoBehaviour
         inventory = GetComponent<InventoryComponent>();
 
         // Init player states
-        walkingState = gameObject.AddComponent<PlayerWalkingState>();
+        walkingState = gameObject.GetComponentInChildren<PlayerWalkingState>();
+        diggingState = gameObject.GetComponentInChildren<PlayerDiggingState>();
 
         ChangeState(walkingState);
 
@@ -63,9 +71,29 @@ public class PlayerComponent : MonoBehaviour
 
     private void Interact()
     {
+        ItemComponent equipedItem = inventory.GetEquipedItem();
+
+        if (equipedItem.Type == ItemType.Tool && UseTool(equipedItem)) return;
+
+        InteractWithWorld();
+    }
+
+    private bool UseTool(ItemComponent equipedTool)
+    {
+        if (equipedTool.Id == ItemId.Hoe)
+        {
+            ChangeState(diggingState);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void InteractWithWorld()
+    {
         if (!isInteractionEnabled || interactables.Count == 0) return;
 
-        interactables[interactables.Count-1].Interact(this);
+        interactables[interactables.Count - 1].Interact(this);
     }
 
     public void SetInteractableObject(InteractionTriggerComponent newInteraction)

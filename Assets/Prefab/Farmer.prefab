@@ -1,5 +1,66 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2109259853284597907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5698309372245582408}
+  - component: {fileID: 6240767759633924104}
+  - component: {fileID: 1863546355494935491}
+  m_Layer: 0
+  m_Name: StatesContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5698309372245582408
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109259853284597907}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3350008827769284635}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6240767759633924104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109259853284597907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e85b566b5082b1e4cb7d5192449e1ac5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  acceleration: 4
+  stopAcceleration: 8
+  maxSpeed: 1
+--- !u!114 &1863546355494935491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109259853284597907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c77372ed4330a354fb2cbcc0e5bd4f1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plotPrefab: {fileID: 3956755207969174849, guid: 4cca875e0f3939d4eaf1a71f6fc8b87b, type: 3}
 --- !u!1 &8056225281700849657
 GameObject:
   m_ObjectHideFlags: 0
@@ -15,6 +76,7 @@ GameObject:
   - component: {fileID: 4321393230077232236}
   - component: {fileID: 4291682530699401124}
   - component: {fileID: 4702580740167502835}
+  - component: {fileID: 2090745657881120343}
   m_Layer: 0
   m_Name: Farmer
   m_TagString: Untagged
@@ -34,7 +96,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5698309372245582408}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-4478420365102256175
@@ -82,6 +145,42 @@ MonoBehaviour:
   interactInputEvent:
     m_PersistentCalls:
       m_Calls: []
+  equipTool1Event:
+    m_PersistentCalls:
+      m_Calls: []
+  equipTool2Event:
+    m_PersistentCalls:
+      m_Calls: []
+  equipTool3Event:
+    m_PersistentCalls:
+      m_Calls: []
+  equipWeaponEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  equipTorchEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  equipItem1Event:
+    m_PersistentCalls:
+      m_Calls: []
+  equipItem2Event:
+    m_PersistentCalls:
+      m_Calls: []
+  equipItem3Event:
+    m_PersistentCalls:
+      m_Calls: []
+  equipItem4Event:
+    m_PersistentCalls:
+      m_Calls: []
+  equipItem5Event:
+    m_PersistentCalls:
+      m_Calls: []
+  equipNextItemEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  equipPreviousItemEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2421984193498706964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,6 +193,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7530eae90374ce41b8312dd67c4dda4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputComponent: {fileID: 0}
+  body: {fileID: 0}
+  sprite: {fileID: 0}
+  inventory: {fileID: 0}
+  statesContainer: {fileID: 2109259853284597907}
+  isInteractionEnabled: 1
 --- !u!212 &4321393230077232236
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -218,3 +323,15 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &2090745657881120343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8056225281700849657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb7baaf2bb8a3f48a44e1237e9429a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
