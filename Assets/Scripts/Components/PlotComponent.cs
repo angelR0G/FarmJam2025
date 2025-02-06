@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class PlotComponent : MonoBehaviour
 {
+    // Components
+    private SpriteRenderer sprite;
     private InteractionTriggerComponent trigger;
-    private GameObject crop;
 
+
+    private GameObject crop;
+    public Sprite dryTexture;
+    public Sprite wateredTexture;
 
     // Start is called before the first frame update
     void Start()
     {
         trigger = GetComponent<InteractionTriggerComponent>();
+        sprite = GetComponent<SpriteRenderer>();
         crop = null;
 
         trigger.interactionCallback = Interact;
@@ -49,11 +55,20 @@ public class PlotComponent : MonoBehaviour
     public void PlantCrop(ItemComponent seed)
     {
         crop = Instantiate(seed.GetComponent<SeedComponent>().cropPrefab, transform);
-        crop.transform.position += new Vector3(0, 0.001f, 0);
+
+        crop.GetComponent<CropComponent>().stateChanged.AddListener(UpdateGroundTexture);
     }
 
     public bool IsPlanted()
     {
         return crop != null;
+    }
+
+    private void UpdateGroundTexture()
+    {
+        CropComponent cropComp;
+        if (crop == null || !crop.TryGetComponent<CropComponent>(out cropComp)) return;
+
+        sprite.sprite = cropComp.currentState == cropComp.wateredState ? wateredTexture : dryTexture;
     }
 }

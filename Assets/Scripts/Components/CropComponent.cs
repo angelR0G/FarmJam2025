@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CropComponent : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class CropComponent : MonoBehaviour
     [HideInInspector] public CropDryState dryState = null;
     [HideInInspector] public CropWateredState wateredState = null;
     [HideInInspector] public CropGrownState grownState = null;
+    public UnityEvent stateChanged = new UnityEvent();
 
     // Start is called before the first frame update
     void Start()
@@ -38,5 +40,7 @@ public class CropComponent : MonoBehaviour
         currentState = newState;
 
         if (currentState != null) currentState.EnterState();
+
+        stateChanged.Invoke();
     }
 }

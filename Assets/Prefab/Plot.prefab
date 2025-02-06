@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f610d4cbde51f974c9bfb1ec28ba2554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dryTexture: {fileID: -321325287, guid: ec53eea35ccfb874b8a65f7d35ac65a2, type: 3}
+  wateredTexture: {fileID: 997186145, guid: 98db1d1d558672940ac8b164b64df430, type: 3}
 --- !u!61 &6278592047753712708
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -145,7 +147,7 @@ SpriteRenderer:
   m_SortingLayerID: -562999791
   m_SortingLayer: -1
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 5dd35632622e30444a8abafa950278ef, type: 3}
+  m_Sprite: {fileID: -321325287, guid: ec53eea35ccfb874b8a65f7d35ac65a2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
