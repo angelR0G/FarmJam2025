@@ -64,6 +64,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1732927470944036388, guid: f9d44aeeafd5f5844ac1cc3ac86a0099, type: 3}
+      propertyPath: m_Size.x
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1732927470944036388, guid: f9d44aeeafd5f5844ac1cc3ac86a0099, type: 3}
+      propertyPath: m_Size.y
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1732927470944036388, guid: f9d44aeeafd5f5844ac1cc3ac86a0099, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 909271463, guid: b4aca670e8222ff47b994f52037c5a56, type: 3}
+    - target: {fileID: 1732927470944036388, guid: f9d44aeeafd5f5844ac1cc3ac86a0099, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1989062247264391388, guid: f9d44aeeafd5f5844ac1cc3ac86a0099, type: 3}
       propertyPath: m_Name
       value: CornSeed

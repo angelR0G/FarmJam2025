@@ -67,4 +67,5 @@ public enum ItemId
     Dagger,
     Hoe,
     WaterCan,
+    Corn,
 }

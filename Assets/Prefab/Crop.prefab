@@ -100,11 +100,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cropCollider: {fileID: 0}
+  sprite: {fileID: 0}
   statesContainer: {fileID: 7455117686523122619}
   currentState: {fileID: 0}
   dryState: {fileID: 0}
   wateredState: {fileID: 0}
   grownState: {fileID: 0}
+  stateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  wateredDays: 0
+  cropSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!61 &2568920310313648328
 BoxCollider2D:
   m_ObjectHideFlags: 0

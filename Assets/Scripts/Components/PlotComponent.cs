@@ -9,7 +9,7 @@ public class PlotComponent : MonoBehaviour
     private InteractionTriggerComponent trigger;
 
 
-    private GameObject crop;
+    private GameObject plantedCrop;
     public Sprite dryTexture;
     public Sprite wateredTexture;
 
@@ -18,7 +18,7 @@ public class PlotComponent : MonoBehaviour
     {
         trigger = GetComponent<InteractionTriggerComponent>();
         sprite = GetComponent<SpriteRenderer>();
-        crop = null;
+        plantedCrop = null;
 
         trigger.interactionCallback = Interact;
     }
@@ -36,7 +36,16 @@ public class PlotComponent : MonoBehaviour
 
         if (IsPlanted())
         {
-            Debug.Log("~~ Que hermosa planta ~~");
+            CropComponent plantedCropComponent = plantedCrop.GetComponent<CropComponent>();
+
+            if (plantedCropComponent.currentState == plantedCropComponent.grownState)
+            {
+                CollectCrop(player);
+            }
+            else
+            {
+                Debug.Log("~~ Que hermosa planta ~~");
+            }
         }
         else 
         {
@@ -54,21 +63,26 @@ public class PlotComponent : MonoBehaviour
 
     public void PlantCrop(ItemComponent seed)
     {
-        crop = Instantiate(seed.GetComponent<SeedComponent>().cropPrefab, transform);
+        plantedCrop = Instantiate(seed.GetComponent<SeedComponent>().cropPrefab, transform);
 
-        crop.GetComponent<CropComponent>().stateChanged.AddListener(UpdateGroundTexture);
+        plantedCrop.GetComponent<CropComponent>().stateChanged.AddListener(UpdateGroundTexture);
     }
 
     public bool IsPlanted()
     {
-        return crop != null;
+        return plantedCrop != null;
     }
 
     private void UpdateGroundTexture()
     {
         CropComponent cropComp;
-        if (crop == null || !crop.TryGetComponent<CropComponent>(out cropComp)) return;
+        if (plantedCrop == null || !plantedCrop.TryGetComponent<CropComponent>(out cropComp)) return;
 
         sprite.sprite = cropComp.currentState == cropComp.wateredState ? wateredTexture : dryTexture;
+    }
+
+    private void CollectCrop(PlayerComponent player)
+    {
+        Destroy(gameObject);
     }
 }

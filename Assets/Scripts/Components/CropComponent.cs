@@ -8,6 +8,7 @@ public class CropComponent : MonoBehaviour
     // Components
     [Header("Components References")]
     public Collider2D cropCollider;
+    public SpriteRenderer sprite;
 
     // States
     [Header("State Machine")]
@@ -19,11 +20,17 @@ public class CropComponent : MonoBehaviour
     [HideInInspector] public CropGrownState grownState = null;
     public UnityEvent stateChanged = new UnityEvent();
 
+    // Other variables
+    public short wateredDays = 0;
+    public List<Sprite> cropSprites = new List<Sprite>();
+    public GameObject collectableCrop = null;
+
     // Start is called before the first frame update
     void Start()
     {
         // Get components
         cropCollider = GetComponent<Collider2D>();
+        sprite = GetComponent<SpriteRenderer>();
 
         // Init crop states
         dryState = statesContainer.GetComponent<CropDryState>();

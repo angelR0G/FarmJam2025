@@ -29,7 +29,7 @@ public class TimeDisplay : MonoBehaviour
     {
         textDay.SetText(newDay.ToString());
     }
-    private void OnHourChanged(object sender, double newHour)
+    private void OnHourChanged(object sender, int newHour)
     {
         //Debug.Log("Hora + " + newHour);
     }

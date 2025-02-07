@@ -7,10 +7,11 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(Light2D))]
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
 
     public event EventHandler<TimeSpan> worldTimeChanged;
     public event EventHandler<int> dayChanged;
-    public event EventHandler<double> hourChanged;
+    public event EventHandler<int> hourChanged;
 
     public const int MinutesInDay = 1440;
 
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         light = GetComponent<Light2D>();
+        Instance = this;
     }
 
     private void Start()
