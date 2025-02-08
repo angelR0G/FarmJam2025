@@ -5,6 +5,7 @@ using UnityEngine;
 public class PickableComponent : MonoBehaviour
 {
     public ItemId id;
+    public int amount = 1;
     private SpriteRenderer sprite;
 
     // Start is called before the first frame update
@@ -18,6 +19,13 @@ public class PickableComponent : MonoBehaviour
 
     private void OnPickUp(PlayerComponent player)
     {
-        if (player.inventory.AddItem(id)) Destroy(gameObject);
+        int savedItems = player.inventory.AddItem(id, amount);
+
+        if (savedItems == amount)
+            Destroy(gameObject);
+        else if (savedItems == 0)
+            Debug.Log("~~ Esto no me cabe ~~");
+        else
+            amount -= savedItems;
     }
 }
