@@ -8,13 +8,15 @@ public class ItemFactory : MonoBehaviour
     public Dictionary<ItemId, ItemData> itemsData;
     public GameObject itemPrefab;
 
-    public static GameObject CreateItem(ItemId id, Transform parent = null)
+    public static GameObject CreateItem(ItemId id, Transform parent = null, int amount = 1)
     {
         if (Instance.itemPrefab == null || !Instance.itemsData.ContainsKey(id)) return null;
 
         // Creates an object and fill its values
         GameObject newItem = Instantiate(Instance.itemPrefab, parent);
-        newItem.GetComponent<ItemComponent>().CopyValues(Instance.itemsData[id]);
+        PickableComponent pickComp = newItem.GetComponent<PickableComponent>();
+        pickComp.id = id;
+        pickComp.amount = amount;
 
         return newItem;
     }

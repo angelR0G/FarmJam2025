@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class PickableComponent : MonoBehaviour
         GetComponent<InteractionTriggerComponent>().interactionCallback = OnPickUp;
 
         sprite.sprite = ItemFactory.GetItem(id).sprite;
+
+        if (amount <= 0) Destroy(gameObject);
     }
 
     private void OnPickUp(PlayerComponent player)
