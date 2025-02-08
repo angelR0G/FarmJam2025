@@ -55,9 +55,10 @@ public class InventoryComponent : MonoBehaviour
         int amountSaved = 0;
 
         // First check slots with that objects that are not full yet
-        while (itemIndex < INVENTORY_SIZE && amountSaved < amount)
+        while (amountSaved < amount)
         {
             itemIndex = FindIncompleteItemSlotIndex(itemId);
+            if (itemIndex == -1) break;
 
             amountSaved += AddItemToSlot(itemId, amount - amountSaved, itemIndex);
 
@@ -66,9 +67,11 @@ public class InventoryComponent : MonoBehaviour
 
         // If there is not enough space, check if there are empty slots
         itemIndex = TOOLS_SLOTS;
-        while (itemIndex < INVENTORY_SIZE && amountSaved < amount)
+        while (amountSaved < amount)
         {
             itemIndex = FindFreeSlotIndex();
+            if (itemIndex == -1) break;
+
             amountSaved += AddItemToSlot(itemId, amount - amountSaved, itemIndex);
 
             itemIndex++;
@@ -108,9 +111,11 @@ public class InventoryComponent : MonoBehaviour
         int slotIndex = TOOLS_SLOTS;
 
         // First check slots with that objects that are not full yet
-        while (slotIndex < INVENTORY_SIZE && freeSpaceCount < amount)
+        while (freeSpaceCount < amount)
         {
             slotIndex = FindIncompleteItemSlotIndex(id);
+            if (slotIndex == -1) break;
+
             freeSpaceCount += items[slotIndex].item.MaxStack - items[slotIndex].amount;
 
             slotIndex++;
@@ -118,9 +123,11 @@ public class InventoryComponent : MonoBehaviour
 
         // If there is not enough space, check if there are empty slots
         slotIndex = TOOLS_SLOTS;
-        while (slotIndex < INVENTORY_SIZE && freeSpaceCount < amount)
+        while (freeSpaceCount < amount)
         {
             slotIndex = FindFreeSlotIndex();
+            if (slotIndex == -1) break;
+
             freeSpaceCount += ItemFactory.GetItem(id).maxStack;
 
             slotIndex++;
