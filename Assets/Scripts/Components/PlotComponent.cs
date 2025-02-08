@@ -63,7 +63,7 @@ public class PlotComponent : MonoBehaviour
 
     public void PlantCrop(ItemComponent seed)
     {
-        plantedCrop = Instantiate(seed.GetComponent<SeedComponent>().cropPrefab, transform);
+        plantedCrop = Instantiate(seed.GetComponent<SeedItemComponent>().cropPrefab, transform);
 
         plantedCrop.GetComponent<CropComponent>().stateChanged.AddListener(UpdateGroundTexture);
     }
@@ -83,6 +83,7 @@ public class PlotComponent : MonoBehaviour
 
     private void CollectCrop(PlayerComponent player)
     {
+        player.inventory.AddItem(plantedCrop.GetComponent<CropComponent>().collectableCrop);
         Destroy(gameObject);
     }
 }
