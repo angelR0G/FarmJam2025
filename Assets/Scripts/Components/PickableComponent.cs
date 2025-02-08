@@ -15,7 +15,7 @@ public class PickableComponent : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         GetComponent<InteractionTriggerComponent>().interactionCallback = OnPickUp;
 
-        sprite.sprite = ItemFactory.GetItem(id).sprite;
+        sprite.sprite = ItemFactory.GetItemData(id).sprite;
 
         if (amount <= 0) Destroy(gameObject);
     }
