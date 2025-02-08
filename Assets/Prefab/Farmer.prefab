@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: -4927616820014282267}
   - component: {fileID: 2421984193498706964}
   - component: {fileID: 4321393230077232236}
-  - component: {fileID: 4291682530699401124}
+  - component: {fileID: 3394066040171388502}
   - component: {fileID: 4702580740167502835}
   m_Layer: 0
   m_Name: Farmer
@@ -451,8 +451,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &4291682530699401124
-BoxCollider2D:
+--- !u!58 &3394066040171388502
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -483,19 +483,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.0001729913, y: 0.010283798}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.21, y: 0.15}
-    newSize: {x: 0.21, y: 0.15}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: -0.055}
   serializedVersion: 2
-  m_Size: {x: 0.21070567, y: 0.1301732}
-  m_EdgeRadius: 0
+  m_Radius: 0.05
 --- !u!50 &4702580740167502835
 Rigidbody2D:
   serializedVersion: 4
