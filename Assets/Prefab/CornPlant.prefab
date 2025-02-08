@@ -68,6 +68,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
+      propertyPath: collectableCrop
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
+      propertyPath: cropSprites.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
+      propertyPath: cropSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: -1442993228, guid: b4aca670e8222ff47b994f52037c5a56, type: 3}
+    - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
+      propertyPath: cropSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 106900536, guid: b4aca670e8222ff47b994f52037c5a56, type: 3}
+    - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
+      propertyPath: cropSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 461557217, guid: b4aca670e8222ff47b994f52037c5a56, type: 3}
+    - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
+      propertyPath: cropSprites.Array.data[3]
+      value: 
+      objectReference: {fileID: -911471794, guid: b4aca670e8222ff47b994f52037c5a56, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

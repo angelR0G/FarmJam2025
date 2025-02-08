@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEditor.Progress;
 
 public class InventoryComponent : MonoBehaviour
 {
@@ -47,25 +49,91 @@ public class InventoryComponent : MonoBehaviour
         return items[activeItemIndex].item;
     }
 
-    public bool AddItem(ItemComponent item)
+    public int AddItem(ItemId itemId, int amount = 1)
     {
-        int itemIndex = -1;
+        int itemIndex = TOOLS_SLOTS;
+        int amountSaved = 0;
 
-        if ((itemIndex = FindIncompleteItemSlotIndex(item)) != -1)
+        // First check slots with that objects that are not full yet
+        while (amountSaved < amount)
         {
-            items[itemIndex].AddAmount(1);
-        }
-        else if ((itemIndex = FindFreeSlotIndex()) != -1)
-        {
-            items[itemIndex].SetItem(item);
-            items[itemIndex].SetAmount(1);
-        }
-        else
-        {
-            return false;
+            itemIndex = FindIncompleteItemSlotIndex(itemId);
+            if (itemIndex == -1) break;
+
+            amountSaved += AddItemToSlot(itemId, amount - amountSaved, itemIndex);
+
+            itemIndex++;
         }
 
-        return true;
+        // If there is not enough space, check if there are empty slots
+        itemIndex = TOOLS_SLOTS;
+        while (amountSaved < amount)
+        {
+            itemIndex = FindFreeSlotIndex();
+            if (itemIndex == -1) break;
+
+            amountSaved += AddItemToSlot(itemId, amount - amountSaved, itemIndex);
+
+            itemIndex++;
+        }
+
+        return amountSaved;
+    }
+
+    private int AddItemToSlot(ItemId itemId, int amount, int slotIndex)
+    {
+        if (items[slotIndex].item == null)
+        {
+            // The slot is empty, so creates a new item component to save the data
+            ItemComponent newItem = SaveItemComponent(itemId);
+
+            items[slotIndex].SetItem(newItem);
+            items[slotIndex].SetAmount(Math.Min(amount, newItem.MaxStack));
+
+            return items[slotIndex].amount;
+        }
+        else if (items[slotIndex].item.Id == itemId)
+        {
+            // The slot has that item saved, so updates the number of items in the slot
+            int freeSpace = items[slotIndex].item.MaxStack - items[slotIndex].amount;
+            int amountToAdd = Math.Min(amount, freeSpace);
+
+            items[slotIndex].AddAmount(amountToAdd);
+            return amountToAdd;
+        }
+
+        return 0;
+    }
+
+    public bool HasSpaceFor(ItemId id, int amount = 1)
+    {
+        int freeSpaceCount = 0;
+        int slotIndex = TOOLS_SLOTS;
+
+        // First check slots with that objects that are not full yet
+        while (freeSpaceCount < amount)
+        {
+            slotIndex = FindIncompleteItemSlotIndex(id);
+            if (slotIndex == -1) break;
+
+            freeSpaceCount += items[slotIndex].item.MaxStack - items[slotIndex].amount;
+
+            slotIndex++;
+        }
+
+        // If there is not enough space, check if there are empty slots
+        slotIndex = TOOLS_SLOTS;
+        while (freeSpaceCount < amount)
+        {
+            slotIndex = FindFreeSlotIndex();
+            if (slotIndex == -1) break;
+
+            freeSpaceCount += ItemFactory.GetItem(id).maxStack;
+
+            slotIndex++;
+        }
+
+        return freeSpaceCount >= amount;
     }
 
     public void EquipItem(int index)
@@ -120,7 +188,7 @@ public class InventoryComponent : MonoBehaviour
 
         if (items[index].amount == 1)
         {
-            Destroy(items[index].item.gameObject);
+            Destroy(items[index].item);
             items[index].SetItem(null);
         }
         else
@@ -133,11 +201,13 @@ public class InventoryComponent : MonoBehaviour
     }
 
 
-    private int FindIncompleteItemSlotIndex(ItemComponent searchItem)
+    private int FindIncompleteItemSlotIndex(ItemId itemId, int start = TOOLS_SLOTS)
     {
-        for (int i = TOOLS_SLOTS; i < items.Count; i++)
+        start = Mathf.Max(start, TOOLS_SLOTS);
+
+        for (int i = start; i < items.Count; i++)
         {
-            if (items[i].item == searchItem && !items[i].IsFull()) return i;
+            if (items[i].item != null && items[i].item.Id == itemId && !items[i].IsFull()) return i;
         }
 
         return -1;
@@ -151,5 +221,20 @@ public class InventoryComponent : MonoBehaviour
         }
 
         return -1;
+    }
+
+    private ItemComponent SaveItemComponent(ItemId itemId)
+    {
+        ItemData data = ItemFactory.GetItem(itemId);
+        ItemComponent newItem;
+
+        if (data.type == ItemType.Seed)
+            newItem = gameObject.AddComponent<SeedItemComponent>();
+        else
+            newItem = gameObject.AddComponent<ItemComponent>();
+
+        newItem.CopyValues(data);
+
+        return newItem;
     }
 }

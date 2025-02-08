@@ -5,36 +5,40 @@ using UnityEngine;
 public class ItemFactory : MonoBehaviour
 {
     private static ItemFactory Instance;
-    public Dictionary<ItemId, GameObject> itemPrefabs;
+    public Dictionary<ItemId, ItemData> itemsData;
+    public GameObject itemPrefab;
 
-    public static GameObject CreateItem(ItemId id, Transform parent = null)
+    public static GameObject CreateItem(ItemId id, Transform parent = null, int amount = 1)
     {
-        GameObject prefab = Instance.itemPrefabs.GetValueOrDefault(id, null);
-        if (prefab == null) return null;
+        if (Instance.itemPrefab == null || !Instance.itemsData.ContainsKey(id)) return null;
 
-        GameObject newItem = Instantiate(prefab, parent);
+        // Creates an object and fill its values
+        GameObject newItem = Instantiate(Instance.itemPrefab, parent);
+        PickableComponent pickComp = newItem.GetComponent<PickableComponent>();
+        pickComp.id = id;
+        pickComp.amount = amount;
 
         return newItem;
+    }
+
+    public static ItemData GetItem(ItemId id)
+    {
+        return Instance.itemsData.GetValueOrDefault(id, null);
     }
 
     private void Awake()
     {
         Instance = this;
-
-        GameObject[] items = Resources.LoadAll<GameObject>("Items/");
-        ItemComponent comp = null;
-
-        itemPrefabs = new Dictionary<ItemId, GameObject>();
-        foreach (GameObject item in items)
+        itemsData = new Dictionary<ItemId, ItemData>();
+        
+        ItemData[] items = Resources.LoadAll<ItemData>("Items/");
+        foreach (ItemData item in items)
         {
-            if (item.TryGetComponent<ItemComponent>(out comp))
-            {
-                itemPrefabs.Add(comp.Id, item);
-            }
+            itemsData.Add(item.id, item);
         }
 
         #if UNITY_EDITOR
-        foreach (KeyValuePair<ItemId, GameObject> v in itemPrefabs)
+        foreach (KeyValuePair<ItemId, ItemData> v in itemsData)
         {
             Debug.Log(v.Key + " -> " + v.Value.ToString());
         }

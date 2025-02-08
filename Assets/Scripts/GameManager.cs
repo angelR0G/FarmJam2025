@@ -7,11 +7,12 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(Light2D))]
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
 
     public event EventHandler<TimeSpan> worldTimeChanged;
     public event EventHandler<int> dayChanged;
-    public event EventHandler<double> hourChanged;
     public event EventHandler<int> moneyChanged;
+    public event EventHandler<int> hourChanged;
 
     public const int MinutesInDay = 1440;
 
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviour
         };
         GradientAlphaKey[] gradientAlphaKeys = { };
         gradient.SetKeys(gradientColorKeys, gradientAlphaKeys);
+        Instance = this;
     }
 
     private void Start()
