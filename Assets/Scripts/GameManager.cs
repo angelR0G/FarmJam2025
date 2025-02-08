@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public event EventHandler<TimeSpan> worldTimeChanged;
     public event EventHandler<int> dayChanged;
     public event EventHandler<double> hourChanged;
+    public event EventHandler<int> moneyChanged;
 
     public const int MinutesInDay = 1440;
 
@@ -22,14 +23,42 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Gradient gradient;
 
-    private Light2D light;
+    private Light2D sunSource;
 
     [SerializeField]
     private int numDays;
 
+    public int currentMoney = 0;
+
+    [Header("Gradient Configure")]
+    [SerializeField] private int nightDuration = 4;
+    [SerializeField] private int nighStartDuration = 6;
+    [SerializeField] private int dayDuration = 11;
+    [SerializeField] private int dawnDuration = 1;
+    [SerializeField] private int duskDuration = 2;
+
+    [SerializeField] private Color NIGHT_COLOR = new Color(0.1553594f, 0.1443129f, 0.6509434f);
+    [SerializeField] private Color DAY_COLOR = new Color(1f, 1f, 1f);
+    [SerializeField] private Color DAWN_COLOR = new Color(1f, 0.7158657f, 0.1745283f);
+    [SerializeField] private Color DUSK_DOWN = new Color(1f, 0.7158657f, 0.1745283f);
+
+
+
     private void Awake()
     {
-        light = GetComponent<Light2D>();
+        sunSource = GetComponent<Light2D>();
+        gradient = new Gradient();
+        GradientColorKey[] gradientColorKeys = { 
+            new GradientColorKey(NIGHT_COLOR, 0),
+            new GradientColorKey(DAWN_COLOR, ((nighStartDuration+dawnDuration/2)*60*minuteLenght)/(24*60*minuteLenght)),
+            new GradientColorKey(DAY_COLOR, ((nighStartDuration+dawnDuration) * 60 * minuteLenght)/(24*60*minuteLenght)), 
+            new GradientColorKey(DAY_COLOR, ((nighStartDuration+dawnDuration+dayDuration) * 60 * minuteLenght)/(24*60*minuteLenght)), 
+            new GradientColorKey(DUSK_DOWN, ((nighStartDuration+dawnDuration+dayDuration+duskDuration/2) * 60 * minuteLenght)/(24*60*minuteLenght)), 
+            new GradientColorKey(NIGHT_COLOR, ((nighStartDuration+dawnDuration+dayDuration+duskDuration) * 60 * minuteLenght)/(24*60*minuteLenght)),
+            new GradientColorKey(NIGHT_COLOR, ((nighStartDuration+dawnDuration+dayDuration+duskDuration+nightDuration) * 60 * minuteLenght)/(24*60*minuteLenght)) 
+        };
+        GradientAlphaKey[] gradientAlphaKeys = { };
+        gradient.SetKeys(gradientColorKeys, gradientAlphaKeys);
     }
 
     private void Start()
@@ -40,7 +69,7 @@ public class GameManager : MonoBehaviour
     {
         currentTime += TimeSpan.FromMinutes(1);
         worldTimeChanged?.Invoke(this, currentTime);
-        light.color = gradient.Evaluate(PercentOfDay());
+        sunSource.color = gradient.Evaluate(PercentOfDay());
         if(currentTime.ToString(@"mm")=="00")
         {
             hourChanged?.Invoke(this, int.Parse(currentTime.ToString(@"hh")));
@@ -55,7 +84,13 @@ public class GameManager : MonoBehaviour
         StartCoroutine(AddMinute());
     }
 
-    private float PercentOfDay() { 
+    public float PercentOfDay() { 
         return (float)currentTime.TotalMinutes % MinutesInDay / MinutesInDay;
+    }
+
+    public void UpdateMoney(int quantity)
+    {
+        currentMoney += quantity;
+        moneyChanged?.Invoke(this, currentMoney);
     }
 }
