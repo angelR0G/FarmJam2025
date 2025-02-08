@@ -5,7 +5,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(InputComponent))]
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(InventoryComponent))]
 public class PlayerComponent : MonoBehaviour
 {
     // Components
@@ -38,7 +37,6 @@ public class PlayerComponent : MonoBehaviour
         inputComponent = GetComponent<InputComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        inventory = GetComponent<InventoryComponent>();
 
         // Init player states
         walkingState = statesContainer.GetComponent<PlayerWalkingState>();
@@ -51,9 +49,9 @@ public class PlayerComponent : MonoBehaviour
         inventory.BindInput(inputComponent);
         inputComponent.interactInputEvent.AddListener(Interact);
 
-        inventory.AddItem(ItemFactory.CreateItem(ItemId.Hoe).GetComponent<ItemComponent>());
-        inventory.AddItem(ItemFactory.CreateItem(ItemId.WaterCan).GetComponent<ItemComponent>());
-        inventory.AddItem(ItemFactory.CreateItem(ItemId.CornSeed).GetComponent<ItemComponent>());
+        inventory.AddItem(ItemId.Hoe);
+        inventory.AddItem(ItemId.WaterCan);
+        inventory.AddItem(ItemId.CornSeed);
     }
 
     // Update is called once per frame

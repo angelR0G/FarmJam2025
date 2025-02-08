@@ -211,6 +211,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d169d01951058f746bd36aecc26f3a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2448403208226745913
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1528273374884061994}
+  - component: {fileID: 7253151188798000588}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1528273374884061994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2448403208226745913}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3350008827769284635}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7253151188798000588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2448403208226745913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb7baaf2bb8a3f48a44e1237e9429a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8056225281700849657
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +270,6 @@ GameObject:
   - component: {fileID: 4321393230077232236}
   - component: {fileID: 4291682530699401124}
   - component: {fileID: 4702580740167502835}
-  - component: {fileID: 2090745657881120343}
   m_Layer: 0
   m_Name: Farmer
   m_TagString: Untagged
@@ -249,6 +292,7 @@ Transform:
   m_Children:
   - {fileID: 3436671154881641867}
   - {fileID: 5698309372245582408}
+  - {fileID: 1528273374884061994}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-4478420365102256175
@@ -347,7 +391,7 @@ MonoBehaviour:
   inputComponent: {fileID: 0}
   body: {fileID: 0}
   sprite: {fileID: 0}
-  inventory: {fileID: 0}
+  inventory: {fileID: 7253151188798000588}
   statesContainer: {fileID: 2109259853284597907}
   currentState: {fileID: 0}
   walkingState: {fileID: 0}
@@ -479,15 +523,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &2090745657881120343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8056225281700849657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efb7baaf2bb8a3f48a44e1237e9429a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -23,7 +23,7 @@ public class CropComponent : MonoBehaviour
     // Other variables
     public short wateredDays = 0;
     public List<Sprite> cropSprites = new List<Sprite>();
-    public GameObject collectableCrop = null;
+    public ItemId collectableCrop = ItemId.Default;
 
     // Start is called before the first frame update
     void Start()

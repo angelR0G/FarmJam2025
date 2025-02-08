@@ -47,17 +47,19 @@ public class InventoryComponent : MonoBehaviour
         return items[activeItemIndex].item;
     }
 
-    public bool AddItem(ItemComponent item)
+    public bool AddItem(ItemId itemId)
     {
         int itemIndex = -1;
 
-        if ((itemIndex = FindIncompleteItemSlotIndex(item)) != -1)
+        if ((itemIndex = FindIncompleteItemSlotIndex(itemId)) != -1)
         {
             items[itemIndex].AddAmount(1);
         }
         else if ((itemIndex = FindFreeSlotIndex()) != -1)
         {
-            items[itemIndex].SetItem(item);
+            ItemComponent newItem = SaveItemComponent(itemId);
+
+            items[itemIndex].SetItem(newItem);
             items[itemIndex].SetAmount(1);
         }
         else
@@ -120,7 +122,7 @@ public class InventoryComponent : MonoBehaviour
 
         if (items[index].amount == 1)
         {
-            Destroy(items[index].item.gameObject);
+            Destroy(items[index].item);
             items[index].SetItem(null);
         }
         else
@@ -133,11 +135,11 @@ public class InventoryComponent : MonoBehaviour
     }
 
 
-    private int FindIncompleteItemSlotIndex(ItemComponent searchItem)
+    private int FindIncompleteItemSlotIndex(ItemId itemId)
     {
         for (int i = TOOLS_SLOTS; i < items.Count; i++)
         {
-            if (items[i].item == searchItem && !items[i].IsFull()) return i;
+            if (items[i].item != null && items[i].item.Id == itemId && !items[i].IsFull()) return i;
         }
 
         return -1;
@@ -151,5 +153,20 @@ public class InventoryComponent : MonoBehaviour
         }
 
         return -1;
+    }
+
+    private ItemComponent SaveItemComponent(ItemId itemId)
+    {
+        ItemData data = ItemFactory.GetItem(itemId);
+        ItemComponent newItem;
+
+        if (data.type == ItemType.Seed)
+            newItem = gameObject.AddComponent<SeedItemComponent>();
+        else
+            newItem = gameObject.AddComponent<ItemComponent>();
+
+        newItem.CopyValues(data);
+
+        return newItem;
     }
 }

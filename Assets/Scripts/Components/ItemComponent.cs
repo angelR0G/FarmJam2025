@@ -6,18 +6,39 @@ using UnityEngine;
 public class ItemComponent : MonoBehaviour
 {
     [SerializeField]
-    private ItemType type = ItemType.Default;
+    protected ItemType type = ItemType.Default;
     [SerializeField]
-    private ItemId id = ItemId.Default;
+    protected ItemId id = ItemId.Default;
     [SerializeField]
-    private int maxStack = 1;
+    protected int maxStack = 1;
     [SerializeField]
-    private String itemName = "Item";
+    protected String itemName = "Item";
+    [SerializeField]
+    protected Sprite sprite = null;
 
     public ItemType Type { get { return type; }  private set { type = value; } }
     public ItemId Id { get { return id; }  private set { id = value; } }
     public int MaxStack { get { return maxStack; }  private set { maxStack = value; } }
     public String ItemName { get { return itemName; }  private set { itemName = value; } }
+    public Sprite Sprite { get { return sprite; } private set { sprite = value; } }
+
+    public void CopyValues(ItemComponent other)
+    {
+        type = other.type;
+        id = other.id;
+        maxStack = other.maxStack;
+        itemName = other.itemName;
+        sprite = other.sprite;
+    }
+
+    public virtual void CopyValues(ItemData data)
+    {
+        type = data.type;
+        id = data.id;
+        maxStack = data.maxStack;
+        itemName = data.itemName;
+        sprite = data.sprite;
+    }
 }
 
 public class ItemSlot
