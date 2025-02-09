@@ -85,7 +85,7 @@ public class InventoryComponent : MonoBehaviour
         if (items[slotIndex].item == null)
         {
             // The slot is empty, so creates a new item component to save the data
-            ItemComponent newItem = SaveItemComponent(itemId);
+            ItemComponent newItem = ItemFactory.CreateItem(itemId, gameObject);
 
             items[slotIndex].SetItem(newItem);
             items[slotIndex].SetAmount(Math.Min(amount, newItem.MaxStack));
@@ -128,7 +128,7 @@ public class InventoryComponent : MonoBehaviour
             slotIndex = FindFreeSlotIndex();
             if (slotIndex == -1) break;
 
-            freeSpaceCount += ItemFactory.GetItem(id).maxStack;
+            freeSpaceCount += ItemFactory.GetItemData(id).maxStack;
 
             slotIndex++;
         }
@@ -221,20 +221,5 @@ public class InventoryComponent : MonoBehaviour
         }
 
         return -1;
-    }
-
-    private ItemComponent SaveItemComponent(ItemId itemId)
-    {
-        ItemData data = ItemFactory.GetItem(itemId);
-        ItemComponent newItem;
-
-        if (data.type == ItemType.Seed)
-            newItem = gameObject.AddComponent<SeedItemComponent>();
-        else
-            newItem = gameObject.AddComponent<ItemComponent>();
-
-        newItem.CopyValues(data);
-
-        return newItem;
     }
 }

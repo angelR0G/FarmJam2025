@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class ItemFactory : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class ItemFactory : MonoBehaviour
     public Dictionary<ItemId, ItemData> itemsData;
     public GameObject itemPrefab;
 
-    public static GameObject CreateItem(ItemId id, Transform parent = null, int amount = 1)
+    public static GameObject CreatePickableItem(ItemId id, Transform parent = null, int amount = 1)
     {
         if (Instance.itemPrefab == null || !Instance.itemsData.ContainsKey(id)) return null;
 
@@ -21,7 +22,26 @@ public class ItemFactory : MonoBehaviour
         return newItem;
     }
 
-    public static ItemData GetItem(ItemId id)
+    public static ItemComponent CreateItem(ItemId id, GameObject owner)
+    {
+        if (owner == null || !Instance.itemsData.ContainsKey(id)) return null;
+
+        ItemData data = Instance.itemsData[id];
+        ItemComponent newItem;
+
+        // Creates the specific component depending on the item data
+        if (data.type == ItemType.Seed)
+            newItem = owner.AddComponent<SeedItemComponent>();
+        else
+            newItem = owner.AddComponent<ItemComponent>();
+
+        // Fills the value of the ItemComponent
+        newItem.CopyValues(Instance.itemsData[id]);
+
+        return newItem;
+    }
+
+    public static ItemData GetItemData(ItemId id)
     {
         return Instance.itemsData.GetValueOrDefault(id, null);
     }
