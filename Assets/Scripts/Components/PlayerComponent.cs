@@ -80,6 +80,8 @@ public class PlayerComponent : MonoBehaviour
 
     private void Interact()
     {
+        if (!isInteractionEnabled) return;
+
         ItemComponent equipedItem = inventory.GetEquipedItem();
 
         if (UseTool(equipedItem)) return;
@@ -109,7 +111,7 @@ public class PlayerComponent : MonoBehaviour
 
     private void InteractWithWorld()
     {
-        if (!isInteractionEnabled || interactables.Count == 0) return;
+        if (interactables.Count == 0) return;
 
         interactables[interactables.Count - 1].Interact(this);
     }

@@ -14,8 +14,11 @@ public class PlayerDiggingState : PlayerState
     {
         canDig = HasSpaceToDig();
 
-        if (!canDig)
+        if (canDig)
         {
+            player.isInteractionEnabled = false;
+        }
+        else {
             player.ChangeState(player.walkingState);
             Debug.Log("~~ No puedo cavar aqui ~~");
         }
