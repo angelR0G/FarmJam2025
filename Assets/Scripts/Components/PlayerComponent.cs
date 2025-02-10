@@ -13,6 +13,7 @@ public class PlayerComponent : MonoBehaviour
     public Rigidbody2D body;
     public SpriteRenderer sprite;
     public InventoryComponent inventory;
+    public Animator animator;
 
     // States
     [Header("State Machine")]
@@ -37,6 +38,7 @@ public class PlayerComponent : MonoBehaviour
         inputComponent = GetComponent<InputComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
 
         // Init player states
         walkingState = statesContainer.GetComponent<PlayerWalkingState>();

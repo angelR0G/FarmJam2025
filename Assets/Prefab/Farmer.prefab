@@ -211,6 +211,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d169d01951058f746bd36aecc26f3a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  liquidAmount: 0
+  isBlood: 0
 --- !u!1 &2448403208226745913
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +272,7 @@ GameObject:
   - component: {fileID: 4321393230077232236}
   - component: {fileID: 3394066040171388502}
   - component: {fileID: 4702580740167502835}
+  - component: {fileID: 4357646901064387132}
   m_Layer: 0
   m_Name: Farmer
   m_TagString: Untagged
@@ -392,6 +395,7 @@ MonoBehaviour:
   body: {fileID: 0}
   sprite: {fileID: 0}
   inventory: {fileID: 7253151188798000588}
+  animator: {fileID: 0}
   statesContainer: {fileID: 2109259853284597907}
   currentState: {fileID: 0}
   walkingState: {fileID: 0}
@@ -513,3 +517,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &4357646901064387132
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8056225281700849657}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 61ca366e93289f34188fbbccc22cb641, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
