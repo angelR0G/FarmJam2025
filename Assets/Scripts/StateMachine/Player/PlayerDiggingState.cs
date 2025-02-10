@@ -14,8 +14,11 @@ public class PlayerDiggingState : PlayerState
     {
         canDig = HasSpaceToDig();
 
-        if (!canDig) 
+        if (!canDig)
+        {
             player.ChangeState(player.walkingState);
+            Debug.Log("~~ No puedo cavar aqui ~~");
+        }
     }
 
     public override void UpdateState()
