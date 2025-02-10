@@ -40,6 +40,11 @@ public class InventoryComponent : MonoBehaviour
         }
     }
 
+    public int GetActiveIndex()
+    {
+        return activeItemIndex;
+    }
+
     public ItemComponent GetEquipedItem()
     {
         // Check if it is a valid index

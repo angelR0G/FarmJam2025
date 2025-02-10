@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(InputComponent))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -13,6 +14,7 @@ public class PlayerComponent : MonoBehaviour
     public Rigidbody2D body;
     public SpriteRenderer sprite;
     public InventoryComponent inventory;
+    public Animator animator;
 
     // States
     [Header("State Machine")]
@@ -28,6 +30,7 @@ public class PlayerComponent : MonoBehaviour
     public bool isInteractionEnabled = true;
     public Vector2 facingDirection = Vector2.down;
     private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
+    public UnityAction onAnimFinished;
 
 
     // Start is called before the first frame update
@@ -37,6 +40,7 @@ public class PlayerComponent : MonoBehaviour
         inputComponent = GetComponent<InputComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
 
         // Init player states
         walkingState = statesContainer.GetComponent<PlayerWalkingState>();
@@ -122,5 +126,10 @@ public class PlayerComponent : MonoBehaviour
 
         if (interactables.Count == 0 )
             sprite.color = Color.white;
+    }
+
+    private void OnAnimationFinished()
+    {
+        onAnimFinished?.Invoke();
     }
 }

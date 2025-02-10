@@ -4,14 +4,34 @@ using UnityEngine;
 
 public class CropDryState : CropState
 {
+    private const int WATER_REQUIRED = 1000;
+
+    private int currentWater = 0;
+
     public override void EnterState()
     {
         crop.cropCollider.enabled = true;
         crop.sprite.sprite = crop.cropSprites[crop.wateredDays];
+        currentWater = 0;
     }
 
     public override void ExitState()
     {
         crop.cropCollider.enabled = false;
+    }
+
+    public void Water(int amount)
+    {
+        currentWater += amount;
+
+        if (currentWater >= WATER_REQUIRED)
+        {
+            crop.ChangeState(crop.wateredState);
+        }
+    }
+
+    public int GetRemainingWaterForGrowth()
+    {
+        return WATER_REQUIRED - currentWater;
     }
 }
