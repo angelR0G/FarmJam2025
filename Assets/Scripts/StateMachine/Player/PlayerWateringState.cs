@@ -33,6 +33,7 @@ public class PlayerWateringState : PlayerState
                 {
                     player.animator.SetTrigger("Water");
                     player.animator.SetBool("LoopWater", true);
+                    player.isInteractionEnabled = false;
                 }
             }
             else 
@@ -40,6 +41,7 @@ public class PlayerWateringState : PlayerState
                 waterSource = obj.GetComponent<WaterSourceComponent>();
                 player.animator.SetTrigger("Water");
                 player.animator.SetBool("LoopWater", false);
+                player.isInteractionEnabled = false;
             }
         }
         else

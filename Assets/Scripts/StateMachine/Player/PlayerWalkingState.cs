@@ -14,6 +14,7 @@ public class PlayerWalkingState : PlayerState
     {
         currentSpeed = 0f;
         UpdateAnimation(true);
+        player.isInteractionEnabled = true;
     }
 
     public override void FixedUpdateState()
