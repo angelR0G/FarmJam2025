@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class SanityComponent : MonoBehaviour
 {
+    [SerializeField]
     private int sanity = 0;
     [SerializeField]
     private int maxSanity = 100;
@@ -24,4 +25,7 @@ public class SanityComponent : MonoBehaviour
     {
         sanity = Math.Min(sanity + s, maxSanity);
     }
+
+    public int GetSanity() { return sanity; }
+    public float GetSanityPercentage() { return Math.Clamp((float)sanity / (float)maxSanity, 0, 1); }
 }

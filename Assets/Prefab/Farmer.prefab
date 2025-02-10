@@ -272,7 +272,9 @@ GameObject:
   - component: {fileID: 4321393230077232236}
   - component: {fileID: 3961482875169893483}
   - component: {fileID: 4702580740167502835}
-  - component: {fileID: 4357646901064387132}
+  - component: {fileID: 941786393497187338}
+  - component: {fileID: 871329882088370086}
+  - component: {fileID: 2767000559645689352}
   m_Layer: 0
   m_Name: Farmer
   m_TagString: Untagged
@@ -517,7 +519,35 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!95 &4357646901064387132
+--- !u!114 &941786393497187338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8056225281700849657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d900926d05cfaaf40bc8d6fd7109991c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 100
+--- !u!114 &871329882088370086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8056225281700849657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17dd78b3458d421419f7a958f244b05a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sanity: 0
+  maxSanity: 100
+--- !u!95 &2767000559645689352
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
