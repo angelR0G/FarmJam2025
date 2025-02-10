@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(InputComponent))]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -29,6 +30,7 @@ public class PlayerComponent : MonoBehaviour
     public bool isInteractionEnabled = true;
     public Vector2 facingDirection = Vector2.down;
     private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
+    public UnityAction onAnimFinished;
 
 
     // Start is called before the first frame update
@@ -124,5 +126,10 @@ public class PlayerComponent : MonoBehaviour
 
         if (interactables.Count == 0 )
             sprite.color = Color.white;
+    }
+
+    private void OnAnimationFinished()
+    {
+        onAnimFinished?.Invoke();
     }
 }

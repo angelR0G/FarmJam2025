@@ -13,6 +13,7 @@ public class PlayerWalkingState : PlayerState
     public override void EnterState()
     {
         currentSpeed = 0f;
+        UpdateAnimation(true);
     }
 
     public override void FixedUpdateState()
