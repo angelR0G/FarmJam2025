@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e02bc50e1be7bfd439c791d457c1e462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  body: {fileID: 0}
   statesContainer: {fileID: 4917371081522861485}
   currentState: {fileID: 0}
   walkingState: {fileID: 0}
@@ -237,7 +238,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.2, y: 0.1}
+  m_Size: {x: 0.2, y: 0.05}
   m_Direction: 1
 --- !u!50 &1558464366271958220
 Rigidbody2D:

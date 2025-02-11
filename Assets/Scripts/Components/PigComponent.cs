@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class PigComponent : MonoBehaviour
 {
+    // Components
+    [Header("Components References")]
+    public Rigidbody2D body;
+
     // States
     [Header("State Machine")]
     [SerializeField, Tooltip("Game Object that contains pig's states. Should be a child of pig game object so that states can update their references correctly.")]
@@ -18,6 +22,9 @@ public class PigComponent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Get components
+        body = GetComponent<Rigidbody2D>();
+
         // Init pig states
         walkingState = statesContainer.GetComponent<PigWalkingState>();
         eatingState = statesContainer.GetComponent<PigEatingState>();
@@ -27,10 +34,14 @@ public class PigComponent : MonoBehaviour
         ChangeState(walkingState);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        currentState.UpdateState();
+    }
+
+    private void FixedUpdate()
+    {
+        currentState.FixedUpdateState();
     }
 
     public void ChangeState(PigState newState)
