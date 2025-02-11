@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class PigComponent : MonoBehaviour
 {
+    private const int STARVING_DAYS_TO_DIE = 3;
+    private const int MIN_HUNGRY_HOUR = 10;
+    private const int MAX_HUNGRY_HOUR = 13;
+
+
     // Components
     [Header("Components References")]
     public Rigidbody2D body;
@@ -19,6 +24,12 @@ public class PigComponent : MonoBehaviour
     [HideInInspector] public PigSleepingState sleepingState = null;
     [HideInInspector] public PigPanicState panicState = null;
 
+    // Other properties
+    public bool isHungry;
+    public bool hasEatenToday;
+    public int starvingDaysCount;
+    public int hungryHour;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +43,14 @@ public class PigComponent : MonoBehaviour
         panicState = statesContainer.GetComponent<PigPanicState>();
 
         ChangeState(walkingState);
+
+        // Initialize hunger properties and bind inputs
+        hasEatenToday = false;
+        isHungry = false;
+        starvingDaysCount = 0;
+        hungryHour = Random.Range(MIN_HUNGRY_HOUR, MAX_HUNGRY_HOUR + 1);
+        GameManager.Instance.dayChanged += OnDayChanged;
+        GameManager.Instance.hourChanged += OnHourChanged;
     }
 
     void Update()
@@ -51,5 +70,42 @@ public class PigComponent : MonoBehaviour
         currentState = newState;
 
         if (currentState != null) currentState.EnterState();
+    }
+
+    public void OnDayChanged(object sender, int dayNumber)
+    {
+        CheckHungerState();
+    }
+
+    public void OnHourChanged(object sender, int hour)
+    {
+        if (hour == 3)
+        {
+            // At night, pig can die or grow depending on its hunger
+            if (hasEatenToday)
+            {
+                // TODO: Pig grows
+                hasEatenToday = false;
+            }
+            else if (starvingDaysCount >= STARVING_DAYS_TO_DIE)
+            {
+                // TODO: Pig dies, leaving its corpse
+                Destroy(gameObject);
+            }
+        }
+        else if (hour == hungryHour)
+        {
+            // Pig gets hungry at this hour every day
+            if (!hasEatenToday)
+                isHungry = true;
+        }
+    }
+
+    public void CheckHungerState()
+    {
+        if (!hasEatenToday) 
+            starvingDaysCount++;
+        else
+            starvingDaysCount = 0;
     }
 }
