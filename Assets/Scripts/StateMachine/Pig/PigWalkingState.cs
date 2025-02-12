@@ -60,6 +60,6 @@ public class PigWalkingState : PigState
 
     private void RequestNewTargetPosition()
     {
-        targetPosition = new Vector3(Random.Range(-6, -4), Random.Range(-2, 2));
+        targetPosition = pig.farmyard.GetRandomPositionInFarmyard();
     }
 }

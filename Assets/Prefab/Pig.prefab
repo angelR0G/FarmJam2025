@@ -139,6 +139,10 @@ MonoBehaviour:
   eatingState: {fileID: 0}
   sleepingState: {fileID: 0}
   panicState: {fileID: 0}
+  isHungry: 0
+  hasEatenToday: 0
+  starvingDaysCount: 0
+  hungryHour: 0
 --- !u!114 &-2222443204524572415
 MonoBehaviour:
   m_ObjectHideFlags: 0

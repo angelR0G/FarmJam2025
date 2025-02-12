@@ -8,7 +8,8 @@ public class PigComponent : MonoBehaviour
     private const int STARVING_DAYS_TO_DIE = 3;
     private const int MIN_HUNGRY_HOUR = 10;
     private const int MAX_HUNGRY_HOUR = 13;
-
+    private const int MAX_AGE = 3;
+    private const float MASS_INCREMENT_WITH_AGE = 3;
 
     // Components
     [Header("Components References")]
@@ -29,6 +30,8 @@ public class PigComponent : MonoBehaviour
     public bool hasEatenToday;
     public int starvingDaysCount;
     public int hungryHour;
+    public int age;
+    public FarmyardComponent farmyard;
 
     // Start is called before the first frame update
     void Start()
@@ -85,6 +88,7 @@ public class PigComponent : MonoBehaviour
             if (hasEatenToday)
             {
                 // TODO: Pig grows
+                Grow();
                 hasEatenToday = false;
             }
             else if (starvingDaysCount >= STARVING_DAYS_TO_DIE)
@@ -107,5 +111,21 @@ public class PigComponent : MonoBehaviour
             starvingDaysCount++;
         else
             starvingDaysCount = 0;
+    }
+
+    private void Grow()
+    {
+        if (age >= MAX_AGE)
+            return;
+        
+        age++;
+        body.mass += MASS_INCREMENT_WITH_AGE;
+        transform.localScale += new Vector3(0.3f, 0.3f, 0.3f);
+    }
+
+    public void Eat(PlayerComponent p)
+    {
+        isHungry = false;
+        hasEatenToday = true;
     }
 }
