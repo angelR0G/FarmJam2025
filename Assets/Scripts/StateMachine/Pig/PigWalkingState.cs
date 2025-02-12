@@ -16,8 +16,15 @@ public class PigWalkingState : PigState
 
     public override void EnterState()
     {
+        GameManager.Instance.hourChanged += CheckSleepTime;
+
         RequestNewTargetPosition();
         nextTargetCountdown = MAX_TIME_TO_REACH_TARGET;
+    }
+
+    public override void ExitState()
+    {
+        GameManager.Instance.hourChanged -= CheckSleepTime;
     }
 
     public override void FixedUpdateState()
@@ -72,5 +79,11 @@ public class PigWalkingState : PigState
             return;
 
         targetPosition = pig.farmyard.GetRandomPositionInFarmyard();
+    }
+
+    public void CheckSleepTime(object sender, int hour)
+    {
+        if (hour > 20 || hour < 8)
+            pig.ChangeState(pig.sleepingState);
     }
 }
