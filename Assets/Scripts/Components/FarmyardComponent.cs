@@ -28,6 +28,22 @@ public class FarmyardComponent : MonoBehaviour
         return randomPosition;
     }
 
+    // Returns whether there is a trough filled with food. If it is found, returns its position in the out parameter
+    public bool GetFilledTroughPosition(out Vector3 troughPosition)
+    {
+        foreach (FoodContainerComponent t in troughs)
+        {
+            if (t.HasFood)
+            {
+                troughPosition = t.transform.position;
+                return true;
+            }
+        }
+
+        troughPosition = Vector3.zero;
+        return false;
+    }
+
     public void SpawnPig()
     {
         GameObject pig = Instantiate(pigPrefab, transform);

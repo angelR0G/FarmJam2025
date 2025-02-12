@@ -22,8 +22,15 @@ public class PigWalkingState : PigState
 
     public override void FixedUpdateState()
     {
-        UpdateMovementTimeout();
-        UpdateMovement();
+        if (pig.isHungry && pig.GetFoodInFront() != null)
+        {
+            pig.ChangeState(pig.eatingState);
+        }
+        else
+        {
+            UpdateMovementTimeout();
+            UpdateMovement();
+        }
     }
 
     private void UpdateMovementTimeout()
@@ -48,6 +55,7 @@ public class PigWalkingState : PigState
         Vector3 movementVector = targetVector.normalized * Mathf.Min(targetVector.magnitude, WALKING_SPEED);
 
         pig.body.velocity = movementVector;
+        pig.facingDirection = targetVector.normalized;
     }
 
     private void UpdateTargetReached(bool isInTargetPosition)
@@ -60,6 +68,9 @@ public class PigWalkingState : PigState
 
     private void RequestNewTargetPosition()
     {
+        if (pig.isHungry && pig.farmyard.GetFilledTroughPosition(out targetPosition))
+            return;
+
         targetPosition = pig.farmyard.GetRandomPositionInFarmyard();
     }
 }

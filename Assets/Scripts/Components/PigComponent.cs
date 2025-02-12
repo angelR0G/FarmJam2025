@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
+using static UnityEngine.UI.Image;
 
 public class PigComponent : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class PigComponent : MonoBehaviour
     private const int MAX_HUNGRY_HOUR = 13;
     private const int MAX_AGE = 3;
     private const float MASS_INCREMENT_WITH_AGE = 3;
+    private const float FOOD_DETECTION_DISTANCE = 0.15f;
 
     // Components
     [Header("Components References")]
@@ -26,12 +29,13 @@ public class PigComponent : MonoBehaviour
     [HideInInspector] public PigPanicState panicState = null;
 
     // Other properties
-    public bool isHungry;
-    public bool hasEatenToday;
-    public int starvingDaysCount;
-    public int hungryHour;
-    public int age;
-    public FarmyardComponent farmyard;
+    public bool isHungry = false;
+    public bool hasEatenToday = false;
+    public int starvingDaysCount = 0;
+    public int hungryHour = 0;
+    public int age = 0;
+    public FarmyardComponent farmyard = null;
+    public Vector2 facingDirection = Vector2.down;
 
     // Start is called before the first frame update
     void Start()
@@ -47,10 +51,7 @@ public class PigComponent : MonoBehaviour
 
         ChangeState(walkingState);
 
-        // Initialize hunger properties and bind inputs
-        hasEatenToday = false;
-        isHungry = false;
-        starvingDaysCount = 0;
+        // Initialize hunger properties and bind events
         hungryHour = Random.Range(MIN_HUNGRY_HOUR, MAX_HUNGRY_HOUR + 1);
         GameManager.Instance.dayChanged += OnDayChanged;
         GameManager.Instance.hourChanged += OnHourChanged;
@@ -127,5 +128,20 @@ public class PigComponent : MonoBehaviour
     {
         isHungry = false;
         hasEatenToday = true;
+    }
+
+    public FoodContainerComponent GetFoodInFront()
+    {
+        FoodContainerComponent food;
+        RaycastHit2D[] hits = new RaycastHit2D[2];
+        Physics2D.Raycast(transform.position, facingDirection, new ContactFilter2D(), hits, FOOD_DETECTION_DISTANCE);
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider != null && hit.collider.gameObject.TryGetComponent<FoodContainerComponent>(out food))
+                return food;
+        }
+
+        return null;
     }
 }

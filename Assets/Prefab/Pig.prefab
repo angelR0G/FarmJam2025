@@ -143,6 +143,9 @@ MonoBehaviour:
   hasEatenToday: 0
   starvingDaysCount: 0
   hungryHour: 0
+  age: 0
+  farmyard: {fileID: 0}
+  facingDirection: {x: 0, y: -1}
 --- !u!114 &-2222443204524572415
 MonoBehaviour:
   m_ObjectHideFlags: 0
