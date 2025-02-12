@@ -124,12 +124,6 @@ public class PigComponent : MonoBehaviour
         transform.localScale += new Vector3(0.3f, 0.3f, 0.3f);
     }
 
-    public void Eat(PlayerComponent p)
-    {
-        isHungry = false;
-        hasEatenToday = true;
-    }
-
     public FoodContainerComponent GetFoodInFront()
     {
         FoodContainerComponent food;
@@ -138,7 +132,7 @@ public class PigComponent : MonoBehaviour
 
         foreach (RaycastHit2D hit in hits)
         {
-            if (hit.collider != null && hit.collider.gameObject.TryGetComponent<FoodContainerComponent>(out food))
+            if (hit.collider != null && hit.collider.gameObject.TryGetComponent<FoodContainerComponent>(out food) && food.HasFood)
                 return food;
         }
 

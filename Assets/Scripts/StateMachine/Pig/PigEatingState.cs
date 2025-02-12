@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class PigEatingState : PigState
 {
-    FoodContainerComponent foodSource;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private const float EATING_TIME = 8f;
+
+    FoodContainerComponent foodSource = null;
+    private float remainingEatingTime = 0;
 
     public override void EnterState()
     {
@@ -19,7 +17,32 @@ public class PigEatingState : PigState
             pig.ChangeState(pig.walkingState);
         else
         {
-            pig.transform.localScale = Vector3.one * 0.1f;
+            remainingEatingTime = EATING_TIME;
         }
+    }
+
+    public override void UpdateState()
+    {
+        if (foodSource == null || !foodSource.HasFood)
+        {
+            pig.ChangeState(pig.walkingState);
+        }
+
+        if (remainingEatingTime <= 0)
+            FinishEating();
+        else
+            remainingEatingTime -= Time.deltaTime;
+    }
+
+    private void FinishEating()
+    {
+        if (foodSource != null)
+        {
+            foodSource.EmptyContainer();
+            pig.isHungry = false;
+            pig.hasEatenToday = true;
+        }
+
+        pig.ChangeState(pig.walkingState);
     }
 }
