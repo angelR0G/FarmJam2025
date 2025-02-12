@@ -54,6 +54,15 @@ public class InventoryComponent : MonoBehaviour
         return items[activeItemIndex].item;
     }
 
+    public ItemComponent GetItemIndex(int index)
+    {
+        // Check if it is a valid index
+        if (index < 0 || index >= INVENTORY_SIZE) return null;
+
+        // Get the item from the correct array
+        return items[index].item;
+    }
+
     public int AddItem(ItemId itemId, int amount = 1)
     {
         int itemIndex = TOOLS_SLOTS;
