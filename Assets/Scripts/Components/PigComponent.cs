@@ -138,4 +138,11 @@ public class PigComponent : MonoBehaviour
 
         return null;
     }
+
+    public void OnDestroy()
+    {
+        ChangeState(null);
+        GameManager.Instance.dayChanged -= OnDayChanged;
+        GameManager.Instance.hourChanged -= OnHourChanged;
+    }
 }
