@@ -7,10 +7,14 @@ public class FarmyardComponent : MonoBehaviour
     private BoxCollider2D area;
     public GameObject pigPrefab;
 
+    private List<FoodContainerComponent> troughs;
+
     // Start is called before the first frame update
     void Start()
     {
         area = GetComponent<BoxCollider2D>();
+        SaveTroughsReferences();
+
         SpawnPig();
     }
 
@@ -30,5 +34,19 @@ public class FarmyardComponent : MonoBehaviour
 
         pig.transform.position = GetRandomPositionInFarmyard();
         pig.GetComponent<PigComponent>().farmyard = this;
+    }
+
+    public void SaveTroughsReferences()
+    {
+        troughs = new List<FoodContainerComponent>();
+
+        FoodContainerComponent trough;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.TryGetComponent<FoodContainerComponent>(out trough))
+            {
+                troughs.Add(trough);
+            }
+        }
     }
 }
