@@ -23,9 +23,20 @@ public class InventoryDisplay : MonoBehaviour
 
     private void UpdateItemSprites()
     {
-        foreach (GameObject g in inventorySlots)
+        for (int i = 0; i < inventorySlots.Count; i++)
         {
-            //g.GetComponent<Image>().sprite = playerInventory.GetEquipedItem().Sprite;
+            ItemComponent item = playerInventory.GetItemIndex(i); 
+            if(item != null)
+            {
+                inventorySlots[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = item.Sprite;
+                inventorySlots[i].transform.GetChild(0).gameObject.SetActive(true);
+
+            }
+            else
+            {
+                inventorySlots[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = null;
+                inventorySlots[i].transform.GetChild(0).gameObject.SetActive(false);
+            }
         }
     }
 
