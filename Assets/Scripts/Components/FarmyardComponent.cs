@@ -46,9 +46,11 @@ public class FarmyardComponent : MonoBehaviour
 
     public void SpawnPig()
     {
+        Vector3 spawnPosition = GetSpawnPosition();
+
         GameObject pig = Instantiate(pigPrefab, transform);
 
-        pig.transform.position = GetRandomPositionInFarmyard();
+        pig.transform.position = spawnPosition;
         pig.GetComponent<PigComponent>().farmyard = this;
     }
 
@@ -64,5 +66,29 @@ public class FarmyardComponent : MonoBehaviour
                 troughs.Add(trough);
             }
         }
+    }
+
+    public Vector3 GetSpawnPosition()
+    {
+        Vector3 spawnPosition = Vector3.zero;
+
+        List<Collider2D> result = new List<Collider2D>();
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.useTriggers = false;
+
+        int spawnAttempts = 5;
+        while (spawnAttempts > 0)
+        {
+            spawnPosition = GetRandomPositionInFarmyard();
+
+            Physics2D.OverlapCircle(spawnPosition, 0.15f, filter, result);
+            if (result.Count == 0)
+                return spawnPosition;
+
+            spawnAttempts--;
+        }
+
+        // If cannot find an empty position, returns the center of the farmyard
+        return transform.position;
     }
 }
