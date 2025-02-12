@@ -32,7 +32,7 @@ public class InventoryComponent : MonoBehaviour
         input.equipPreviousItemEvent.AddListener(EquipPreviousItem);
     }
 
-    public void Start()
+    public void Awake()
     {
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
