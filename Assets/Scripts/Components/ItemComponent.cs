@@ -89,4 +89,5 @@ public enum ItemId
     Hoe,
     WaterCan,
     Corn,
+    Pitchfork
 }

@@ -15,6 +15,7 @@ public class PlayerComponent : MonoBehaviour
     public SpriteRenderer sprite;
     public InventoryComponent inventory;
     public Animator animator;
+    public AttackComponent attackComponent;
 
     // States
     [Header("State Machine")]
@@ -24,6 +25,7 @@ public class PlayerComponent : MonoBehaviour
     [HideInInspector] public PlayerWalkingState walkingState = null;
     [HideInInspector] public PlayerDiggingState diggingState = null;
     [HideInInspector] public PlayerWateringState wateringState = null;
+    [HideInInspector] public PlayerAttackState attackState = null;
 
     // Other variables
     [Header("Player properties")]
@@ -31,6 +33,7 @@ public class PlayerComponent : MonoBehaviour
     public Vector2 facingDirection = Vector2.down;
     private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
     public UnityAction onAnimFinished;
+    public UnityAction onAnimEvent;
 
 
     // Start is called before the first frame update
@@ -41,11 +44,13 @@ public class PlayerComponent : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        attackComponent = GetComponent<AttackComponent>();
 
         // Init player states
         walkingState = statesContainer.GetComponent<PlayerWalkingState>();
         diggingState = statesContainer.GetComponent<PlayerDiggingState>();
         wateringState = statesContainer.GetComponent<PlayerWateringState>();
+        attackState = statesContainer.GetComponent<PlayerAttackState>();
 
         ChangeState(walkingState);
 
@@ -56,6 +61,7 @@ public class PlayerComponent : MonoBehaviour
         inventory.AddItem(ItemId.Hoe);
         inventory.AddItem(ItemId.WaterCan);
         inventory.AddItem(ItemId.CornSeed);
+        inventory.AddItem(ItemId.Pitchfork);
     }
 
     // Update is called once per frame
@@ -101,6 +107,10 @@ public class PlayerComponent : MonoBehaviour
         {
             ChangeState(wateringState);
         }
+        else if (equipedTool.Id == ItemId.Pitchfork)
+        {
+            ChangeState(attackState);
+        }
         else
         {
             return false;
@@ -133,5 +143,10 @@ public class PlayerComponent : MonoBehaviour
     private void OnAnimationFinished()
     {
         onAnimFinished?.Invoke();
+    }
+
+    private void OnAnimationEvent()
+    {
+        onAnimEvent?.Invoke();
     }
 }
