@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FarmerAttackLeft
+  m_Name: FarmerFinishAttackLeft
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 856650273, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
+      value: {fileID: 1726321538, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
     - time: 0.083333336
-      value: {fileID: 639322019, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
+      value: {fileID: -1703340320, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
     - time: 0.16666667
-      value: {fileID: -1566959681, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
+      value: {fileID: 436050339, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
     - time: 0.25
-      value: {fileID: -576287637, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
+      value: {fileID: 895486124, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -50,10 +50,10 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 856650273, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
-    - {fileID: 639322019, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
-    - {fileID: -1566959681, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
-    - {fileID: -576287637, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
+    - {fileID: 1726321538, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
+    - {fileID: -1703340320, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
+    - {fileID: 436050339, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
+    - {fileID: 895486124, guid: aae7d3f10e73ee54abc1511e64f7ead5, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
@@ -79,7 +79,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.083333336
+  - time: 0.16666667
     functionName: OnAnimationEvent
     data: 
     objectReferenceParameter: {fileID: 0}

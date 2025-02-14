@@ -227,6 +227,7 @@ GameObject:
   - component: {fileID: 1863546355494935491}
   - component: {fileID: 5604335683603138453}
   - component: {fileID: 1902316905249877143}
+  - component: {fileID: 7458667622349085327}
   m_Layer: 0
   m_Name: StatesContainer
   m_TagString: Untagged
@@ -303,6 +304,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfbc967b0ee2e824bb48e20b6c6dc06a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7458667622349085327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109259853284597907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f61ec8ebe2be624e912ae7c719b18d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2448403208226745913
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,6 +360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb7baaf2bb8a3f48a44e1237e9429a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blockInventory: 0
 --- !u!1 &8056225281700849657
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,7 +511,7 @@ MonoBehaviour:
   diggingState: {fileID: 0}
   wateringState: {fileID: 0}
   attackState: {fileID: 0}
-  isInteractionEnabled: 1
+  finishAttackState: {fileID: 0}
   facingDirection: {x: 0, y: -1}
 --- !u!212 &4321393230077232236
 SpriteRenderer:

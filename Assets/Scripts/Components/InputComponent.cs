@@ -41,6 +41,11 @@ public class InputComponent : MonoBehaviour
         }
     }
 
+    public void Update()
+    {
+        interact = false;
+    }
+
     public void OnEquipTool1(InputValue value)
     {
         if (value.isPressed)

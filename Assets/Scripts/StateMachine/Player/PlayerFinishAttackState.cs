@@ -2,19 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttackState : PlayerState
+public class PlayerFinishAttackState : PlayerState
 {
-    private const float COOLDOWN_TIME = 0.1f;
-    private const float IMPULSE_SPEED = 0.5f;
-    private const float ATTACK_RANGE = 0.2f;
-    private const float ATTACK_WIDTH = 0.2f;
-    private const float MIN_TIME_REQUIRED_FOR_COMBO = 0.1f;
+    private const float COOLDOWN_TIME = 0.2f;
+    private const float IMPULSE_SPEED = 1f;
+    private const float ATTACK_RANGE = 0.3f;
+    private const float ATTACK_WIDTH = 0.1f;
 
     private float cooldown = 0;
     private bool isOnCooldown = false;
-    private bool comboActivated = false;
-    private float comboTimer = 1f;
-    public int attackDamage = 10;
+    public int attackDamage = 20;
 
     public override void EnterState()
     {
@@ -25,10 +22,8 @@ public class PlayerAttackState : PlayerState
         player.attackComponent.UpdateDamageArea(ATTACK_RANGE, ATTACK_WIDTH, Vector2.Angle(Vector2.right, player.facingDirection));
         player.attackComponent.damage = attackDamage;
         isOnCooldown = false;
-        comboActivated = false;
-        comboTimer = 0f;
 
-        player.animator.SetTrigger("Attack");
+        player.animator.SetTrigger("FinishAttack");
     }
 
     public override void ExitState()
@@ -45,34 +40,11 @@ public class PlayerAttackState : PlayerState
 
     public override void UpdateState()
     {
-        CheckComboActivated();
-
         if (isOnCooldown)
         {
-            if (comboActivated)
-            {
-                player.ChangeState(player.finishAttackState);
-            }
-            else 
-            {
-                cooldown -= Time.deltaTime;
-                if (cooldown <= 0)
-                    player.ChangeState(player.walkingState);
-            }
-        }
-    }
-
-    public void CheckComboActivated()
-    {
-        // Check that a minimum amount of time passed so that input can refresh
-        if (comboTimer >= MIN_TIME_REQUIRED_FOR_COMBO)
-        {
-            if (player.inputComponent.interact)
-                comboActivated = true;
-        }
-        else
-        {
-            comboTimer += Time.deltaTime;
+            cooldown -= Time.deltaTime;
+            if (cooldown <= 0)
+                player.ChangeState(player.walkingState);
         }
     }
 
