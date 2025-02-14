@@ -14,7 +14,7 @@ public class PlayerAttackState : PlayerState
 
     public override void EnterState()
     {
-        player.isInteractionEnabled = false;
+        player.IsInteractionEnabled = false;
         player.onAnimEvent = Attack;
         player.onAnimFinished = StartCooldown;
 
@@ -26,7 +26,7 @@ public class PlayerAttackState : PlayerState
 
     public override void ExitState()
     {
-        player.isInteractionEnabled = true;
+        player.IsInteractionEnabled = true;
         player.onAnimEvent = null;
         player.onAnimFinished = null;
     }

@@ -29,11 +29,19 @@ public class PlayerComponent : MonoBehaviour
 
     // Other variables
     [Header("Player properties")]
-    public bool isInteractionEnabled = true;
+    private bool isInteractionEnabled = true;
     public Vector2 facingDirection = Vector2.down;
     private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
     public UnityAction onAnimFinished;
     public UnityAction onAnimEvent;
+
+    public bool IsInteractionEnabled {  
+        get { return isInteractionEnabled; } 
+        set { 
+            isInteractionEnabled = value; 
+            inventory.blockInventory = !value; 
+        } 
+    }
 
 
     // Start is called before the first frame update

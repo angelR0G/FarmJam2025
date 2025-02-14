@@ -13,6 +13,7 @@ public class InventoryComponent : MonoBehaviour
     const ushort INVENTORY_SIZE = ITEMS_SLOTS + TOOLS_SLOTS;
 
     private int activeItemIndex = 0;
+    public bool blockInventory = false;
 
     private List<ItemSlot> items = new List<ItemSlot>(INVENTORY_SIZE);
 
@@ -152,7 +153,7 @@ public class InventoryComponent : MonoBehaviour
 
     public void EquipItem(int index)
     {
-        if (index < 0 || index >= INVENTORY_SIZE) return;
+        if (blockInventory || index < 0 || index >= INVENTORY_SIZE) return;
 
         activeItemIndex = index;
 

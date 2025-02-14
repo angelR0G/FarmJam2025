@@ -16,7 +16,7 @@ public class PlayerDiggingState : PlayerState
 
         if (canDig)
         {
-            player.isInteractionEnabled = false;
+            player.IsInteractionEnabled = false;
         }
         else {
             player.ChangeState(player.walkingState);
