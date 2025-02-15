@@ -17,7 +17,7 @@ public class AttackComponent : MonoBehaviour
     public void UpdateDamageArea(float attackRange, float attackWidth, float attackAngle)
     {
         damageArea.size = new Vector2(attackRange, attackWidth);
-        damageArea.offset = new Vector2(Mathf.Cos(attackAngle) * attackRange/2, Mathf.Sin(attackAngle) * attackRange/2);
+        damageArea.offset = new Vector2(attackRange/2, 0);
         damageArea.gameObject.transform.rotation = Quaternion.Euler(0, 0, attackAngle);
     }
 

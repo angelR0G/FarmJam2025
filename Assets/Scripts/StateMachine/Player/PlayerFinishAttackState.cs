@@ -6,7 +6,7 @@ public class PlayerFinishAttackState : PlayerState
 {
     private const float COOLDOWN_TIME = 0.2f;
     private const float IMPULSE_SPEED = 1f;
-    private const float ATTACK_RANGE = 0.3f;
+    private const float ATTACK_RANGE = 0.4f;
     private const float ATTACK_WIDTH = 0.1f;
 
     private float cooldown = 0;
@@ -19,7 +19,7 @@ public class PlayerFinishAttackState : PlayerState
         player.onAnimEvent = Attack;
         player.onAnimFinished = StartCooldown;
 
-        player.attackComponent.UpdateDamageArea(ATTACK_RANGE, ATTACK_WIDTH, Vector2.Angle(Vector2.right, player.facingDirection));
+        player.attackComponent.UpdateDamageArea(ATTACK_RANGE, ATTACK_WIDTH, Vector2.SignedAngle(Vector2.right, player.facingDirection));
         player.attackComponent.damage = attackDamage;
         isOnCooldown = false;
 
