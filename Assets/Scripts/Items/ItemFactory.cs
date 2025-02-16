@@ -8,6 +8,7 @@ public class ItemFactory : MonoBehaviour
     private static ItemFactory Instance;
     public Dictionary<ItemId, ItemData> itemsData;
     public GameObject itemPrefab;
+    public GameObject corpsePrefab;
 
     public static GameObject CreatePickableItem(ItemId id, Transform parent = null, int amount = 1)
     {
@@ -20,6 +21,13 @@ public class ItemFactory : MonoBehaviour
         pickComp.amount = amount;
 
         return newItem;
+    }
+
+    public static GameObject CreateCorpse()
+    {
+        if (Instance.corpsePrefab == null) return null;
+
+        return Instantiate(Instance.corpsePrefab); ;
     }
 
     public static ItemComponent CreateItem(ItemId id, GameObject owner)

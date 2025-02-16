@@ -9,11 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1390533872969812008}
-  - component: {fileID: -4600296406122789960}
+  - component: {fileID: 7225262076370115545}
   - component: {fileID: 4608792540556621525}
   - component: {fileID: 8272164420557985175}
   - component: {fileID: -1261621517771589495}
   - component: {fileID: -1952811958990992785}
+  - component: {fileID: 8349236110919855122}
   m_Layer: 0
   m_Name: Corpse
   m_TagString: Untagged
@@ -36,8 +37,8 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!70 &-4600296406122789960
-CapsuleCollider2D:
+--- !u!58 &7225262076370115545
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -69,8 +70,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.2, y: 0.1}
-  m_Direction: 1
+  serializedVersion: 2
+  m_Radius: 0.1
 --- !u!50 &4608792540556621525
 Rigidbody2D:
   serializedVersion: 4
@@ -176,3 +177,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e82c516be4fdf143b9375e5c85e0c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8349236110919855122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7165927974511255936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1aa610c6cbd75541b8665a6042a1a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blood: 0

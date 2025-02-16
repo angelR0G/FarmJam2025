@@ -29,6 +29,12 @@ public class HealthComponent : MonoBehaviour
         health = Math.Min(health + h, maxHealth);
     }
 
+    public void Kill()
+    {
+        health = 0;
+        onDieCallback();
+    }
+
     public int GetHealth() { return health; }
     public float GetHealthPercentage() { return Math.Clamp((float)health/ (float)maxHealth, 0, 1); }
 }
