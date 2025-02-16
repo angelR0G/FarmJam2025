@@ -44,6 +44,13 @@ public class AttackComponent : MonoBehaviour
 
         HealthComponent damagedObjectHealth = other.gameObject.GetComponent<HealthComponent>();
         damagedObjectHealth?.LooseHealth(damage);
+
+        Rigidbody2D damagedObjectBody;
+        if (other.TryGetComponent<Rigidbody2D>(out damagedObjectBody))
+        {
+            Vector3 forceDirection = (other.gameObject.transform.position - transform.position).normalized;
+            damagedObjectBody.AddForce(new Vector2(forceDirection.x, forceDirection.y) * 10 * damagedObjectBody.mass, ForceMode2D.Impulse);
+        }
     }
 
     public void ConfigureSprite(Vector3 spriteOffset = new Vector3(), bool flipH = false, bool flipV = false)

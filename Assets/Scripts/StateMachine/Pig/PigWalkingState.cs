@@ -56,7 +56,7 @@ public class PigWalkingState : PigState
 
         // Check if it is already in the target position
         UpdateTargetReached(targetVector.magnitude < TARGET_REACHED_TRESHOLD);
-        if (hasReachedTarget)
+        if (hasReachedTarget || pig.healthComp.IsStunned())
             return;
 
         Vector3 movementVector = targetVector.normalized * Mathf.Min(targetVector.magnitude, WALKING_SPEED);

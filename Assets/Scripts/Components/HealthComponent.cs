@@ -5,23 +5,36 @@ using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
 {
+    private const float DAMAGE_EFFECT_TIME = 0.2f;
+
     [SerializeField]
     private int health = 0;
     [SerializeField]
     private int maxHealth = 100;
     public Action onDieCallback;
+    private float damagedRemainingTime;
+    private SpriteRenderer sprite;
 
     // Start is called before the first frame update
     void Start()
     {
         health = maxHealth;
+        sprite = GetComponent<SpriteRenderer>();
+    }
+
+    private void Update()
+    {
+        ApplyDamagedEffect();
     }
 
     public void LooseHealth(int h)
     {
         health -= h;
-        
-        if (health <= 0) onDieCallback();
+
+        if (health <= 0)
+            onDieCallback();
+        else
+            damagedRemainingTime = DAMAGE_EFFECT_TIME;
     }
 
     public void RestoreHealth(int h)
@@ -33,6 +46,19 @@ public class HealthComponent : MonoBehaviour
     {
         health = 0;
         onDieCallback();
+    }
+
+    private void ApplyDamagedEffect()
+    {
+        if (damagedRemainingTime <= 0 || !sprite) return;
+
+        damagedRemainingTime -= Time.deltaTime;
+        sprite.color = damagedRemainingTime > 0 ? Color.red : Color.white;
+    }
+
+    public bool IsStunned()
+    {
+        return damagedRemainingTime > 0;
     }
 
     public int GetHealth() { return health; }
