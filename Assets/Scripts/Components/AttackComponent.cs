@@ -26,7 +26,7 @@ public class AttackComponent : MonoBehaviour
         damageArea.enabled = newState;
     }
 
-    public void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject == gameObject) return;
 
