@@ -50,12 +50,12 @@ public class LightSourceComponent : MonoBehaviour
         collider.enabled = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("aasdsaas");
+        other.GetComponent<SanityComponent>().insideLightSource = true;
     }
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        Debug.Log("exit");
+        other.GetComponent<SanityComponent>().insideLightSource = false;
     }
 }

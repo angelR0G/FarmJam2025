@@ -19,6 +19,7 @@ public class SanityComponent : MonoBehaviour
     private GameManager gameManager;
     private bool looseSanityState = false;
     private HealthComponent health;
+    public bool insideLightSource = false;
     private float timer = 0f;
 
 
@@ -56,7 +57,7 @@ public class SanityComponent : MonoBehaviour
             {
                 health.LooseHealth(looseHealthRate);
             }
-            if (looseSanityState && (sanity - looseSanityRate) >= 0)
+            if (!insideLightSource && looseSanityState && (sanity - looseSanityRate) >= 0)
             {
                 LooseSanity(looseSanityRate);
             }
