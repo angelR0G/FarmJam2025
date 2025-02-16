@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCarringState : PlayerState
+public class PlayerCarryingState : PlayerState
 {
     private const float DROP_TIME = 0.5f;
     private const float MOVEMENT_TRESHOLD = 0.1f;

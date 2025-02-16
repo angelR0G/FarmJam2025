@@ -27,7 +27,7 @@ public class PlayerComponent : MonoBehaviour
     [HideInInspector] public PlayerWateringState wateringState = null;
     [HideInInspector] public PlayerAttackState attackState = null;
     [HideInInspector] public PlayerFinishAttackState finishAttackState = null;
-    [HideInInspector] public PlayerCarringState carringState = null;
+    [HideInInspector] public PlayerCarryingState carringState = null;
 
     // Other variables
     [Header("Player properties")]
@@ -62,7 +62,7 @@ public class PlayerComponent : MonoBehaviour
         wateringState = statesContainer.GetComponent<PlayerWateringState>();
         attackState = statesContainer.GetComponent<PlayerAttackState>();
         finishAttackState = statesContainer.GetComponent<PlayerFinishAttackState>();
-        carringState = statesContainer.GetComponent<PlayerCarringState>();
+        carringState = statesContainer.GetComponent<PlayerCarryingState>();
 
         ChangeState(walkingState);
 

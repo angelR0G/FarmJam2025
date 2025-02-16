@@ -332,7 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 922ff14aefd83984eb426fc10a04f3c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.7
+  speed: 0.45
   carriedObject: {fileID: 0}
 --- !u!1 &2448403208226745913
 GameObject:
@@ -817,4 +817,3 @@ MonoBehaviour:
   attackAnim: {fileID: 1844415574189093455}
   damageArea: {fileID: 5710534295558224449}
   damage: 10
-  attackAnimName: 
