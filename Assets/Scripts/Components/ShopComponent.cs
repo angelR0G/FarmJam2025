@@ -5,13 +5,20 @@ using UnityEngine;
 public class ShopComponent : MonoBehaviour
 {
     private static Dictionary<ItemId, int> shopItems = new Dictionary<ItemId, int> {
-        {ItemId.Corn, 1 },
-        {ItemId.WaterCan, 5 }
+        {ItemId.WheatSeed, 1 },
+        {ItemId.PotatoSeed, 5 },
+        {ItemId.TomatoSeed, 5 },
+        {ItemId.BeanSeed, 5 },
+        {ItemId.PumpkinSeed, 5 },
     };
 
     private static Dictionary<ItemId, int> sellItemsValue = new Dictionary<ItemId, int>
     {
-        {ItemId.Corn, 1},
+        {ItemId.Wheat, 1},
+        {ItemId.Potato, 1},
+        {ItemId.Tomato, 1},
+        {ItemId.Bean, 1},
+        {ItemId.Pumpkin, 1},
     };
 
     public void BuyItem(ItemId itemId, int quantity, InventoryComponent inventoryToBeSaved)

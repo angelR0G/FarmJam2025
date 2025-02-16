@@ -74,7 +74,6 @@ public class PlayerComponent : MonoBehaviour
 
         inventory.AddItem(ItemId.Hoe);
         inventory.AddItem(ItemId.WaterCan);
-        inventory.AddItem(ItemId.CornSeed);
         inventory.AddItem(ItemId.Pitchfork);
         inventory.AddItem(ItemId.Dagger);
     }
