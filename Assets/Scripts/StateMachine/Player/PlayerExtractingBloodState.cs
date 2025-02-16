@@ -13,7 +13,7 @@ public class PlayerExtractingBloodState : PlayerState
         if (corpseBloodContainer)
         {
             player.IsInteractionEnabled = false;
-            player.animator.SetTrigger("Dig");
+            player.animator.SetTrigger("ExtractBlood");
             player.onAnimFinished = OnAnimationFinished;
         }
         else {
