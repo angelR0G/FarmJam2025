@@ -28,6 +28,7 @@ public class PlayerComponent : MonoBehaviour
     [HideInInspector] public PlayerAttackState attackState = null;
     [HideInInspector] public PlayerFinishAttackState finishAttackState = null;
     [HideInInspector] public PlayerCarryingState carringState = null;
+    [HideInInspector] public PlayerExtractingBloodState extractingBloodState = null;
 
     // Other variables
     [Header("Player properties")]
@@ -63,6 +64,7 @@ public class PlayerComponent : MonoBehaviour
         attackState = statesContainer.GetComponent<PlayerAttackState>();
         finishAttackState = statesContainer.GetComponent<PlayerFinishAttackState>();
         carringState = statesContainer.GetComponent<PlayerCarryingState>();
+        extractingBloodState = statesContainer.GetComponent<PlayerExtractingBloodState>();
 
         ChangeState(walkingState);
 
@@ -74,6 +76,7 @@ public class PlayerComponent : MonoBehaviour
         inventory.AddItem(ItemId.WaterCan);
         inventory.AddItem(ItemId.CornSeed);
         inventory.AddItem(ItemId.Pitchfork);
+        inventory.AddItem(ItemId.Dagger);
     }
 
     // Update is called once per frame
@@ -122,6 +125,10 @@ public class PlayerComponent : MonoBehaviour
         else if (equipedTool.Id == ItemId.Pitchfork)
         {
             ChangeState(attackState);
+        }
+        else if (equipedTool.Id == ItemId.Dagger)
+        {
+            ChangeState(extractingBloodState);
         }
         else
         {

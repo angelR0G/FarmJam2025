@@ -230,6 +230,7 @@ GameObject:
   - component: {fileID: 1902316905249877143}
   - component: {fileID: 7458667622349085327}
   - component: {fileID: 4915552024639879413}
+  - component: {fileID: 1310216179467050628}
   m_Layer: 0
   m_Name: StatesContainer
   m_TagString: Untagged
@@ -292,7 +293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d169d01951058f746bd36aecc26f3a90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  liquidAmount: 0
   isBlood: 0
 --- !u!114 &1902316905249877143
 MonoBehaviour:
@@ -334,6 +334,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.45
   carriedObject: {fileID: 0}
+--- !u!114 &1310216179467050628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109259853284597907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10cc4cca07b611842847c56943a5180e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2448403208226745913
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,6 +649,7 @@ MonoBehaviour:
   attackState: {fileID: 0}
   finishAttackState: {fileID: 0}
   carringState: {fileID: 0}
+  extractingBloodState: {fileID: 0}
   facingDirection: {x: 0, y: -1}
 --- !u!212 &4321393230077232236
 SpriteRenderer:
@@ -766,6 +779,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   maxHealth: 100
+  onDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &871329882088370086
 MonoBehaviour:
   m_ObjectHideFlags: 0

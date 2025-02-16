@@ -10,8 +10,10 @@ public class PlayerWateringState : PlayerState
     private const int MAX_LIQUID_AMOUNT = 1000;
     private const float WATERING_SPEED = 300f;
 
-    public int liquidAmount = 0;
+    private int liquidAmount = 0;
     public bool isBlood = false;
+
+    public int LiquidAmount { get { return liquidAmount; } private set { liquidAmount = value; } }
 
     private CropComponent cropBeingWatered;
     private WaterSourceComponent waterSource;
@@ -86,6 +88,19 @@ public class PlayerWateringState : PlayerState
         {
             liquidAmount = MAX_LIQUID_AMOUNT;
             waterSource = null;
+        }
+    }
+
+    public void AddBlood(int bloodAmount)
+    {
+        if (isBlood)
+        {
+            liquidAmount = Math.Min(liquidAmount + bloodAmount, MAX_LIQUID_AMOUNT);
+        }
+        else
+        {
+            liquidAmount = Math.Min(bloodAmount, MAX_LIQUID_AMOUNT);
+            isBlood = true;
         }
     }
 
