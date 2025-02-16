@@ -145,11 +145,7 @@ public class PigComponent : MonoBehaviour
 
     public void TransformIntoCorpse()
     {
-        GameObject corpse = ItemFactory.CreateCorpse();
-
-        corpse.transform.position = transform.position;
-        corpse.GetComponent<BloodContainer>().blood = BLOOD_BY_AGE[age];
-        corpse.GetComponent<SpriteRenderer>().sprite = corpseSprite;
+        ItemFactory.CreateCorpse(transform.position, BLOOD_BY_AGE[age], corpseSprite);
 
         Destroy(gameObject);
     }
