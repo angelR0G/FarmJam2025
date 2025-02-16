@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class AttackComponent : MonoBehaviour
 {
+    public SpriteRenderer sprite;
+    public Animator attackAnim;
     public BoxCollider2D damageArea = null;
     public int damage = 10;
 
@@ -12,6 +14,16 @@ public class AttackComponent : MonoBehaviour
     {
         damageArea.enabled = false;
         damageArea.isTrigger = true;
+        sprite.enabled = false;
+    }
+
+    private void LateUpdate()
+    {
+        if (sprite.enabled)
+        {
+            if (attackAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+                StopAnimation();
+        }
     }
 
     public void UpdateDamageArea(float attackRange, float attackWidth, float attackAngle)
@@ -32,5 +44,23 @@ public class AttackComponent : MonoBehaviour
 
         HealthComponent damagedObjectHealth = other.gameObject.GetComponent<HealthComponent>();
         damagedObjectHealth?.LooseHealth(damage);
+    }
+
+    public void ConfigureSprite(Vector3 spriteOffset = new Vector3(), bool flipH = false, bool flipV = false)
+    {
+        sprite.gameObject.transform.localPosition = spriteOffset;
+        sprite.flipX = flipH;
+        sprite.flipY = flipV;
+    }
+
+    public void PlayAnimation(string animationName)
+    {
+        sprite.enabled = true;
+        attackAnim.Play(animationName, 0, 0);
+    }
+
+    public void StopAnimation()
+    {
+        sprite.enabled = false;
     }
 }

@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerFinishAttackState : PlayerState
 {
-    private const float COOLDOWN_TIME = 0.2f;
+    private const float COOLDOWN_TIME = 0.25f;
     private const float IMPULSE_SPEED = 1f;
     private const float ATTACK_RANGE = 0.4f;
-    private const float ATTACK_WIDTH = 0.1f;
+    private const float ATTACK_WIDTH = 0.12f;
 
     private float cooldown = 0;
     private bool isOnCooldown = false;
@@ -21,6 +21,9 @@ public class PlayerFinishAttackState : PlayerState
 
         player.attackComponent.UpdateDamageArea(ATTACK_RANGE, ATTACK_WIDTH, Vector2.SignedAngle(Vector2.right, player.facingDirection));
         player.attackComponent.damage = attackDamage;
+        player.attackComponent.ConfigureSprite(new Vector3(0.14f, 0));
+        player.attackComponent.PlayAnimation("FinishAttack");
+
         isOnCooldown = false;
 
         player.animator.SetTrigger("FinishAttack");
