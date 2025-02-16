@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 604a8675957bb5646abc95976078dd89, type: 3}
   m_Name: PotatoSeed
   m_EditorClassIdentifier: 
-  type: 0
-  id: 0
-  maxStack: 1
-  itemName: Item
-  sprite: {fileID: 0}
+  type: 1
+  id: 12
+  maxStack: 50
+  itemName: Potato seed
+  sprite: {fileID: -1207382050, guid: d50477672bc929d44aeabdd89ed4b7c5, type: 3}
   cropPrefab: {fileID: 0}

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c37c0c3bdc57954996f6d91d6393586, type: 3}
   m_Name: Pumpkin
   m_EditorClassIdentifier: 
-  type: 0
-  id: 0
-  maxStack: 1
-  itemName: Item
-  sprite: {fileID: 0}
+  type: 2
+  id: 9
+  maxStack: 50
+  itemName: Pumpkin
+  sprite: {fileID: -528703139, guid: d50477672bc929d44aeabdd89ed4b7c5, type: 3}

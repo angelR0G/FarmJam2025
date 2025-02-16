@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c37c0c3bdc57954996f6d91d6393586, type: 3}
   m_Name: Torch
   m_EditorClassIdentifier: 
-  type: 0
-  id: 0
+  type: 4
+  id: 5
   maxStack: 1
-  itemName: Item
-  sprite: {fileID: 0}
+  itemName: Torch
+  sprite: {fileID: -909592960, guid: 5056439dfe54be646a1a05b2b9e7e2e0, type: 3}
