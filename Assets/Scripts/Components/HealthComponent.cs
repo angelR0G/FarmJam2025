@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HealthComponent : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class HealthComponent : MonoBehaviour
     [SerializeField]
     private int maxHealth = 100;
     public Action onDieCallback;
+    public UnityEvent onDamageEvent;
     private float damagedRemainingTime;
     private SpriteRenderer sprite;
 
@@ -34,7 +36,10 @@ public class HealthComponent : MonoBehaviour
         if (health <= 0)
             onDieCallback();
         else
+        {
             damagedRemainingTime = DAMAGE_EFFECT_TIME;
+            onDamageEvent.Invoke();
+        }
     }
 
     public void RestoreHealth(int h)

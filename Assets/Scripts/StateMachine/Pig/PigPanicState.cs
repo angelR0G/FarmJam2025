@@ -4,15 +4,61 @@ using UnityEngine;
 
 public class PigPanicState : PigState
 {
-    // Start is called before the first frame update
-    void Start()
+    private const float PANIC_TIME = 20f;
+    private const float RUNNING_SPEED = 2.5f;
+    private const float TARGET_REACHED_TRESHOLD = 0.2f;
+
+    private Vector3 targetPosition;
+    private float panicTimeout;
+
+    public override void EnterState()
     {
-        
+        RequestNewTargetPosition();
+        panicTimeout = PANIC_TIME;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void FixedUpdateState()
     {
+        if (panicTimeout <= 0)
+        {
+            pig.ChangeState(pig.walkingState);
+        }
+        else
+        {
+            UpdateTarget();
+            UpdateMovement();
+
+            panicTimeout -= Time.fixedDeltaTime;
+        }
+    }
+
+    private void UpdateMovement()
+    {
+        if (pig.healthComp.IsStunned())
+            return;
+
         
+        Vector3 targetVector = targetPosition - transform.position;
+        Vector3 movementVector = targetVector.normalized * RUNNING_SPEED;
+
+        pig.body.velocity = movementVector;
+        pig.facingDirection = targetVector.normalized;
+    }
+
+    private void UpdateTarget()
+    {
+        // Check if it is already in the target position
+        if ((targetPosition - transform.position).magnitude < TARGET_REACHED_TRESHOLD)
+            RequestNewTargetPosition();
+    }
+
+    private void RequestNewTargetPosition()
+    {
+        targetPosition = pig.farmyard.GetRandomPositionInFarmyard();
+    }
+
+    public void RestartPanicTime()
+    {
+        panicTimeout = PANIC_TIME;
     }
 }

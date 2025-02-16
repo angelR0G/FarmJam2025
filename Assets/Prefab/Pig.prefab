@@ -161,7 +161,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  maxHealth: 100
+  maxHealth: 50
+  onDamageEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!212 &6158667444303823425
 SpriteRenderer:
   m_ObjectHideFlags: 0

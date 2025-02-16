@@ -61,6 +61,7 @@ public class PigComponent : MonoBehaviour
         GameManager.Instance.hourChanged += OnHourChanged;
 
         healthComp.onDieCallback = TransformIntoCorpse;
+        healthComp.onDamageEvent.AddListener(EnterPanic);
     }
 
     void Update()
@@ -108,6 +109,14 @@ public class PigComponent : MonoBehaviour
             if (!hasEatenToday)
                 isHungry = true;
         }
+    }
+
+    private void EnterPanic()
+    {
+        if (currentState == panicState) 
+            panicState.RestartPanicTime();
+        else
+            ChangeState(panicState);
     }
 
     public void CheckHungerState()
