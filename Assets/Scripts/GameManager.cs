@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(Light2D))]
@@ -13,6 +14,9 @@ public class GameManager : MonoBehaviour
     public event EventHandler<int> dayChanged;
     public event EventHandler<int> moneyChanged;
     public event EventHandler<int> hourChanged;
+    public event EventHandler<int> nightStart;
+    public event EventHandler<int> nightEnd;
+    
 
     public const int MinutesInDay = 1440;
 
@@ -42,6 +46,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Color DAY_COLOR = new Color(1f, 1f, 1f);
     [SerializeField] private Color DAWN_COLOR = new Color(1f, 0.7158657f, 0.1745283f);
     [SerializeField] private Color DUSK_DOWN = new Color(1f, 0.7158657f, 0.1745283f);
+
+
+
+    private bool nightStartState = false;
+    private bool nightEndState = false;
 
 
 
@@ -76,7 +85,21 @@ public class GameManager : MonoBehaviour
         {
             hourChanged?.Invoke(this, int.Parse(currentTime.ToString(@"hh")));
         }
-        
+        String nightStartHourString = (nighStartDuration+ dawnDuration + dayDuration + duskDuration) < 10 ? "0" + (nighStartDuration + dawnDuration + dayDuration + duskDuration).ToString() : (nighStartDuration + dawnDuration + dayDuration + duskDuration).ToString();
+        String nightEndHourString = (nighStartDuration + dawnDuration) < 10 ? "0" + (nighStartDuration + dawnDuration).ToString() : (nighStartDuration + dawnDuration).ToString();
+        if (!nightStartState && currentTime.ToString(@"hh") == nightStartHourString)
+        {
+            nightStartState = true;
+            nightEndState = false;
+            nightStart?.Invoke(this, int.Parse(currentTime.ToString(@"hh")));
+        }
+        if (!nightEndState && currentTime.ToString(@"hh") == nightEndHourString)
+        {
+            nightStartState = false;
+            nightEndState = true;
+            nightEnd?.Invoke(this, int.Parse(currentTime.ToString(@"hh")));
+        }
+
         if (PercentOfDay() == 0) 
         {
             numDays++;
