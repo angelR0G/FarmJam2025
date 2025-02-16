@@ -42,8 +42,11 @@ public class AttackComponent : MonoBehaviour
     {
         if (other.gameObject == gameObject) return;
 
-        HealthComponent damagedObjectHealth = other.gameObject.GetComponent<HealthComponent>();
-        damagedObjectHealth?.LooseHealth(damage);
+        HealthComponent damagedObjectHealth; 
+        if (!other.gameObject.TryGetComponent<HealthComponent>(out damagedObjectHealth))
+            return;
+
+        damagedObjectHealth.LooseHealth(damage);
 
         Rigidbody2D damagedObjectBody;
         if (other.TryGetComponent<Rigidbody2D>(out damagedObjectBody))
