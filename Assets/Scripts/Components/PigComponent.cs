@@ -13,10 +13,12 @@ public class PigComponent : MonoBehaviour
     private const int MAX_AGE = 3;
     private const float MASS_INCREMENT_WITH_AGE = 3;
     private const float FOOD_DETECTION_DISTANCE = 0.15f;
+    private static readonly int[] BLOOD_BY_AGE = { 100, 250, 400, 1000 };
 
     // Components
     [Header("Components References")]
     public Rigidbody2D body;
+    public HealthComponent healthComp;
 
     // States
     [Header("State Machine")]
@@ -36,12 +38,14 @@ public class PigComponent : MonoBehaviour
     public int age = 0;
     public FarmyardComponent farmyard = null;
     public Vector2 facingDirection = Vector2.down;
+    public Sprite corpseSprite = null;
 
     // Start is called before the first frame update
     void Start()
     {
         // Get components
         body = GetComponent<Rigidbody2D>();
+        healthComp = GetComponent<HealthComponent>();
 
         // Init pig states
         walkingState = statesContainer.GetComponent<PigWalkingState>();
@@ -55,6 +59,9 @@ public class PigComponent : MonoBehaviour
         hungryHour = Random.Range(MIN_HUNGRY_HOUR, MAX_HUNGRY_HOUR + 1);
         GameManager.Instance.dayChanged += OnDayChanged;
         GameManager.Instance.hourChanged += OnHourChanged;
+
+        healthComp.onDieCallback = TransformIntoCorpse;
+        healthComp.onDamageEvent.AddListener(EnterPanic);
     }
 
     void Update()
@@ -88,14 +95,12 @@ public class PigComponent : MonoBehaviour
             // At night, pig can die or grow depending on its hunger
             if (hasEatenToday)
             {
-                // TODO: Pig grows
                 Grow();
                 hasEatenToday = false;
             }
             else if (starvingDaysCount >= STARVING_DAYS_TO_DIE)
             {
-                // TODO: Pig dies, leaving its corpse
-                Destroy(gameObject);
+                healthComp.Kill();
             }
         }
         else if (hour == hungryHour)
@@ -104,6 +109,14 @@ public class PigComponent : MonoBehaviour
             if (!hasEatenToday)
                 isHungry = true;
         }
+    }
+
+    private void EnterPanic()
+    {
+        if (currentState == panicState) 
+            panicState.RestartPanicTime();
+        else
+            ChangeState(panicState);
     }
 
     public void CheckHungerState()
@@ -137,6 +150,13 @@ public class PigComponent : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void TransformIntoCorpse()
+    {
+        ItemFactory.CreateCorpse(transform.position, BLOOD_BY_AGE[age], corpseSprite);
+
+        Destroy(gameObject);
     }
 
     public void OnDestroy()

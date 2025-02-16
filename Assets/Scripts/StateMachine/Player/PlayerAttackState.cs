@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class PlayerAttackState : PlayerState
 {
-    private const float COOLDOWN_TIME = 0.1f;
+    private const float COOLDOWN_TIME = 0.15f;
     private const float IMPULSE_SPEED = 0.5f;
     private const float ATTACK_RANGE = 0.25f;
-    private const float ATTACK_WIDTH = 0.2f;
+    private const float ATTACK_WIDTH = 0.25f;
     private const float MIN_TIME_REQUIRED_FOR_COMBO = 0.1f;
 
     private float cooldown = 0;
@@ -24,6 +24,9 @@ public class PlayerAttackState : PlayerState
 
         player.attackComponent.UpdateDamageArea(ATTACK_RANGE, ATTACK_WIDTH, Vector2.SignedAngle(Vector2.right, player.facingDirection));
         player.attackComponent.damage = attackDamage;
+        player.attackComponent.ConfigureSprite(new Vector3(0.04f, 0), false, player.animator.GetInteger("Direction") == 3);
+        player.attackComponent.PlayAnimation("Attack");
+
         isOnCooldown = false;
         comboActivated = false;
         comboTimer = 0f;
