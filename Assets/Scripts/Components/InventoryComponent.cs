@@ -64,6 +64,18 @@ public class InventoryComponent : MonoBehaviour
         return items[index].item;
     }
 
+    public void AddTool(ItemId toolId)
+    {
+        for (int i = 0; i < TOOLS_SLOTS; i++)
+        {
+            if (items[i].item == null)
+            {
+                items[i].SetItem(ItemFactory.CreateItem(toolId, gameObject));
+                return;
+            }
+        }
+    }
+
     public int AddItem(ItemId itemId, int amount = 1)
     {
         int itemIndex = TOOLS_SLOTS;

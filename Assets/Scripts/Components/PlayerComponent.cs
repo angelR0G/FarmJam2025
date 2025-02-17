@@ -71,11 +71,6 @@ public class PlayerComponent : MonoBehaviour
         // Bind inputs
         inventory.BindInput(inputComponent);
         inputComponent.interactInputEvent.AddListener(Interact);
-
-        inventory.AddItem(ItemId.Hoe);
-        inventory.AddItem(ItemId.WaterCan);
-        inventory.AddItem(ItemId.Pitchfork);
-        inventory.AddItem(ItemId.Dagger);
     }
 
     // Update is called once per frame
