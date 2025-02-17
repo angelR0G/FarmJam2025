@@ -17,4 +17,4 @@ MonoBehaviour:
   maxStack: 50
   itemName: Tomato seed
   sprite: {fileID: -28429404, guid: d50477672bc929d44aeabdd89ed4b7c5, type: 3}
-  cropPrefab: {fileID: 0}
+  cropPrefab: {fileID: 911254701734855569, guid: 4988e031723b2644685451759a5a0545, type: 3}

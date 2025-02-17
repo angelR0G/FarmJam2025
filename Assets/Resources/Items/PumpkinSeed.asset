@@ -17,4 +17,4 @@ MonoBehaviour:
   maxStack: 50
   itemName: Pumpkin seed
   sprite: {fileID: -47637131, guid: d50477672bc929d44aeabdd89ed4b7c5, type: 3}
-  cropPrefab: {fileID: 0}
+  cropPrefab: {fileID: 5188267201815406099, guid: 5fc3db0561208564c8f18d8fbd530319, type: 3}

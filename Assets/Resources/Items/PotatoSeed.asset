@@ -17,4 +17,4 @@ MonoBehaviour:
   maxStack: 50
   itemName: Potato seed
   sprite: {fileID: -1207382050, guid: d50477672bc929d44aeabdd89ed4b7c5, type: 3}
-  cropPrefab: {fileID: 0}
+  cropPrefab: {fileID: 4742219406045994638, guid: 9f9bd70fd779d884398bedea0f97dd5c, type: 3}

@@ -17,4 +17,4 @@ MonoBehaviour:
   maxStack: 50
   itemName: Carrot seed
   sprite: {fileID: -1632723524, guid: d50477672bc929d44aeabdd89ed4b7c5, type: 3}
-  cropPrefab: {fileID: 0}
+  cropPrefab: {fileID: 3227912163887429086, guid: 352488bfa78f63147bbcf29f48bb0403, type: 3}
