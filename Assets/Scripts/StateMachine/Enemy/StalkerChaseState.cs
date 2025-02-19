@@ -2,32 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StalkerChaseState : MonoBehaviour
+public class StalkerChaseState : StalkerState
 {
+    private const float ATTACK_DISTANCE = 1f;
+    private const float CHASE_MAX_DISTANCE = 3f;
+    private const float MAX_SPEED = 1.5f;
+    private const float ACCELERATION = 0.75f;
 
-    private void UpdateMovement()
-    {/*
-        InputComponent inputComponent = player.inputComponent;
-        Rigidbody2D body = player.body;
+    public GameObject target;
+    private bool colisionAvoidanceEnabled = false;
+    private float speed;
 
-        bool isMoving = inputComponent.movementDirection != Vector2.zero;
-        Vector2 playerPos = new Vector2(transform.position.x, transform.position.y);
-        float previousSpeed = currentSpeed;
+    public override void EnterState()
+    {
+        colisionAvoidanceEnabled = true;
+        speed = 0.0f;
+    }
 
-        if (isMoving)
+    public override void ExitState()
+    {
+        colisionAvoidanceEnabled = false;
+    }
+
+    public override void FixedUpdateState()
+    {
+        Vector3 vectorToTarget = target.transform.position - transform.position;
+        float distanceToTarget = vectorToTarget.magnitude;
+
+        if (distanceToTarget < ATTACK_DISTANCE)
         {
-            // Accelerating
-            player.facingDirection = inputComponent.movementDirection;
-            currentSpeed = Mathf.Min(currentSpeed + acceleration * Time.fixedDeltaTime, maxSpeed);
+            enemy.ChangeState(enemy.attackState);
+        }
+        else if (distanceToTarget < CHASE_MAX_DISTANCE)
+        {
+            MoveTo(vectorToTarget.normalized);
         }
         else
         {
-            // Stoping
-            currentSpeed = Mathf.Max(currentSpeed - stopAcceleration * Time.fixedDeltaTime, 0f);
+            enemy.ChangeState(enemy.wanderState);
+        }
+    }
+
+    private void MoveTo(Vector3 direction)
+    {
+        if (speed < MAX_SPEED)
+        {
+            speed = Mathf.Min(speed + ACCELERATION * Time.fixedDeltaTime, MAX_SPEED);
         }
 
-        body.MovePosition(playerPos + player.facingDirection * currentSpeed * Time.fixedDeltaTime);
-
-        UpdateAnimation((currentSpeed == 0 && previousSpeed > 0) || (previousSpeed == 0 && currentSpeed > 0));*/
+        enemy.body.MovePosition(enemy.transform.position + direction * speed * Time.fixedDeltaTime);
     }
 }

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class StalkerEnemyComponent : MonoBehaviour
 {
     // Components
     public HealthComponent healthComp;
     public Rigidbody2D body;
+    public SpriteRenderer sprite;
 
     // States
     [Header("State Machine")]
@@ -25,6 +27,7 @@ public class StalkerEnemyComponent : MonoBehaviour
         // Get components
         healthComp = GetComponent<HealthComponent>();
         body = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
 
         // Init enemy states
         wanderState = statesContainer.GetComponent<StalkerWanderState>();
@@ -53,5 +56,26 @@ public class StalkerEnemyComponent : MonoBehaviour
         currentState = newState;
 
         if (currentState != null) currentState.EnterState();
+    }
+
+    public bool IsGameObjectInSight(GameObject obj, float maxDistance = -1)
+    {
+        if (obj == null) return false;
+
+        Vector2 vectorToObject = obj.transform.position - transform.position;
+
+        if (maxDistance > 0 && vectorToObject.magnitude > maxDistance) return false;
+
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, vectorToObject.normalized, vectorToObject.magnitude);
+
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider.isTrigger || hit.collider.gameObject == gameObject || hit.collider.gameObject == obj.gameObject) continue;
+
+            // Another object's collision is in the line of sight
+            return false;
+        }
+
+        return true;
     }
 }

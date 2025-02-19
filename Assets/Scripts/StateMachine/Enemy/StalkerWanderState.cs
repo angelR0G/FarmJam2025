@@ -8,7 +8,7 @@ public class StalkerWanderState : StalkerState
     private const float TARGET_REACHED_TRESHOLD = 0.1f;
     private const float STAND_STILL_TIME = 5f;
     private const float MAX_TIME_TO_REACH_TARGET = 20f;
-    private const float DETECTION_DISTANCE = 0.5f;
+    private const float DETECTION_DISTANCE = 1.5f;
 
     public Vector3 targetPosition;
     private float nextTargetCountdown;
@@ -87,18 +87,9 @@ public class StalkerWanderState : StalkerState
 
         if (player == null || player.GetComponent<PlayerComponent>() == null) return;
 
-        Vector2 vectorToPlayer = player.transform.position - transform.position;
+        if (!enemy.IsGameObjectInSight(player.gameObject)) return;
 
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, vectorToPlayer.normalized, vectorToPlayer.magnitude);
-
-        foreach(RaycastHit2D hit in hits)
-        {
-            if (hit.collider.isTrigger ||hit.collider.gameObject == enemy.gameObject || hit.collider.gameObject == player.gameObject) continue;
-
-            // Another object's collision is in the line of sight
-            return;
-        }
-
+        enemy.stalkState.player = player.gameObject;
         enemy.ChangeState(enemy.stalkState);
     }
 }
