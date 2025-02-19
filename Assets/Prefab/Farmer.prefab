@@ -390,6 +390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb7baaf2bb8a3f48a44e1237e9429a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  storageSize: 10
   blockInventory: 0
 --- !u!1 &5264381055197122324
 GameObject:
@@ -516,7 +517,7 @@ GameObject:
   - component: {fileID: 871329882088370086}
   - component: {fileID: 2767000559645689352}
   - component: {fileID: 585860122286041746}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Farmer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -796,6 +797,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sanity: 0
   maxSanity: 100
+  looseSanityRate: 5
+  looseHealthRate: 5
+  insideLightSource: 0
 --- !u!95 &2767000559645689352
 Animator:
   serializedVersion: 5
