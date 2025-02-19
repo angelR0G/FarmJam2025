@@ -52,10 +52,20 @@ public class LightSourceComponent : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        other.GetComponent<SanityComponent>().insideLightSource = true;
+        SanityComponent sanity;
+
+        if (other.TryGetComponent<SanityComponent>(out sanity))
+        {
+            sanity.insideLightSource = true;
+        }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        other.GetComponent<SanityComponent>().insideLightSource = false;
+        SanityComponent sanity;
+
+        if (other.TryGetComponent<SanityComponent>(out sanity))
+        {
+            sanity.insideLightSource = false;
+        }
     }
 }
