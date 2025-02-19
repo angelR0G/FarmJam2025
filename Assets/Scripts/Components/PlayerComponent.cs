@@ -134,9 +134,28 @@ public class PlayerComponent : MonoBehaviour
 
     private void InteractWithWorld()
     {
-        if (interactables.Count == 0) return;
+        if (interactables.Count > 1)
+        {
+            // Interact with the closest interactable object
+            int closestInteractableIndex = 0;
+            float distanceToClosestInteractable = float.MaxValue;
 
-        interactables[interactables.Count - 1].Interact(this);
+            for (int i = 0; i < interactables.Count; i++)
+            {
+                float distance = Vector3.SqrMagnitude(interactables[i].transform.position - transform.position);
+                if (distance < distanceToClosestInteractable)
+                {
+                    closestInteractableIndex = i;
+                    distanceToClosestInteractable = distance;
+                }
+            }
+
+            interactables[closestInteractableIndex].Interact(this);
+        }
+        else if (interactables.Count == 1)
+        {
+            interactables[0].Interact(this);
+        }
     }
 
     public void SetInteractableObject(InteractionTriggerComponent newInteraction)

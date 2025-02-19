@@ -8,7 +8,7 @@ public class PlayerExtractingBloodState : PlayerState
 
     public override void EnterState() 
     {
-        corpseBloodContainer = GetBloodContainereAtTheirPosition();
+        corpseBloodContainer = GetBloodContainerAtTheirPosition();
 
         if (corpseBloodContainer)
         {
@@ -33,13 +33,14 @@ public class PlayerExtractingBloodState : PlayerState
         player.ChangeState(player.walkingState);
     }
 
-    private BloodContainer GetBloodContainereAtTheirPosition()
+    private BloodContainer GetBloodContainerAtTheirPosition()
     {
         BloodContainer bloodContainer;
         Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+
         foreach (Collider2D c in collisions)
         {
-            // Does not take into account the player
+            // Check whether the object has a blood container
             if (c.TryGetComponent<BloodContainer>(out bloodContainer))
             {
                 return bloodContainer;
