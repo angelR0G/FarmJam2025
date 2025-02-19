@@ -69,7 +69,7 @@ public class InventoryComponent : StorageComponent
         itemIndex = TOOLS_SLOTS;
         while (amountSaved < amount)
         {
-            itemIndex = FindFreeSlotIndex();
+            itemIndex = FindFreeSlotIndex(itemIndex);
             if (itemIndex == -1) break;
 
             amountSaved += AddItemToSlot(itemId, amount - amountSaved, itemIndex);
@@ -88,7 +88,7 @@ public class InventoryComponent : StorageComponent
         // First check slots with that objects that are not full yet
         while (freeSpaceCount < amount)
         {
-            slotIndex = FindIncompleteItemSlotIndex(id);
+            slotIndex = FindIncompleteItemSlotIndex(id, slotIndex);
             if (slotIndex == -1) break;
 
             freeSpaceCount += items[slotIndex].item.MaxStack - items[slotIndex].amount;
@@ -100,7 +100,7 @@ public class InventoryComponent : StorageComponent
         slotIndex = TOOLS_SLOTS;
         while (freeSpaceCount < amount)
         {
-            slotIndex = FindFreeSlotIndex();
+            slotIndex = FindFreeSlotIndex(slotIndex);
             if (slotIndex == -1) break;
 
             freeSpaceCount += ItemFactory.GetItemData(id).maxStack;
