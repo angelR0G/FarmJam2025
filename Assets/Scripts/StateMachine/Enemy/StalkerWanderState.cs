@@ -89,7 +89,7 @@ public class StalkerWanderState : StalkerState
 
         if (!enemy.IsGameObjectInSight(player.gameObject)) return;
 
-        enemy.stalkState.player = player.gameObject;
+        enemy.attackTarget = player.gameObject;
         enemy.ChangeState(enemy.stalkState);
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using static UnityEngine.GraphicsBuffer;
 
 public class StalkerEnemyComponent : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class StalkerEnemyComponent : MonoBehaviour
     public HealthComponent healthComp;
     public Rigidbody2D body;
     public SpriteRenderer sprite;
+    public CircleCollider2D enemyCollider;
 
     // States
     [Header("State Machine")]
@@ -21,6 +23,9 @@ public class StalkerEnemyComponent : MonoBehaviour
     [HideInInspector] public StalkerAttackState attackState = null;
     [HideInInspector] public StalkerRecoverState recoverState = null;
 
+    // Other properties
+    public GameObject attackTarget;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +33,7 @@ public class StalkerEnemyComponent : MonoBehaviour
         healthComp = GetComponent<HealthComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        enemyCollider = GetComponent<CircleCollider2D>();
 
         // Init enemy states
         wanderState = statesContainer.GetComponent<StalkerWanderState>();
@@ -77,5 +83,32 @@ public class StalkerEnemyComponent : MonoBehaviour
         }
 
         return true;
+    }
+
+    public Vector3 GetAvoidanceDirection(Vector3 targetDirection, float rayDistance, List<GameObject> ignoreObjects)
+    {
+        Vector3 leftAvoid = Vector3.zero;
+        Vector3 rightAvoid = Vector3.zero;
+
+        // Left raycast
+        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Quaternion.Euler(0, 0, 30f) * targetDirection, rayDistance);
+        foreach (RaycastHit2D hit in hits)
+        {
+            if (hit.collider.isTrigger || ignoreObjects.Contains(hit.collider.gameObject)) continue;
+
+            leftAvoid += Quaternion.Euler(0, 0, -90) * targetDirection * 1f * (1 - (hit.distance/rayDistance));
+        }
+
+        // Right raycast
+        hits = Physics2D.RaycastAll(transform.position, Quaternion.Euler(0, 0, -30f) * targetDirection, rayDistance);
+        foreach (RaycastHit2D hit in hits)
+        {
+            GameObject hitObject = hit.collider.gameObject;
+            if (hit.collider.isTrigger || ignoreObjects.Contains(hit.collider.gameObject)) continue;
+
+            rightAvoid += Quaternion.Euler(0, 0, 90) * targetDirection * 1f * (1 - (hit.distance / rayDistance));
+        }
+
+        return leftAvoid.sqrMagnitude >= rightAvoid.sqrMagnitude ? leftAvoid : rightAvoid;
     }
 }

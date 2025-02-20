@@ -7,7 +7,6 @@ public class StalkerStalkState : StalkerState
     private const float STALK_TIME_TO_ATTACK = 1.2f;
     private const float STALK_MAX_DISTANCE = 1.8f;
 
-    public GameObject player;
     private float stalkTime;
     private float inSightCheckTimeout;
 
@@ -29,7 +28,7 @@ public class StalkerStalkState : StalkerState
         else
         {
             inSightCheckTimeout += 0.15f;
-            if (!enemy.IsGameObjectInSight(player, STALK_MAX_DISTANCE))
+            if (!enemy.IsGameObjectInSight(enemy.attackTarget, STALK_MAX_DISTANCE))
             {
                 enemy.ChangeState(enemy.wanderState);
                 return;
@@ -40,7 +39,6 @@ public class StalkerStalkState : StalkerState
         stalkTime -= Time.deltaTime;
         if (stalkTime <= 0)
         {
-            enemy.chaseState.target = player;
             enemy.ChangeState(enemy.chaseState);
         }
     }
