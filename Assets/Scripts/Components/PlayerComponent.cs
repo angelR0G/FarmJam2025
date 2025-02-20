@@ -71,6 +71,8 @@ public class PlayerComponent : MonoBehaviour
         // Bind inputs
         inventory.BindInput(inputComponent);
         inputComponent.interactInputEvent.AddListener(Interact);
+
+        GetComponent<HealthComponent>().onDamageEvent.AddListener(OnDamaged);
     }
 
     // Update is called once per frame
@@ -180,5 +182,10 @@ public class PlayerComponent : MonoBehaviour
     private void OnAnimationEvent()
     {
         onAnimEvent?.Invoke();
+    }
+
+    private void OnDamaged()
+    {
+        ChangeState(walkingState);
     }
 }

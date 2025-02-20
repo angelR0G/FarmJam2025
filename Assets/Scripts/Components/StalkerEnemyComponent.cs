@@ -12,6 +12,7 @@ public class StalkerEnemyComponent : MonoBehaviour
     public Rigidbody2D body;
     public SpriteRenderer sprite;
     public CircleCollider2D enemyCollider;
+    public AttackComponent attackComp;
 
     // States
     [Header("State Machine")]
@@ -37,6 +38,7 @@ public class StalkerEnemyComponent : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
+        attackComp = GetComponent<AttackComponent>();
 
         // Init enemy states
         wanderState = statesContainer.GetComponent<StalkerWanderState>();
