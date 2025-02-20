@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class StalkerChaseState : StalkerState
 {
-    private const float ATTACK_DISTANCE = 1f;
+    private const float ATTACK_DISTANCE = 0.8f;
     private const float CHASE_MAX_DISTANCE = 3f;
-    private const float MAX_SPEED = 1f;
+    private const float MAX_SPEED = 1.5f;
     private const float ACCELERATION = 0.75f;
+    private const float CHASE_TIME_BEFORE_ATTACK = 1f;
 
     private float speed;
+    private float attackCooldown;
 
     public override void EnterState()
     {
         speed = 0.0f;
+        attackCooldown = CHASE_TIME_BEFORE_ATTACK;
     }
 
     public override void FixedUpdateState()
@@ -21,7 +24,7 @@ public class StalkerChaseState : StalkerState
         Vector3 vectorToTarget = enemy.attackTarget.transform.position - transform.position;
         float distanceToTarget = vectorToTarget.magnitude;
 
-        if (distanceToTarget < ATTACK_DISTANCE && CanAmbushPlayer())
+        if (attackCooldown <= 0 && distanceToTarget < ATTACK_DISTANCE && CanAmbushPlayer())
         {
             enemy.ChangeState(enemy.attackState);
         }
@@ -35,6 +38,11 @@ public class StalkerChaseState : StalkerState
         }
     }
 
+    public override void UpdateState()
+    {
+        if (attackCooldown > 0) attackCooldown -= Time.deltaTime;
+    }
+
     private void MoveTo(Vector3 direction)
     {
         if (speed < MAX_SPEED)
@@ -43,7 +51,7 @@ public class StalkerChaseState : StalkerState
         }
 
         // Obstacle detection
-        Vector3 avoidVector = enemy.GetAvoidanceDirection(direction, speed, new List<GameObject> { enemy.gameObject, target });
+        Vector3 avoidVector = enemy.GetAvoidanceDirection(direction, speed, new List<GameObject> { enemy.gameObject, enemy.attackTarget });
         direction = (direction + avoidVector).normalized;
 
         enemy.body.MovePosition(enemy.transform.position + direction * speed * Time.fixedDeltaTime);
