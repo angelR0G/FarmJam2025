@@ -37,6 +37,19 @@ public class InventoryComponent : StorageComponent
         return items[activeItemIndex].item;
     }
 
+    public int GetItemQuantity(ItemId id)
+    {
+        int itemsCounter = 0;
+
+        for (int i = 0; i < TOOLS_SLOTS; i++)
+        {
+            if (items[i].item != null && items[i].item.Id == id)
+                itemsCounter += items[i].amount;
+        }
+
+        return itemsCounter;
+    }
+
     public void AddTool(ItemId toolId)
     {
         for (int i = 0; i < TOOLS_SLOTS; i++)
@@ -157,8 +170,8 @@ public class InventoryComponent : StorageComponent
         } while (previousIndex != activeItemIndex);
     }
 
-    public void RemoveEquipedItem()
+    public void RemoveEquipedItem(int quantity = 1)
     {
-        RemoveItemByIndex(activeItemIndex);
+        RemoveItemByIndex(activeItemIndex, quantity);
     }
 }

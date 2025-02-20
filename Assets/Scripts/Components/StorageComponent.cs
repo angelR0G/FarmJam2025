@@ -115,17 +115,17 @@ public class StorageComponent : MonoBehaviour
         return freeSpaceCount >= amount;
     }
 
-    public void RemoveItemByIndex(int index)
+    public void RemoveItemByIndex(int index, int quantity)
     {
-        if (index < 0 || index > items.Count) return;
+        if (index < 0 || index > items.Count || quantity <= 0) return;
 
-        if (items[index].amount == 1)
+        if (items[index].amount <= quantity)
         {
             Destroy(items[index].item);
             items[index].SetItem(null);
         }
         else
-            items[index].AddAmount(-1);
+            items[index].AddAmount(-quantity);
     }
 
     protected int FindIncompleteItemSlotIndex(ItemId itemId, int start = 0)
