@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1539334836739491357}
+  - component: {fileID: 7986979384445257375}
   - component: {fileID: 756774411672922199}
   - component: {fileID: 5708310758190453611}
   - component: {fileID: 7673605683894246116}
-  - component: {fileID: 7986979384445257375}
   - component: {fileID: 8316068179178921679}
   m_Layer: 0
   m_Name: StalkerEnemy
@@ -37,6 +37,31 @@ Transform:
   - {fileID: 1486482770575224400}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7986979384445257375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6780782006218790767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52fcb1adc343b574197308fd4d21bc9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthComp: {fileID: 0}
+  body: {fileID: 0}
+  sprite: {fileID: 0}
+  enemyCollider: {fileID: 0}
+  statesContainer: {fileID: 6833512899187708388}
+  currentState: {fileID: 0}
+  wanderState: {fileID: 0}
+  stalkState: {fileID: 0}
+  chaseState: {fileID: 0}
+  attackState: {fileID: 0}
+  recoverState: {fileID: 0}
+  attackTarget: {fileID: 0}
+  corpseSprite: {fileID: -1540196596, guid: ec53eea35ccfb874b8a65f7d35ac65a2, type: 3}
 --- !u!212 &756774411672922199
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -151,28 +176,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &7986979384445257375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6780782006218790767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52fcb1adc343b574197308fd4d21bc9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthComp: {fileID: 0}
-  body: {fileID: 0}
-  sprite: {fileID: 0}
-  statesContainer: {fileID: 6833512899187708388}
-  currentState: {fileID: 0}
-  wanderState: {fileID: 0}
-  stalkState: {fileID: 0}
-  chaseState: {fileID: 0}
-  attackState: {fileID: 0}
-  recoverState: {fileID: 0}
 --- !u!114 &8316068179178921679
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,7 +254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab448d2d81bdd34480293331525c5f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
 --- !u!114 &8351950478153791683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -276,7 +278,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 733869ecf831c0240b6bcd50a2c5cfba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
 --- !u!114 &8912563982481555995
 MonoBehaviour:
   m_ObjectHideFlags: 0

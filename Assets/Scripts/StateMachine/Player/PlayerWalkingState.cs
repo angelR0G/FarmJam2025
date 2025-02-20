@@ -12,9 +12,15 @@ public class PlayerWalkingState : PlayerState
 
     public override void EnterState()
     {
+        player.body.velocity = Vector2.zero;
         currentSpeed = 0f;
         UpdateAnimation(true);
         player.IsInteractionEnabled = true;
+    }
+
+    public override void ExitState()
+    {
+        player.body.velocity = Vector2.zero;
     }
 
     public override void FixedUpdateState()

@@ -7,6 +7,7 @@ using static UnityEngine.GraphicsBuffer;
 public class StalkerEnemyComponent : MonoBehaviour
 {
     // Components
+    [Header("Components")]
     public HealthComponent healthComp;
     public Rigidbody2D body;
     public SpriteRenderer sprite;
@@ -24,7 +25,9 @@ public class StalkerEnemyComponent : MonoBehaviour
     [HideInInspector] public StalkerRecoverState recoverState = null;
 
     // Other properties
+    [Header("Enemy properties")]
     public GameObject attackTarget;
+    public Sprite corpseSprite;
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +46,8 @@ public class StalkerEnemyComponent : MonoBehaviour
         recoverState = statesContainer.GetComponent<StalkerRecoverState>();
 
         ChangeState(wanderState);
+
+        healthComp.onDieCallback = OnDie;
     }
 
     // Update is called once per frame
@@ -110,5 +115,17 @@ public class StalkerEnemyComponent : MonoBehaviour
         }
 
         return leftAvoid.sqrMagnitude >= rightAvoid.sqrMagnitude ? leftAvoid : rightAvoid;
+    }
+
+    private void OnDie()
+    {
+        ItemFactory.CreateCorpse(transform.position, 100, corpseSprite);
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (currentState == attackState)
+            attackState.FinishAttack();
     }
 }

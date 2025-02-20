@@ -33,8 +33,11 @@ public class HealthComponent : MonoBehaviour
     {
         health -= h;
 
-        if (health <= 0)
-            onDieCallback();
+        if (health <= 0) 
+        { 
+            if (onDieCallback != null)
+                onDieCallback();
+        }
         else
         {
             damagedRemainingTime = DAMAGE_EFFECT_TIME;

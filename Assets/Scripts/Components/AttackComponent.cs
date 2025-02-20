@@ -40,7 +40,7 @@ public class AttackComponent : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject == gameObject) return;
+        if (other.gameObject == gameObject || other.isTrigger) return;
 
         HealthComponent damagedObjectHealth; 
         if (!other.gameObject.TryGetComponent<HealthComponent>(out damagedObjectHealth))

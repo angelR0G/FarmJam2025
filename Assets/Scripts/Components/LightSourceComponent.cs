@@ -38,14 +38,12 @@ public class LightSourceComponent : MonoBehaviour
 
     private void OnNightStart(object sender, int hour)
     {
-        Debug.Log("Night Start");
         light2D.enabled = true;
         collider.enabled=true;
     }
 
     private void OnNightEnd(object sender, int hour)
     {
-        Debug.Log("Night end");
         light2D.enabled = false;
         collider.enabled = false;
     }
