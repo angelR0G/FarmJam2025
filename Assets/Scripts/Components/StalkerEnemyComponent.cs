@@ -110,7 +110,6 @@ public class StalkerEnemyComponent : MonoBehaviour
         hits = Physics2D.RaycastAll(transform.position, Quaternion.Euler(0, 0, -30f) * targetDirection, rayDistance);
         foreach (RaycastHit2D hit in hits)
         {
-            GameObject hitObject = hit.collider.gameObject;
             if (hit.collider.isTrigger || ignoreObjects.Contains(hit.collider.gameObject)) continue;
 
             rightAvoid += Quaternion.Euler(0, 0, 90) * targetDirection * 1f * (1 - (hit.distance / rayDistance));

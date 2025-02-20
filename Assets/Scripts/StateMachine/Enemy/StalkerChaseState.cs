@@ -7,6 +7,7 @@ public class StalkerChaseState : StalkerState
     private const float ATTACK_DISTANCE = 0.8f;
     private const float CHASE_MAX_DISTANCE = 3f;
     private const float MAX_SPEED = 1.5f;
+    private const float AVOIDING_OBSTACLE_MAX_SPEED = 0.8f;
     private const float ACCELERATION = 0.75f;
     private const float CHASE_TIME_BEFORE_ATTACK = 1f;
 
@@ -24,6 +25,7 @@ public class StalkerChaseState : StalkerState
         Vector3 vectorToTarget = enemy.attackTarget.transform.position - transform.position;
         float distanceToTarget = vectorToTarget.magnitude;
 
+        // Depending on the distance to the target, change its behaviour
         if (attackCooldown <= 0 && distanceToTarget < ATTACK_DISTANCE && CanAmbushPlayer())
         {
             enemy.ChangeState(enemy.attackState);
@@ -36,6 +38,12 @@ public class StalkerChaseState : StalkerState
         {
             enemy.ChangeState(enemy.wanderState);
         }
+
+        // If it has no line of sight with target, resets attack cooldown
+        if (attackCooldown > 0 && !CanAmbushPlayer(true))
+        {
+            attackCooldown = CHASE_TIME_BEFORE_ATTACK;
+        }
     }
 
     public override void UpdateState()
@@ -45,30 +53,37 @@ public class StalkerChaseState : StalkerState
 
     private void MoveTo(Vector3 direction)
     {
-        if (speed < MAX_SPEED)
-        {
-            speed = Mathf.Min(speed + ACCELERATION * Time.fixedDeltaTime, MAX_SPEED);
-        }
-
         // Obstacle detection
         Vector3 avoidVector = enemy.GetAvoidanceDirection(direction, speed, new List<GameObject> { enemy.gameObject, enemy.attackTarget });
         direction = (direction + avoidVector).normalized;
 
+        float targetSpeed = avoidVector.sqrMagnitude <= 0 ? MAX_SPEED : AVOIDING_OBSTACLE_MAX_SPEED;
+
+        if (speed < targetSpeed)
+            speed = Mathf.Min(speed + ACCELERATION * Time.fixedDeltaTime, targetSpeed);
+
+        else if (speed > targetSpeed)
+            speed = Mathf.Max(speed - ACCELERATION * Time.fixedDeltaTime, targetSpeed);
+
         enemy.body.MovePosition(enemy.transform.position + direction * speed * Time.fixedDeltaTime);
     }
 
-    private bool CanAmbushPlayer()
+    private bool CanAmbushPlayer(bool useSimplifiedRaycast = false)
     {
         Vector2 attackDirection = enemy.attackTarget.transform.position - transform.position;
-        Vector2 boxSize = new Vector2(enemy.enemyCollider.radius * 2, enemy.enemyCollider.radius * 2);
+        RaycastHit2D[] hits;
 
-        RaycastHit2D[] hits = Physics2D.BoxCastAll(transform.position, boxSize, Vector2.SignedAngle(Vector2.right, attackDirection), attackDirection);
+        if (useSimplifiedRaycast)
+            hits = Physics2D.RaycastAll(transform.position, attackDirection, attackDirection.magnitude);
+        else
+            hits = Physics2D.CircleCastAll(transform.position, enemy.enemyCollider.radius, attackDirection, attackDirection.magnitude);
 
         foreach(RaycastHit2D hit in hits)
         {
             if (hit.collider.isTrigger || hit.collider.gameObject == enemy.gameObject) continue;
 
-            return hit.collider.gameObject == enemy.attackTarget;
+            if (hit.collider.gameObject != enemy.attackTarget)
+                return false;
         }
 
         return true;
