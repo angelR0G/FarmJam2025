@@ -22,10 +22,13 @@ public class PlayerExtractingBloodState : PlayerState
         }
     }
 
+    public override void ExitState()
+    {
+        player.onAnimFinished = null;
+    }
+
     public void OnAnimationFinished()
     {
-        // Remove callback
-        player.onAnimFinished = null;
         player.wateringState.AddBlood(corpseBloodContainer.blood);
         
         Destroy(corpseBloodContainer.gameObject);
