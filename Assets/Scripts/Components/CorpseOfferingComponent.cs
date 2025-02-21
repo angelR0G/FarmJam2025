@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CorpseOfferingComponent : MonoBehaviour
 {
-    private GameObject corpseOffered = null;
+    private CorpseComponent corpseOffered = null;
     public CropOfferingComponent cropOfferingAltar;
 
     private static readonly Dictionary<CorpseCreature, KeyValuePair<ItemId, int>>  offerings = new Dictionary<CorpseCreature, KeyValuePair<ItemId, int>> {
@@ -33,10 +33,16 @@ public class CorpseOfferingComponent : MonoBehaviour
 
         DestroyCorpse();
 
-        corpseOffered = newCorpseOffered.gameObject;
+        corpseOffered = newCorpseOffered;
+        corpseOffered.onCorpseConsumed.AddListener(RemoveCorpse);
 
         KeyValuePair<ItemId, int> newCropOffering = offerings[newCorpseOffered.creature];
         cropOfferingAltar.RequestNewOffering(newCropOffering.Key, newCropOffering.Value);
+    }
+
+    public bool IsOfferingCompleted()
+    {
+        return corpseOffered != null;
     }
 
     public void DestroyCorpse()
@@ -44,6 +50,12 @@ public class CorpseOfferingComponent : MonoBehaviour
         if (corpseOffered == null)
             return;
 
-        Destroy(corpseOffered);
+        corpseOffered.onCorpseConsumed.RemoveListener(RemoveCorpse);
+        corpseOffered.ConsumeCorpse();
+    }
+
+    private void RemoveCorpse()
+    {
+        corpseOffered = null;
     }
 }

@@ -15,18 +15,18 @@ public class AltarComponent : MonoBehaviour
 
     private void InspectAltar(PlayerComponent player)
     {
-        Debug.Log("~~ Para realizar el ritual tengo que hacer tres ofrendas: carne, frutos y sangre. ~~");
+        CanStartRitual(player);
     }
 
     public bool CanStartRitual(PlayerComponent player)
     {
-        if (!cropOfferingAltar.IsOfferingCompleted())
+        if (!corpseOfferingAltar.IsOfferingCompleted() || !cropOfferingAltar.IsOfferingCompleted())
         {
-            Debug.Log("~~ Para realizar el ritual tengo que hacer una ofrenda. ~~");
+            Debug.Log("~~ Para realizar el ritual tengo que hacer tres ofrendas: carne, frutos y sangre. ~~");
         }
         else if (player.inventory.GetEquipedItem().Id != ItemId.Dagger)
         {
-            Debug.Log("~~ Con mi daga completare el ritual ~~");
+            Debug.Log("~~ Las ofrendas estan listas, solo falta mi sangre ~~");
         }
         else
         {

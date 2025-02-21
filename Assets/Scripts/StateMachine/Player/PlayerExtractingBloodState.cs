@@ -43,8 +43,13 @@ public class PlayerExtractingBloodState : PlayerState
     public void OnAnimationFinished()
     {
         player.wateringState.AddBlood(corpseBloodContainer.blood);
-        
-        Destroy(corpseBloodContainer.gameObject);
+
+        // Destroys blood container object
+        CorpseComponent corpse;
+        if (corpseBloodContainer.TryGetComponent<CorpseComponent>(out corpse))
+            corpse.ConsumeCorpse();
+        else 
+            Destroy(corpseBloodContainer.gameObject);
 
         player.ChangeState(player.walkingState);
     }
