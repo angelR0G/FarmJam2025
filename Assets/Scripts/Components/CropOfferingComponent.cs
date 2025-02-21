@@ -6,11 +6,13 @@ public class CropOfferingComponent : MonoBehaviour
 {
     private ItemId expectedOffering = ItemId.Default;
     private int requiredCropsQuantity = 0;
+    public ObjectIndicatorComponent indicator;
 
     // Start is called before the first frame update
     void Start()
     {
         GetComponent<InteractionTriggerComponent>().interactionCallback = PlacingOffering;
+        indicator.SetVisibility(false);
     }
 
     public void PlacingOffering(PlayerComponent player)
@@ -37,6 +39,11 @@ public class CropOfferingComponent : MonoBehaviour
                 int offeringQuantity = Mathf.Min(player.inventory.GetEquipedItemQuantity(), requiredCropsQuantity);
                 requiredCropsQuantity -= offeringQuantity;
                 player.inventory.RemoveEquipedItem(offeringQuantity);
+
+                if (requiredCropsQuantity > 0)
+                    indicator.DisplayItem(expectedOffering, requiredCropsQuantity);
+                else
+                    indicator.SetVisibility(false);
             }
         }
     }
@@ -47,6 +54,9 @@ public class CropOfferingComponent : MonoBehaviour
 
         expectedOffering = newOffering;
         requiredCropsQuantity = requiredQuantity;
+
+        if (newOffering != ItemId.Default)
+            indicator.DisplayItem(newOffering, requiredQuantity);
     }
 
     public bool IsOfferingCompleted()
@@ -57,5 +67,6 @@ public class CropOfferingComponent : MonoBehaviour
     public void RemoveOffering()
     {
         expectedOffering = ItemId.Default;
+        indicator.SetVisibility(false);
     }
 }
