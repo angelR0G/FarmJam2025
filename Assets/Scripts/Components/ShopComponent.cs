@@ -9,6 +9,14 @@ public class ShopComponent : MonoBehaviour
         {ItemId.WaterCan, 5 }
     };
 
+    private static List<ItemId> seedItems = new List<ItemId> {
+        ItemId.Corn
+    };
+
+    private static List<ItemId> itemsItems = new List<ItemId> {
+        ItemId.WaterCan
+    };
+
     private static Dictionary<ItemId, int> sellItemsValue = new Dictionary<ItemId, int>
     {
         {ItemId.Corn, 1},
