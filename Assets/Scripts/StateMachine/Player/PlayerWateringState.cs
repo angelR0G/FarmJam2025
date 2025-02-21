@@ -8,7 +8,8 @@ public class PlayerWateringState : PlayerState
     private const float WATERING_DISTANCE = 0.1f;
     private const float WATERING_AREA_SIZE = 0.2f;
     private const int MAX_LIQUID_AMOUNT = 1000;
-    private const float WATERING_SPEED = 300f;
+    private const float WATERING_SPEED = 100f;
+    private const float BLOOD_WATERING_SPEED = 400f;
 
     private int liquidAmount = 0;
     public bool isBlood = false;
@@ -30,6 +31,12 @@ public class PlayerWateringState : PlayerState
                     cropBeingWatered = null;
                     player.ChangeState(player.walkingState);
                     Debug.Log("~~ La regadera esta vacia. Tengo que llenarla ~~");
+                }
+                else if (!IsLiquidCompatibleWithCrop(cropBeingWatered))
+                {
+                    cropBeingWatered = null;
+                    player.ChangeState(player.walkingState);
+                    Debug.Log("~~ No puedo regar esta planta con esto ~~");
                 }
                 else
                 {
@@ -72,8 +79,9 @@ public class PlayerWateringState : PlayerState
         }
 
         CropDryState dryCrop = cropBeingWatered.dryState;
+        float watertingSpeed = isBlood ? BLOOD_WATERING_SPEED : WATERING_SPEED;
         int waterLimit = Math.Min(dryCrop.GetRemainingWaterForGrowth(), liquidAmount);
-        int waterAmount = Math.Min(Mathf.CeilToInt(WATERING_SPEED * Time.deltaTime), waterLimit);
+        int waterAmount = Math.Min(Mathf.CeilToInt(watertingSpeed * Time.deltaTime), waterLimit);
 
         liquidAmount -= waterAmount;
         dryCrop.Water(waterAmount);
@@ -81,8 +89,13 @@ public class PlayerWateringState : PlayerState
 
     private void FillWaterCan()
     {
+        if (isBlood)
+        {
+            liquidAmount = 0;
+            isBlood = false;
+        }
+
         liquidAmount += Mathf.CeilToInt(WATERING_SPEED * Time.deltaTime);
-        isBlood = false;
 
         if (liquidAmount >= MAX_LIQUID_AMOUNT)
         {
@@ -108,6 +121,12 @@ public class PlayerWateringState : PlayerState
     {
         cropBeingWatered = null;
         waterSource = null;
+    }
+
+    private bool IsLiquidCompatibleWithCrop(CropComponent crop)
+    {
+        // Evil crops require blood while normal plants require water
+        return crop.dryState.isWateredWithBlood == isBlood;
     }
 
     // Returns the object that can be interacted with the water can (crop, water source or null)

@@ -8,6 +8,7 @@ public class CropComponent : MonoBehaviour
     // Components
     [Header("Components References")]
     public Collider2D cropCollider;
+    public Rigidbody2D body;
     public SpriteRenderer sprite;
 
     // States
@@ -31,6 +32,7 @@ public class CropComponent : MonoBehaviour
         // Get components
         cropCollider = GetComponent<Collider2D>();
         sprite = GetComponent<SpriteRenderer>();
+        body = GetComponent<Rigidbody2D>();
 
         // Init crop states
         dryState = statesContainer.GetComponent<CropDryState>();

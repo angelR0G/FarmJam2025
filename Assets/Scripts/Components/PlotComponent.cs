@@ -49,7 +49,7 @@ public class PlotComponent : MonoBehaviour
         }
         else 
         {
-            if (equipedItemType == ItemType.Seed)
+            if (equipedItemType == ItemType.Seed || equipedItemType == ItemType.EvilCrop)
             {
                 PlantCrop(equipedItem as SeedItemComponent);
                 player.inventory.RemoveEquipedItem();
@@ -83,7 +83,27 @@ public class PlotComponent : MonoBehaviour
 
     private void CollectCrop(PlayerComponent player)
     {
-        player.inventory.AddItem(plantedCrop.GetComponent<CropComponent>().collectableCrop);
-        Destroy(gameObject);
+        if (plantedCrop.CompareTag("EvilCrop"))
+        {
+            // Evil crops become carriable objects
+            CropComponent cropComp = plantedCrop.GetComponent<CropComponent>();
+            cropComp.body.bodyType = RigidbodyType2D.Dynamic;
+            cropComp.cropCollider.enabled = true;
+
+            plantedCrop.AddComponent<InteractionTriggerComponent>();
+            plantedCrop.AddComponent<CarriableComponent>();
+
+            plantedCrop.transform.SetParent(transform.parent, true);
+
+            Destroy(gameObject);
+        }
+        else
+        {
+            // Normal plants are added to player's inventory
+            bool plantAdded = player.inventory.AddItem(plantedCrop.GetComponent<CropComponent>().collectableCrop) > 0;
+
+            if (plantAdded)
+                Destroy(gameObject);
+        }
     }
 }

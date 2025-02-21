@@ -101,4 +101,9 @@ public enum ItemId
     Tomato,
     BeanSeed,
     Bean,
+    EvilBulbSeed,
+    EvilLightSeed,
+    EvilSpikeSeed,
+    EvilLettuceSeed,
+    EvilHeartSeed
 }
