@@ -50,13 +50,16 @@ public class CropOfferingComponent : MonoBehaviour
 
     public void RequestNewOffering(ItemId newOffering, int requiredQuantity)
     {
-        RemoveOffering();
+        if (expectedOffering != newOffering)
+        {
+            RemoveOffering();
 
-        expectedOffering = newOffering;
-        requiredCropsQuantity = requiredQuantity;
+            expectedOffering = newOffering;
+            requiredCropsQuantity = requiredQuantity;
+        }
 
         if (newOffering != ItemId.Default)
-            indicator.DisplayItem(newOffering, requiredQuantity);
+            indicator.DisplayItem(expectedOffering, requiredCropsQuantity);
     }
 
     public bool IsOfferingCompleted()
