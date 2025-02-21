@@ -120,7 +120,7 @@ public class StalkerEnemyComponent : MonoBehaviour
 
     private void OnDie()
     {
-        ItemFactory.CreateCorpse(transform.position, 100, corpseSprite);
+        ItemFactory.CreateCorpse(transform.position, 100, CorpseCreature.Stalker, corpseSprite);
         Destroy(gameObject);
     }
 

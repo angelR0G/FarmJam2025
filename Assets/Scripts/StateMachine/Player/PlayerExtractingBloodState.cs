@@ -8,18 +8,31 @@ public class PlayerExtractingBloodState : PlayerState
 
     public override void EnterState() 
     {
-        corpseBloodContainer = GetBloodContainerAtTheirPosition();
+        GameObject interactableObject = GetInteractableObjetAtTheirPosition();
 
-        if (corpseBloodContainer)
+        if (interactableObject != null)
         {
-            player.IsInteractionEnabled = false;
-            player.animator.SetTrigger("ExtractBlood");
-            player.onAnimFinished = OnAnimationFinished;
+            AltarComponent altar;
+
+            if (interactableObject.TryGetComponent<AltarComponent>(out altar))
+            {
+                // Change state to perform a ritual
+                player.sacrificeState.altar = altar;
+                player.ChangeState(player.sacrificeState);
+                return;
+            }
+            else if (interactableObject.TryGetComponent<BloodContainer>(out corpseBloodContainer))
+            {
+                // Start extracting blood
+                player.IsInteractionEnabled = false;
+                player.animator.SetTrigger("ExtractBlood");
+                player.onAnimFinished = OnAnimationFinished;
+                return;
+            }
         }
-        else {
-            player.ChangeState(player.walkingState);
-            Debug.Log("~~ No hay sangre que extraer ~~");
-        }
+
+        player.ChangeState(player.walkingState);
+        Debug.Log("~~ No hay sangre que extraer ~~");
     }
 
     public override void ExitState()
@@ -36,17 +49,16 @@ public class PlayerExtractingBloodState : PlayerState
         player.ChangeState(player.walkingState);
     }
 
-    private BloodContainer GetBloodContainerAtTheirPosition()
+    // Get posible objects that require a dagger to interact, which are altars and blood containers
+    private GameObject GetInteractableObjetAtTheirPosition()
     {
-        BloodContainer bloodContainer;
         Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position, 0.1f);
 
         foreach (Collider2D c in collisions)
         {
-            // Check whether the object has a blood container
-            if (c.TryGetComponent<BloodContainer>(out bloodContainer))
+            if (c.GetComponent<AltarComponent>() || c.GetComponent<BloodContainer>())
             {
-                return bloodContainer;
+                return c.gameObject;
             }
         }
 

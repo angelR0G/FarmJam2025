@@ -29,6 +29,7 @@ public class PlayerComponent : MonoBehaviour
     [HideInInspector] public PlayerFinishAttackState finishAttackState = null;
     [HideInInspector] public PlayerCarryingState carringState = null;
     [HideInInspector] public PlayerExtractingBloodState extractingBloodState = null;
+    [HideInInspector] public PlayerSacrificingState sacrificeState = null;
 
     // Other variables
     [Header("Player properties")]
@@ -65,6 +66,7 @@ public class PlayerComponent : MonoBehaviour
         finishAttackState = statesContainer.GetComponent<PlayerFinishAttackState>();
         carringState = statesContainer.GetComponent<PlayerCarryingState>();
         extractingBloodState = statesContainer.GetComponent<PlayerExtractingBloodState>();
+        sacrificeState = statesContainer.GetComponent<PlayerSacrificingState>();
 
         ChangeState(walkingState);
 

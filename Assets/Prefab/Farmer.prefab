@@ -231,6 +231,7 @@ GameObject:
   - component: {fileID: 7458667622349085327}
   - component: {fileID: 4915552024639879413}
   - component: {fileID: 1310216179467050628}
+  - component: {fileID: 4444417975796763171}
   m_Layer: 0
   m_Name: StatesContainer
   m_TagString: Untagged
@@ -346,6 +347,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10cc4cca07b611842847c56943a5180e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4444417975796763171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109259853284597907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f9d7e5197a7f1d4baa91968893db53f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  altar: {fileID: 0}
 --- !u!1 &2448403208226745913
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,6 +665,7 @@ MonoBehaviour:
   finishAttackState: {fileID: 0}
   carringState: {fileID: 0}
   extractingBloodState: {fileID: 0}
+  sacrificeState: {fileID: 0}
   facingDirection: {x: 0, y: -1}
 --- !u!212 &4321393230077232236
 SpriteRenderer:

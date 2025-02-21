@@ -154,7 +154,7 @@ public class PigComponent : MonoBehaviour
 
     public void TransformIntoCorpse()
     {
-        ItemFactory.CreateCorpse(transform.position, BLOOD_BY_AGE[age], corpseSprite);
+        ItemFactory.CreateCorpse(transform.position, BLOOD_BY_AGE[age], CorpseCreature.Pig, corpseSprite);
 
         Destroy(gameObject);
     }

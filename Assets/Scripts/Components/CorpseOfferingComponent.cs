@@ -34,11 +34,12 @@ public class CorpseOfferingComponent : MonoBehaviour
         DestroyCorpse();
 
         corpseOffered = newCorpseOffered.gameObject;
+
         KeyValuePair<ItemId, int> newCropOffering = offerings[newCorpseOffered.creature];
         cropOfferingAltar.RequestNewOffering(newCropOffering.Key, newCropOffering.Value);
     }
 
-    private void DestroyCorpse()
+    public void DestroyCorpse()
     {
         if (corpseOffered == null)
             return;

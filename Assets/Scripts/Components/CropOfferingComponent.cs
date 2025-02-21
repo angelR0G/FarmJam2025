@@ -34,7 +34,7 @@ public class CropOfferingComponent : MonoBehaviour
             }
             else
             {
-                int offeringQuantity = Mathf.Min(player.inventory.GetItemQuantity(offering.Id), requiredCropsQuantity);
+                int offeringQuantity = Mathf.Min(player.inventory.GetEquipedItemQuantity(), requiredCropsQuantity);
                 requiredCropsQuantity -= offeringQuantity;
                 player.inventory.RemoveEquipedItem(offeringQuantity);
             }
@@ -43,12 +43,19 @@ public class CropOfferingComponent : MonoBehaviour
 
     public void RequestNewOffering(ItemId newOffering, int requiredQuantity)
     {
+        RemoveOffering();
+
         expectedOffering = newOffering;
         requiredCropsQuantity = requiredQuantity;
     }
 
-    private bool IsOfferingCompleted()
+    public bool IsOfferingCompleted()
     {
         return expectedOffering != ItemId.Default && requiredCropsQuantity <= 0;
+    }
+
+    public void RemoveOffering()
+    {
+        expectedOffering = ItemId.Default;
     }
 }

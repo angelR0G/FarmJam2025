@@ -37,17 +37,11 @@ public class InventoryComponent : StorageComponent
         return items[activeItemIndex].item;
     }
 
-    public int GetItemQuantity(ItemId id)
+    public int GetEquipedItemQuantity()
     {
-        int itemsCounter = 0;
+        if (activeItemIndex < 0 || activeItemIndex >= storageSize) return 0;
 
-        for (int i = 0; i < TOOLS_SLOTS; i++)
-        {
-            if (items[i].item != null && items[i].item.Id == id)
-                itemsCounter += items[i].amount;
-        }
-
-        return itemsCounter;
+        return items[activeItemIndex].amount;
     }
 
     public void AddTool(ItemId toolId)
