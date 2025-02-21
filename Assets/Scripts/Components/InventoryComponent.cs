@@ -1,21 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
-using UnityEngine.Events;
-using static UnityEditor.Progress;
 
-public class InventoryComponent : MonoBehaviour
+public class InventoryComponent : StorageComponent
 {
-    const ushort ITEMS_SLOTS = 5;
-    const ushort TOOLS_SLOTS = 5;
-    const ushort INVENTORY_SIZE = ITEMS_SLOTS + TOOLS_SLOTS;
+    public readonly int TOOLS_SLOTS = 5;
 
     private int activeItemIndex = 0;
     public bool blockInventory = false;
-
-    private List<ItemSlot> items = new List<ItemSlot>(INVENTORY_SIZE);
 
     public void BindInput(InputComponent input)
     {
@@ -33,14 +23,6 @@ public class InventoryComponent : MonoBehaviour
         input.equipPreviousItemEvent.AddListener(EquipPreviousItem);
     }
 
-    public void Awake()
-    {
-        for (int i = 0; i < INVENTORY_SIZE; i++)
-        {
-            items.Add(new ItemSlot());
-        }
-    }
-
     public int GetActiveIndex()
     {
         return activeItemIndex;
@@ -49,22 +31,32 @@ public class InventoryComponent : MonoBehaviour
     public ItemComponent GetEquipedItem()
     {
         // Check if it is a valid index
-        if (activeItemIndex < 0 || activeItemIndex >= INVENTORY_SIZE) return null;
+        if (activeItemIndex < 0 || activeItemIndex >= storageSize) return null;
 
         // Get the item from the correct array
         return items[activeItemIndex].item;
     }
 
-    public ItemComponent GetItemIndex(int index)
+    public int GetEquipedItemQuantity()
     {
-        // Check if it is a valid index
-        if (index < 0 || index >= INVENTORY_SIZE) return null;
+        if (activeItemIndex < 0 || activeItemIndex >= storageSize) return 0;
 
-        // Get the item from the correct array
-        return items[index].item;
+        return items[activeItemIndex].amount;
     }
 
-    public int AddItem(ItemId itemId, int amount = 1)
+    public void AddTool(ItemId toolId)
+    {
+        for (int i = 0; i < TOOLS_SLOTS; i++)
+        {
+            if (items[i].item == null)
+            {
+                items[i].SetItem(ItemFactory.CreateItem(toolId, gameObject));
+                return;
+            }
+        }
+    }
+
+    public override int AddItem(ItemId itemId, int amount = 1)
     {
         int itemIndex = TOOLS_SLOTS;
         int amountSaved = 0;
@@ -72,7 +64,7 @@ public class InventoryComponent : MonoBehaviour
         // First check slots with that objects that are not full yet
         while (amountSaved < amount)
         {
-            itemIndex = FindIncompleteItemSlotIndex(itemId);
+            itemIndex = FindIncompleteItemSlotIndex(itemId, itemIndex);
             if (itemIndex == -1) break;
 
             amountSaved += AddItemToSlot(itemId, amount - amountSaved, itemIndex);
@@ -84,7 +76,7 @@ public class InventoryComponent : MonoBehaviour
         itemIndex = TOOLS_SLOTS;
         while (amountSaved < amount)
         {
-            itemIndex = FindFreeSlotIndex();
+            itemIndex = FindFreeSlotIndex(itemIndex);
             if (itemIndex == -1) break;
 
             amountSaved += AddItemToSlot(itemId, amount - amountSaved, itemIndex);
@@ -95,32 +87,7 @@ public class InventoryComponent : MonoBehaviour
         return amountSaved;
     }
 
-    private int AddItemToSlot(ItemId itemId, int amount, int slotIndex)
-    {
-        if (items[slotIndex].item == null)
-        {
-            // The slot is empty, so creates a new item component to save the data
-            ItemComponent newItem = ItemFactory.CreateItem(itemId, gameObject);
-
-            items[slotIndex].SetItem(newItem);
-            items[slotIndex].SetAmount(Math.Min(amount, newItem.MaxStack));
-
-            return items[slotIndex].amount;
-        }
-        else if (items[slotIndex].item.Id == itemId)
-        {
-            // The slot has that item saved, so updates the number of items in the slot
-            int freeSpace = items[slotIndex].item.MaxStack - items[slotIndex].amount;
-            int amountToAdd = Math.Min(amount, freeSpace);
-
-            items[slotIndex].AddAmount(amountToAdd);
-            return amountToAdd;
-        }
-
-        return 0;
-    }
-
-    public bool HasSpaceFor(ItemId id, int amount = 1)
+    public override bool HasSpaceFor(ItemId id, int amount = 1)
     {
         int freeSpaceCount = 0;
         int slotIndex = TOOLS_SLOTS;
@@ -128,7 +95,7 @@ public class InventoryComponent : MonoBehaviour
         // First check slots with that objects that are not full yet
         while (freeSpaceCount < amount)
         {
-            slotIndex = FindIncompleteItemSlotIndex(id);
+            slotIndex = FindIncompleteItemSlotIndex(id, slotIndex);
             if (slotIndex == -1) break;
 
             freeSpaceCount += items[slotIndex].item.MaxStack - items[slotIndex].amount;
@@ -140,7 +107,7 @@ public class InventoryComponent : MonoBehaviour
         slotIndex = TOOLS_SLOTS;
         while (freeSpaceCount < amount)
         {
-            slotIndex = FindFreeSlotIndex();
+            slotIndex = FindFreeSlotIndex(slotIndex);
             if (slotIndex == -1) break;
 
             freeSpaceCount += ItemFactory.GetItemData(id).maxStack;
@@ -153,7 +120,7 @@ public class InventoryComponent : MonoBehaviour
 
     public void EquipItem(int index)
     {
-        if (blockInventory || index < 0 || index >= INVENTORY_SIZE) return;
+        if (blockInventory || index < 0 || index >= storageSize) return;
 
         activeItemIndex = index;
 
@@ -171,7 +138,7 @@ public class InventoryComponent : MonoBehaviour
         do
         {
             nextIndex++;
-            if (nextIndex >= INVENTORY_SIZE) nextIndex = 0;
+            if (nextIndex >= storageSize) nextIndex = 0;
 
             if (items[nextIndex].item != null)
             {
@@ -187,7 +154,7 @@ public class InventoryComponent : MonoBehaviour
         do
         {
             previousIndex--;
-            if (previousIndex < 0) previousIndex = INVENTORY_SIZE - 1;
+            if (previousIndex < 0) previousIndex = storageSize - 1;
 
             if (items[previousIndex].item != null)
             {
@@ -197,44 +164,8 @@ public class InventoryComponent : MonoBehaviour
         } while (previousIndex != activeItemIndex);
     }
 
-    public void RemoveItemByIndex(int index)
+    public void RemoveEquipedItem(int quantity = 1)
     {
-        if (index < 0 || index > items.Count) return;
-
-        if (items[index].amount == 1)
-        {
-            Destroy(items[index].item);
-            items[index].SetItem(null);
-        }
-        else
-            items[index].AddAmount(-1);
-    }
-
-    public void RemoveEquipedItem()
-    {
-        RemoveItemByIndex(activeItemIndex);
-    }
-
-
-    private int FindIncompleteItemSlotIndex(ItemId itemId, int start = TOOLS_SLOTS)
-    {
-        start = Mathf.Max(start, TOOLS_SLOTS);
-
-        for (int i = start; i < items.Count; i++)
-        {
-            if (items[i].item != null && items[i].item.Id == itemId && !items[i].IsFull()) return i;
-        }
-
-        return -1;
-    }
-
-    private int FindFreeSlotIndex()
-    {
-        for (int i = TOOLS_SLOTS; i < items.Count; i++)
-        {
-            if (items[i].item == null) return i;
-        }
-
-        return -1;
+        RemoveItemByIndex(activeItemIndex, quantity);
     }
 }

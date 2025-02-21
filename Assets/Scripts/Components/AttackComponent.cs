@@ -14,14 +14,16 @@ public class AttackComponent : MonoBehaviour
     {
         damageArea.enabled = false;
         damageArea.isTrigger = true;
-        sprite.enabled = false;
+
+        if (sprite != null)
+            sprite.enabled = false;
     }
 
     private void LateUpdate()
     {
-        if (sprite.enabled)
+        if (sprite != null && sprite.enabled)
         {
-            if (attackAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            if (attackAnim != null && attackAnim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
                 StopAnimation();
         }
     }
@@ -40,7 +42,7 @@ public class AttackComponent : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject == gameObject) return;
+        if (other.gameObject == gameObject || other.isTrigger) return;
 
         HealthComponent damagedObjectHealth; 
         if (!other.gameObject.TryGetComponent<HealthComponent>(out damagedObjectHealth))
@@ -58,6 +60,8 @@ public class AttackComponent : MonoBehaviour
 
     public void ConfigureSprite(Vector3 spriteOffset = new Vector3(), bool flipH = false, bool flipV = false)
     {
+        if (sprite == null) return;
+
         sprite.gameObject.transform.localPosition = spriteOffset;
         sprite.flipX = flipH;
         sprite.flipY = flipV;
@@ -65,12 +69,16 @@ public class AttackComponent : MonoBehaviour
 
     public void PlayAnimation(string animationName)
     {
+        if (sprite == null || attackAnim == null) return;
+
         sprite.enabled = true;
         attackAnim.Play(animationName, 0, 0);
     }
 
     public void StopAnimation()
     {
+        if (sprite == null) return;
+
         sprite.enabled = false;
     }
 }

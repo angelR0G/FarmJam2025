@@ -8,41 +8,62 @@ public class PlayerExtractingBloodState : PlayerState
 
     public override void EnterState() 
     {
-        corpseBloodContainer = GetBloodContainereAtTheirPosition();
+        GameObject interactableObject = GetInteractableObjetAtTheirPosition();
 
-        if (corpseBloodContainer)
+        if (interactableObject != null)
         {
-            player.IsInteractionEnabled = false;
-            player.animator.SetTrigger("ExtractBlood");
-            player.onAnimFinished = OnAnimationFinished;
+            AltarComponent altar;
+
+            if (interactableObject.TryGetComponent<AltarComponent>(out altar))
+            {
+                // Change state to perform a ritual
+                player.sacrificeState.altar = altar;
+                player.ChangeState(player.sacrificeState);
+                return;
+            }
+            else if (interactableObject.TryGetComponent<BloodContainer>(out corpseBloodContainer))
+            {
+                // Start extracting blood
+                player.IsInteractionEnabled = false;
+                player.animator.SetTrigger("ExtractBlood");
+                player.onAnimFinished = OnAnimationFinished;
+                return;
+            }
         }
-        else {
-            player.ChangeState(player.walkingState);
-            Debug.Log("~~ No hay sangre que extraer ~~");
-        }
+
+        player.ChangeState(player.walkingState);
+        Debug.Log("~~ No hay sangre que extraer ~~");
+    }
+
+    public override void ExitState()
+    {
+        player.onAnimFinished = null;
     }
 
     public void OnAnimationFinished()
     {
-        // Remove callback
-        player.onAnimFinished = null;
         player.wateringState.AddBlood(corpseBloodContainer.blood);
-        
-        Destroy(corpseBloodContainer.gameObject);
+
+        // Destroys blood container object
+        CorpseComponent corpse;
+        if (corpseBloodContainer.TryGetComponent<CorpseComponent>(out corpse))
+            corpse.ConsumeCorpse();
+        else 
+            Destroy(corpseBloodContainer.gameObject);
 
         player.ChangeState(player.walkingState);
     }
 
-    private BloodContainer GetBloodContainereAtTheirPosition()
+    // Get posible objects that require a dagger to interact, which are altars and blood containers
+    private GameObject GetInteractableObjetAtTheirPosition()
     {
-        BloodContainer bloodContainer;
         Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position, 0.1f);
+
         foreach (Collider2D c in collisions)
         {
-            // Does not take into account the player
-            if (c.TryGetComponent<BloodContainer>(out bloodContainer))
+            if (c.GetComponent<AltarComponent>() || c.GetComponent<BloodContainer>())
             {
-                return bloodContainer;
+                return c.gameObject;
             }
         }
 

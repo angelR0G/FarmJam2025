@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 604a8675957bb5646abc95976078dd89, type: 3}
+  m_Name: TomatoSeed
+  m_EditorClassIdentifier: 
+  type: 1
+  id: 14
+  maxStack: 50
+  itemName: Tomato seed
+  sprite: {fileID: -28429404, guid: d50477672bc929d44aeabdd89ed4b7c5, type: 3}
+  cropPrefab: {fileID: 911254701734855569, guid: 4988e031723b2644685451759a5a0545, type: 3}

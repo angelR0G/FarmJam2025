@@ -51,7 +51,7 @@ public class PlotComponent : MonoBehaviour
         {
             if (equipedItemType == ItemType.Seed)
             {
-                PlantCrop(equipedItem);
+                PlantCrop(equipedItem as SeedItemComponent);
                 player.inventory.RemoveEquipedItem();
             }
             else
@@ -61,9 +61,9 @@ public class PlotComponent : MonoBehaviour
         }
     }
 
-    public void PlantCrop(ItemComponent seed)
+    public void PlantCrop(SeedItemComponent seed)
     {
-        plantedCrop = Instantiate(seed.GetComponent<SeedItemComponent>().cropPrefab, transform);
+        plantedCrop = Instantiate(seed.cropPrefab, transform);
 
         plantedCrop.GetComponent<CropComponent>().stateChanged.AddListener(UpdateGroundTexture);
     }

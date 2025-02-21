@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 604a8675957bb5646abc95976078dd89, type: 3}
-  m_Name: CornSeed
+  m_Script: {fileID: 11500000, guid: 6c37c0c3bdc57954996f6d91d6393586, type: 3}
+  m_Name: Pumpkin
   m_EditorClassIdentifier: 
-  type: 1
-  id: 1
+  type: 2
+  id: 9
   maxStack: 50
-  itemName: Corn seed
-  sprite: {fileID: 909271463, guid: b4aca670e8222ff47b994f52037c5a56, type: 3}
-  cropPrefab: {fileID: 799574607529291030, guid: d92f5923213346d468a998883f29b491, type: 3}
+  itemName: Pumpkin
+  sprite: {fileID: -528703139, guid: d50477672bc929d44aeabdd89ed4b7c5, type: 3}

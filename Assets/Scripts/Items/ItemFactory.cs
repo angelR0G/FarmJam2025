@@ -23,12 +23,13 @@ public class ItemFactory : MonoBehaviour
         return newItem;
     }
 
-    public static GameObject CreateCorpse(Vector3 spawnPosition, int bloodAmount, Sprite corpseSprite)
+    public static GameObject CreateCorpse(Vector3 spawnPosition, int bloodAmount, CorpseCreature creature, Sprite corpseSprite)
     {
         if (Instance.corpsePrefab == null) return null;
 
         GameObject newCorpse = Instantiate(Instance.corpsePrefab);
         newCorpse.transform.position = spawnPosition;
+        newCorpse.GetComponent<CorpseComponent>().creature = creature;
         newCorpse.GetComponent<BloodContainer>().blood = bloodAmount;
         newCorpse.GetComponent<SpriteRenderer>().sprite = corpseSprite;
 

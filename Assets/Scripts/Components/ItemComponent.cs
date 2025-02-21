@@ -84,10 +84,21 @@ public enum ItemType
 public enum ItemId
 {
     Default,
-    CornSeed,
     Dagger,
     Hoe,
     WaterCan,
-    Corn,
-    Pitchfork
+    Pitchfork,
+    Torch,
+    Wheat,
+    WheatSeed,
+    PumpkinSeed,
+    Pumpkin,
+    CarrotSeed,
+    Carrot,
+    PotatoSeed,
+    Potato,
+    TomatoSeed,
+    Tomato,
+    BeanSeed,
+    Bean,
 }

@@ -25,7 +25,7 @@ public class InventoryDisplay : MonoBehaviour
     {
         for (int i = 0; i < inventorySlots.Count; i++)
         {
-            ItemComponent item = playerInventory.GetItemIndex(i); 
+            ItemComponent item = playerInventory.GetItemByIndex(i); 
             if(item != null)
             {
                 inventorySlots[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = item.Sprite;

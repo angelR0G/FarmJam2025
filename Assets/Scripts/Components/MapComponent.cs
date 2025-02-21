@@ -45,4 +45,30 @@ public class MapComponent : MonoBehaviour
 
         return true;
     }
+
+    public Vector3 GetWalkablePositionAroundPoint(Vector3 origin, float minDistance, float maxDistance)
+    {
+        Vector3 direction = Vector3.zero;
+        float distance = 0;
+        Vector3 randomPoint = Vector3.zero;
+        ushort remainingAttempts = 10;
+
+        do
+        {
+            remainingAttempts--;
+
+            // Calculate a random point from a random direction and distance
+            direction = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+            distance = minDistance + (maxDistance-minDistance) * Random.value;
+            randomPoint = origin + direction * distance;
+
+            // If there is no collision in the tilemap, the point is valid and stop loop
+            if (IsPositionFree(randomPoint))
+                return randomPoint;
+
+        } while(remainingAttempts > 0);
+
+        // If no point could be found, return the origin
+        return origin;
+    }
 }

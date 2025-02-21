@@ -115,21 +115,43 @@ public class PlayerWateringState : PlayerState
     {
         Vector2 wateringPosition = new Vector2(player.transform.position.x, player.transform.position.y) + player.facingDirection * WATERING_DISTANCE;
         Collider2D[] collisions = Physics2D.OverlapBoxAll(wateringPosition, new Vector2(WATERING_AREA_SIZE, WATERING_AREA_SIZE), 0);
+        CropComponent crop;
+
+        GameObject closestValidGameObject = null;
+        float distanceToClosestGameObject = 0;
 
         foreach (Collider2D c in collisions)
         {
+            // Water sources to fill the water
             if (c.GetComponent<WaterSourceComponent>())
             {
-                return c.gameObject;
+                float distance = GetSqrDistanceToObject(c.gameObject);
+
+                if (closestValidGameObject == null || (liquidAmount < MAX_LIQUID_AMOUNT && distance < distanceToClosestGameObject))
+                {
+                    closestValidGameObject = c.gameObject;
+                    distanceToClosestGameObject = distance;
+                }
             }
 
-            CropComponent crop;
-            if (c.gameObject.TryGetComponent<CropComponent>(out crop) && crop.currentState == crop.dryState)
+            // Crops that can be watered
+            else if (c.gameObject.TryGetComponent<CropComponent>(out crop) && crop.currentState == crop.dryState)
             {
-                return crop.gameObject;
+                float distance = GetSqrDistanceToObject(c.gameObject);
+
+                if (closestValidGameObject == null || distance < distanceToClosestGameObject)
+                {
+                    closestValidGameObject = c.gameObject;
+                    distanceToClosestGameObject = distance;
+                }
             }
         }
 
-        return null;
+        return closestValidGameObject;
+    }
+
+    private float GetSqrDistanceToObject(GameObject obj)
+    {
+        return Vector3.SqrMagnitude(obj.transform.position - player.transform.position);
     }
 }

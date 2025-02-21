@@ -38,24 +38,32 @@ public class LightSourceComponent : MonoBehaviour
 
     private void OnNightStart(object sender, int hour)
     {
-        Debug.Log("Night Start");
         light2D.enabled = true;
         collider.enabled=true;
     }
 
     private void OnNightEnd(object sender, int hour)
     {
-        Debug.Log("Night end");
         light2D.enabled = false;
         collider.enabled = false;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        other.GetComponent<SanityComponent>().insideLightSource = true;
+        SanityComponent sanity;
+
+        if (other.TryGetComponent<SanityComponent>(out sanity))
+        {
+            sanity.insideLightSource = true;
+        }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        other.GetComponent<SanityComponent>().insideLightSource = false;
+        SanityComponent sanity;
+
+        if (other.TryGetComponent<SanityComponent>(out sanity))
+        {
+            sanity.insideLightSource = false;
+        }
     }
 }

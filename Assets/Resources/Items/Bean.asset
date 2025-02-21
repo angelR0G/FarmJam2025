@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c37c0c3bdc57954996f6d91d6393586, type: 3}
-  m_Name: Corn
+  m_Name: Bean
   m_EditorClassIdentifier: 
   type: 2
-  id: 5
+  id: 17
   maxStack: 50
-  itemName: Corn
-  sprite: {fileID: -236475751, guid: b4aca670e8222ff47b994f52037c5a56, type: 3}
+  itemName: Beans
+  sprite: {fileID: -1158655513, guid: d50477672bc929d44aeabdd89ed4b7c5, type: 3}

@@ -36,6 +36,7 @@ public class PlayerAttackState : PlayerState
 
     public override void ExitState()
     {
+        player.attackComponent.SetDamageAreaActive(false);
         player.IsInteractionEnabled = true;
         player.onAnimEvent = null;
         player.onAnimFinished = null;
