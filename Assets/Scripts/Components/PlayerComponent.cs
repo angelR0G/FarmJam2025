@@ -75,6 +75,12 @@ public class PlayerComponent : MonoBehaviour
         inputComponent.interactInputEvent.AddListener(Interact);
 
         GetComponent<HealthComponent>().onDamageEvent.AddListener(OnDamaged);
+
+        inventory.AddItem(ItemId.CarrotSeed, 10);
+        inventory.AddItem(ItemId.BeanSeed, 10);
+        inventory.AddItem(ItemId.PotatoSeed, 10);
+        inventory.AddItem(ItemId.PumpkinSeed, 10);
+        inventory.AddItem(ItemId.WheatSeed, 10);
     }
 
     // Update is called once per frame
