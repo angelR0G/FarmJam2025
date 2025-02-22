@@ -27,6 +27,7 @@ public class PlayerCarryingState : PlayerState
 
     public override void ExitState()
     {
+        carriedObject.SetCarrier(null);
         player.IsInteractionEnabled = true;
 
         player.facingDirection = -player.facingDirection;
