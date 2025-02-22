@@ -23,7 +23,7 @@ public class CorpseOfferingComponent : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject == corpseOffered.gameObject)
+        if (corpseOffered != null && collision.gameObject == corpseOffered.gameObject)
             RemoveCorpse();
     }
 
