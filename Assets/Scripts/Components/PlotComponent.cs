@@ -22,6 +22,7 @@ public class PlotComponent : MonoBehaviour
         plantedCrop = null;
 
         trigger.interactionCallback = Interact;
+        GameManager.Instance.nightStart += DisappearAtDawn;
     }
 
     // Update is called once per frame
@@ -54,6 +55,10 @@ public class PlotComponent : MonoBehaviour
             {
                 PlantCrop(equipedItem as SeedItemComponent);
                 player.inventory.RemoveEquipedItem();
+
+                // Remove callbacks that automatically destroy plot
+                GameManager.Instance.nightEnd -= DestroyPlot;
+                GameManager.Instance.nightStart -= DisappearAtDawn;
             }
             else if (equipedItemType == ItemType.Seed || equipedItemType == ItemType.EvilCrop)
             {
@@ -110,5 +115,17 @@ public class PlotComponent : MonoBehaviour
             if (plantAdded)
                 Destroy(gameObject);
         }
+    }
+
+    private void DisappearAtDawn(object sender, int hour)
+    {
+        GameManager.Instance.nightEnd += DestroyPlot;
+        GameManager.Instance.nightStart -= DisappearAtDawn;
+    }
+
+    private void DestroyPlot(object sender, int hour)
+    {
+        GameManager.Instance.nightEnd -= DestroyPlot;
+        Destroy(gameObject);
     }
 }
