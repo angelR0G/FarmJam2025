@@ -21,6 +21,8 @@ public class InventoryComponent : StorageComponent
         input.equipItem5Event.AddListener(() => EquipItem(9));
         input.equipNextItemEvent.AddListener(EquipNextItem);
         input.equipPreviousItemEvent.AddListener(EquipPreviousItem);
+        input.dropItemEvent.AddListener(DropItem);
+        input.unequipItemEvent.AddListener(UnequipItem);
     }
 
     public int GetActiveIndex()
@@ -122,18 +124,19 @@ public class InventoryComponent : StorageComponent
     {
         if (blockInventory || index < 0 || index >= storageSize) return;
 
-        activeItemIndex = index;
+        if (activeItemIndex == index)
+        {
+            UnequipItem();
+            return;
+        }
 
-        #if UNITY_EDITOR
-        if (GetEquipedItem() != null)
-            Debug.Log("Objeto con id (" + GetEquipedItem().Id + ") equipado.");
-        else
-            Debug.Log("Equipada ranura vacía");
-        #endif
+        activeItemIndex = index;
     }
 
     public void EquipNextItem()
     {
+        if (activeItemIndex == -1) EquipItem(0);
+
         int nextIndex = activeItemIndex;
         do
         {
@@ -150,6 +153,8 @@ public class InventoryComponent : StorageComponent
 
     public void EquipPreviousItem()
     {
+        if (activeItemIndex == -1) EquipItem(0);
+
         int previousIndex = activeItemIndex;
         do
         {
@@ -167,5 +172,20 @@ public class InventoryComponent : StorageComponent
     public void RemoveEquipedItem(int quantity = 1)
     {
         RemoveItemByIndex(activeItemIndex, quantity);
+    }
+
+    public void UnequipItem()
+    {
+        activeItemIndex = -1;
+    }
+
+    public void DropItem()
+    {
+        if (activeItemIndex < TOOLS_SLOTS || activeItemIndex >= storageSize || items[activeItemIndex].item == null)
+            return;
+
+        GameObject droppedItem = ItemFactory.CreatePickableItem(items[activeItemIndex].item.Id, null, items[activeItemIndex].amount);
+        droppedItem.transform.position = transform.position;
+        RemoveEquipedItem(items[activeItemIndex].amount);
     }
 }

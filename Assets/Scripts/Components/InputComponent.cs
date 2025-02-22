@@ -24,7 +24,13 @@ public class InputComponent : MonoBehaviour
     public UnityEvent equipItem5Event;
     public UnityEvent equipNextItemEvent;
     public UnityEvent equipPreviousItemEvent;
+    public UnityEvent unequipItemEvent;
+    public UnityEvent dropItemEvent;
 
+    public void Update()
+    {
+        interact = false;
+    }
 
     public void OnMove(InputValue value)
     {
@@ -39,11 +45,6 @@ public class InputComponent : MonoBehaviour
         {
             interactInputEvent.Invoke();
         }
-    }
-
-    public void Update()
-    {
-        interact = false;
     }
 
     public void OnEquipTool1(InputValue value)
@@ -133,5 +134,21 @@ public class InputComponent : MonoBehaviour
     {
         if (value.Get<float>() > 1f)
             equipPreviousItemEvent.Invoke();
+    }
+
+    public void OnDropItem(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            dropItemEvent.Invoke();
+        }
+    }
+
+    public void OnUnequipItem(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            unequipItemEvent.Invoke();
+        }
     }
 }
