@@ -8,6 +8,7 @@ public class AttackComponent : MonoBehaviour
     public Animator attackAnim;
     public BoxCollider2D damageArea = null;
     public int damage = 10;
+    public bool onlyOneHit = false;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +56,11 @@ public class AttackComponent : MonoBehaviour
         {
             Vector3 forceDirection = (other.gameObject.transform.position - transform.position).normalized;
             damagedObjectBody.AddForce(new Vector2(forceDirection.x, forceDirection.y) * 10 * damagedObjectBody.mass, ForceMode2D.Impulse);
+        }
+
+        if (onlyOneHit)
+        {
+            SetDamageAreaActive(false);
         }
     }
 

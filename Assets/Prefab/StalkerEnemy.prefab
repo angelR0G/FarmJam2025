@@ -292,6 +292,7 @@ MonoBehaviour:
   attackAnim: {fileID: 0}
   damageArea: {fileID: 1239753224452977363}
   damage: 40
+  onlyOneHit: 1
 --- !u!95 &4586587335726813085
 Animator:
   serializedVersion: 5
