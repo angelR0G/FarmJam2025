@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 6158667444303823425}
   - component: {fileID: 4144090940144501892}
   - component: {fileID: 1558464366271958220}
+  - component: {fileID: 7388660783870160375}
   m_Layer: 0
   m_Name: Pig
   m_TagString: Untagged
@@ -134,6 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   body: {fileID: 0}
   healthComp: {fileID: 0}
+  animator: {fileID: 0}
   statesContainer: {fileID: 4917371081522861485}
   currentState: {fileID: 0}
   walkingState: {fileID: 0}
@@ -250,7 +252,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.2, y: 0.05}
+  m_Size: {x: 0.15, y: 0.1}
   m_Direction: 1
 --- !u!50 &1558464366271958220
 Rigidbody2D:
@@ -279,3 +281,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!95 &7388660783870160375
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5294915289095801889}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ab47963def7086c4a837fb20300b3c83, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

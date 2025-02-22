@@ -7,6 +7,7 @@ public class PigSleepingState : PigState
     public override void EnterState()
     {
         GameManager.Instance.hourChanged += CheckWakeUpTime;
+        pig.animator.SetTrigger("Sleeping");
     }
 
     public override void ExitState()

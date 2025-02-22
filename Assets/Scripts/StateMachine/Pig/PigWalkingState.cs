@@ -20,6 +20,8 @@ public class PigWalkingState : PigState
 
         RequestNewTargetPosition();
         nextTargetCountdown = MAX_TIME_TO_REACH_TARGET;
+
+        pig.animator.SetTrigger("StartMoving");
     }
 
     public override void ExitState()
@@ -63,6 +65,9 @@ public class PigWalkingState : PigState
 
         pig.body.velocity = movementVector;
         pig.facingDirection = targetVector.normalized;
+
+        if (movementVector.x > 0) pig.FlipSprite(true);
+        else if (movementVector.x < 0) pig.FlipSprite(false);
     }
 
     private void UpdateTargetReached(bool isInTargetPosition)
@@ -71,6 +76,7 @@ public class PigWalkingState : PigState
         hasReachedTarget = isInTargetPosition;
 
         nextTargetCountdown = hasReachedTarget ? Random.Range(STAND_STILL_MIN_TIME, STAND_STILL_MAX_TIME) : MAX_TIME_TO_REACH_TARGET;
+        pig.animator.SetTrigger(hasReachedTarget ? "StopMoving" : "StartMoving");
     }
 
     private void RequestNewTargetPosition()

@@ -19,6 +19,8 @@ public class PigComponent : MonoBehaviour
     [Header("Components References")]
     public Rigidbody2D body;
     public HealthComponent healthComp;
+    public Animator animator;
+    public SpriteRenderer sprite;
 
     // States
     [Header("State Machine")]
@@ -46,6 +48,8 @@ public class PigComponent : MonoBehaviour
         // Get components
         body = GetComponent<Rigidbody2D>();
         healthComp = GetComponent<HealthComponent>();
+        animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
 
         // Init pig states
         walkingState = statesContainer.GetComponent<PigWalkingState>();
@@ -157,6 +161,11 @@ public class PigComponent : MonoBehaviour
         ItemFactory.CreateCorpse(transform.position, BLOOD_BY_AGE[age], CorpseCreature.Pig, corpseSprite);
 
         Destroy(gameObject);
+    }
+
+    public void FlipSprite(bool fliped)
+    {
+        sprite.flipX = fliped;
     }
 
     public void OnDestroy()
