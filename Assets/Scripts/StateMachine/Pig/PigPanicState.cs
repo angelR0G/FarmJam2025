@@ -11,10 +11,21 @@ public class PigPanicState : PigState
     private Vector3 targetPosition;
     private float panicTimeout;
 
+    private float defaultAnimSpeed = 0;
+
     public override void EnterState()
     {
         RequestNewTargetPosition();
         panicTimeout = PANIC_TIME;
+
+        pig.animator.SetTrigger("StartMoving");
+        defaultAnimSpeed = pig.animator.GetFloat("AnimSpeed");
+        pig.animator.SetFloat("AnimSpeed", 0.75f);
+    }
+
+    public override void ExitState()
+    {
+        pig.animator.SetFloat("AnimSpeed", defaultAnimSpeed);
     }
 
     public override void FixedUpdateState()
@@ -43,6 +54,9 @@ public class PigPanicState : PigState
 
         pig.body.velocity = movementVector;
         pig.facingDirection = targetVector.normalized;
+
+        if (movementVector.x > 0) pig.FlipSprite(true);
+        else if (movementVector.x < 0) pig.FlipSprite(false);
     }
 
     private void UpdateTarget()

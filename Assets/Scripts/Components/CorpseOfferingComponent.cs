@@ -23,13 +23,13 @@ public class CorpseOfferingComponent : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject == corpseOffered)
-            corpseOffered = null;
+        if (corpseOffered != null && collision.gameObject == corpseOffered.gameObject)
+            RemoveCorpse();
     }
 
     private void OfferNewCorpse(CorpseComponent newCorpseOffered)
     {
-        if (newCorpseOffered.gameObject == corpseOffered) return;
+        if (newCorpseOffered == corpseOffered) return;
 
         DestroyCorpse();
 
@@ -57,5 +57,6 @@ public class CorpseOfferingComponent : MonoBehaviour
     private void RemoveCorpse()
     {
         corpseOffered = null;
+        cropOfferingAltar.indicator.SetVisibility(false);
     }
 }

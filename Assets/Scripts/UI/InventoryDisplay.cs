@@ -42,10 +42,18 @@ public class InventoryDisplay : MonoBehaviour
 
     private void UpdateSlotMark(int index)
     {
-        marker.transform.SetParent(inventorySlots[index].transform);
-        marker.rectTransform.position = Vector3.zero;
-        marker.transform.position = Vector3.zero;
-        marker.rectTransform.anchoredPosition3D = Vector3.zero;
+        if (index < 0)
+        {
+            marker.enabled = false;
+        }
+        else
+        {
+            marker.transform.SetParent(inventorySlots[index].transform);
+            marker.rectTransform.position = Vector3.zero;
+            marker.transform.position = Vector3.zero;
+            marker.rectTransform.anchoredPosition3D = Vector3.zero;
+            marker.enabled = true;
+        }
     }
 
     // Update is called once per frame

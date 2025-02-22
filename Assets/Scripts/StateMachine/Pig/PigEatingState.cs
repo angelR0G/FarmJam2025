@@ -18,6 +18,8 @@ public class PigEatingState : PigState
         else
         {
             remainingEatingTime = EATING_TIME;
+
+            pig.animator.SetTrigger("Eating");
         }
     }
 

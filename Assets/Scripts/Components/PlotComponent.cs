@@ -12,6 +12,7 @@ public class PlotComponent : MonoBehaviour
     private GameObject plantedCrop;
     public Sprite dryTexture;
     public Sprite wateredTexture;
+    public bool evilCropsAllowed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class PlotComponent : MonoBehaviour
         plantedCrop = null;
 
         trigger.interactionCallback = Interact;
+        GameManager.Instance.nightStart += DisappearAtDawn;
     }
 
     // Update is called once per frame
@@ -49,10 +51,18 @@ public class PlotComponent : MonoBehaviour
         }
         else 
         {
-            if (equipedItemType == ItemType.Seed)
+            if ((equipedItemType == ItemType.Seed && !evilCropsAllowed) || (equipedItemType == ItemType.EvilCrop && evilCropsAllowed))
             {
                 PlantCrop(equipedItem as SeedItemComponent);
                 player.inventory.RemoveEquipedItem();
+
+                // Remove callbacks that automatically destroy plot
+                GameManager.Instance.nightEnd -= DestroyPlot;
+                GameManager.Instance.nightStart -= DisappearAtDawn;
+            }
+            else if (equipedItemType == ItemType.Seed || equipedItemType == ItemType.EvilCrop)
+            {
+                Debug.Log("~~ Este suelo no es adecuado para esta planta ~~");
             }
             else
             {
@@ -83,7 +93,39 @@ public class PlotComponent : MonoBehaviour
 
     private void CollectCrop(PlayerComponent player)
     {
-        player.inventory.AddItem(plantedCrop.GetComponent<CropComponent>().collectableCrop);
+        if (plantedCrop.CompareTag("EvilCrop"))
+        {
+            // Evil crops become carriable objects
+            CropComponent cropComp = plantedCrop.GetComponent<CropComponent>();
+            cropComp.body.bodyType = RigidbodyType2D.Dynamic;
+            cropComp.cropCollider.enabled = true;
+
+            plantedCrop.AddComponent<InteractionTriggerComponent>();
+            plantedCrop.AddComponent<CarriableComponent>();
+
+            plantedCrop.transform.SetParent(transform.parent, true);
+
+            Destroy(gameObject);
+        }
+        else
+        {
+            // Normal plants are added to player's inventory
+            bool plantAdded = player.inventory.AddItem(plantedCrop.GetComponent<CropComponent>().collectableCrop) > 0;
+
+            if (plantAdded)
+                Destroy(gameObject);
+        }
+    }
+
+    private void DisappearAtDawn(object sender, int hour)
+    {
+        GameManager.Instance.nightEnd += DestroyPlot;
+        GameManager.Instance.nightStart -= DisappearAtDawn;
+    }
+
+    private void DestroyPlot(object sender, int hour)
+    {
+        GameManager.Instance.nightEnd -= DestroyPlot;
         Destroy(gameObject);
     }
 }

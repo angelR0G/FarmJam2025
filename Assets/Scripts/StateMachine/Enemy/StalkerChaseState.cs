@@ -18,6 +18,8 @@ public class StalkerChaseState : StalkerState
     {
         speed = 0.0f;
         attackCooldown = CHASE_TIME_BEFORE_ATTACK;
+
+        enemy.animator.SetTrigger("Chase");
     }
 
     public override void FixedUpdateState()
@@ -66,6 +68,9 @@ public class StalkerChaseState : StalkerState
             speed = Mathf.Max(speed - ACCELERATION * Time.fixedDeltaTime, targetSpeed);
 
         enemy.body.MovePosition(enemy.transform.position + direction * speed * Time.fixedDeltaTime);
+
+        if (direction.x > 0) enemy.FlipSprite(true);
+        else if (direction.x < 0) enemy.FlipSprite(false);
     }
 
     private bool CanAmbushPlayer(bool useSimplifiedRaycast = false)

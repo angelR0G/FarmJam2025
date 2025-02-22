@@ -16,11 +16,23 @@ public class CarriableComponent : MonoBehaviour
     public void SetCarrier(PlayerComponent newCarrier)
     {
         carrier = newCarrier;
+        SetCollisionEnabled(newCarrier == null);
 
         if (newCarrier != null)
         {
             newCarrier.carringState.carriedObject = this;
             newCarrier.ChangeState(newCarrier.carringState);
+        }
+    }
+
+    public void SetCollisionEnabled(bool newState)
+    {
+        foreach (Collider2D col in GetComponents<Collider2D>())
+        {
+            if (!col.isTrigger)
+            {
+                col.enabled = newState;
+            }
         }
     }
 }

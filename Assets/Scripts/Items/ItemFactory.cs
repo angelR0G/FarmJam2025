@@ -44,7 +44,7 @@ public class ItemFactory : MonoBehaviour
         ItemComponent newItem;
 
         // Creates the specific component depending on the item data
-        if (data.type == ItemType.Seed)
+        if (data is SeedItemData)
             newItem = owner.AddComponent<SeedItemComponent>();
         else
             newItem = owner.AddComponent<ItemComponent>();

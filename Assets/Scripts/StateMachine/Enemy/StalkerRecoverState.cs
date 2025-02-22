@@ -9,6 +9,8 @@ public class StalkerRecoverState : StalkerState
     public override void EnterState()
     {
         recoveringTime = 2.5f;
+
+        enemy.animator.SetTrigger("Recover");
     }
 
     public override void UpdateState()

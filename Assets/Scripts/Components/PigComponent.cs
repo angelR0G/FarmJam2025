@@ -19,6 +19,8 @@ public class PigComponent : MonoBehaviour
     [Header("Components References")]
     public Rigidbody2D body;
     public HealthComponent healthComp;
+    public Animator animator;
+    public SpriteRenderer sprite;
 
     // States
     [Header("State Machine")]
@@ -46,6 +48,8 @@ public class PigComponent : MonoBehaviour
         // Get components
         body = GetComponent<Rigidbody2D>();
         healthComp = GetComponent<HealthComponent>();
+        animator = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
 
         // Init pig states
         walkingState = statesContainer.GetComponent<PigWalkingState>();
@@ -62,6 +66,9 @@ public class PigComponent : MonoBehaviour
 
         healthComp.onDieCallback = TransformIntoCorpse;
         healthComp.onDamageEvent.AddListener(EnterPanic);
+
+        // Modify initial size
+        transform.localScale -= new Vector3(0.2f, 0.2f, 0.2f);
     }
 
     void Update()
@@ -134,7 +141,8 @@ public class PigComponent : MonoBehaviour
         
         age++;
         body.mass += MASS_INCREMENT_WITH_AGE;
-        transform.localScale += new Vector3(0.3f, 0.3f, 0.3f);
+        healthComp.RestoreHealth(100);
+        transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
     }
 
     public FoodContainerComponent GetFoodInFront()
@@ -154,9 +162,15 @@ public class PigComponent : MonoBehaviour
 
     public void TransformIntoCorpse()
     {
-        ItemFactory.CreateCorpse(transform.position, BLOOD_BY_AGE[age], CorpseCreature.Pig, corpseSprite);
+        GameObject corpse = ItemFactory.CreateCorpse(transform.position, BLOOD_BY_AGE[age], CorpseCreature.Pig, corpseSprite);
+        corpse.transform.localScale = transform.localScale;
 
         Destroy(gameObject);
+    }
+
+    public void FlipSprite(bool fliped)
+    {
+        sprite.flipX = fliped;
     }
 
     public void OnDestroy()

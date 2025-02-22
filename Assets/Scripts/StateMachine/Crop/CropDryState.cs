@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CropDryState : CropState
 {
-    private const int WATER_REQUIRED = 1000;
+    public int requiredLiquidToGrow = 1000;
+    public bool isWateredWithBlood = false;
 
     private int currentWater = 0;
 
@@ -24,7 +25,7 @@ public class CropDryState : CropState
     {
         currentWater += amount;
 
-        if (currentWater >= WATER_REQUIRED)
+        if (currentWater >= requiredLiquidToGrow)
         {
             crop.ChangeState(crop.wateredState);
         }
@@ -32,6 +33,6 @@ public class CropDryState : CropState
 
     public int GetRemainingWaterForGrowth()
     {
-        return WATER_REQUIRED - currentWater;
+        return requiredLiquidToGrow - currentWater;
     }
 }
