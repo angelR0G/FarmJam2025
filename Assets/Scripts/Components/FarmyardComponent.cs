@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class FarmyardComponent : MonoBehaviour
 {
+    private const int PIG_SPAWN_INTERVAL = 3;
+
     private BoxCollider2D area;
     public GameObject pigPrefab;
 
+    private int daysUntilNewPigSpawn = PIG_SPAWN_INTERVAL;
     private List<FoodContainerComponent> troughs;
 
     // Start is called before the first frame update
@@ -15,6 +18,7 @@ public class FarmyardComponent : MonoBehaviour
         area = GetComponent<BoxCollider2D>();
         SaveTroughsReferences();
 
+        GameManager.Instance.nightEnd += OnNewDay;
         SpawnPig();
     }
 
@@ -90,5 +94,16 @@ public class FarmyardComponent : MonoBehaviour
 
         // If cannot find an empty position, returns the center of the farmyard
         return transform.position;
+    }
+
+    private void OnNewDay(object sender, int hour)
+    {
+        daysUntilNewPigSpawn--;
+
+        if (daysUntilNewPigSpawn <= 0)
+        {
+            SpawnPig();
+            daysUntilNewPigSpawn = PIG_SPAWN_INTERVAL;
+        }
     }
 }
