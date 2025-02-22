@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryComponent : StorageComponent
@@ -28,6 +29,11 @@ public class InventoryComponent : StorageComponent
         return activeItemIndex;
     }
 
+    public List<ItemSlot> GetAllItems()
+    {
+        return items;
+    }
+
     public ItemComponent GetEquipedItem()
     {
         // Check if it is a valid index
@@ -42,6 +48,19 @@ public class InventoryComponent : StorageComponent
         if (activeItemIndex < 0 || activeItemIndex >= storageSize) return 0;
 
         return items[activeItemIndex].amount;
+    }
+
+    public int GetItemQuantity(ItemId id)
+    {
+        int quantity=0;
+        foreach(ItemSlot slot in items)
+        {
+            if(slot.item != null && slot.item.Id == id)
+            {
+                quantity += slot.amount;
+            }
+        }
+        return quantity;
     }
 
     public void AddTool(ItemId toolId)

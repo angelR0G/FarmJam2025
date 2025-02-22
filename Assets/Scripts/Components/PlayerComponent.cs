@@ -73,6 +73,7 @@ public class PlayerComponent : MonoBehaviour
         // Bind inputs
         inventory.BindInput(inputComponent);
         inputComponent.interactInputEvent.AddListener(Interact);
+        inventory.AddItem(ItemId.Pumpkin, 10);
 
         GetComponent<HealthComponent>().onDamageEvent.AddListener(OnDamaged);
     }
