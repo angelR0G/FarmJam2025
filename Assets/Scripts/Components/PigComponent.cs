@@ -66,6 +66,9 @@ public class PigComponent : MonoBehaviour
 
         healthComp.onDieCallback = TransformIntoCorpse;
         healthComp.onDamageEvent.AddListener(EnterPanic);
+
+        // Modify initial size
+        transform.localScale -= new Vector3(0.2f, 0.2f, 0.2f);
     }
 
     void Update()
@@ -138,7 +141,8 @@ public class PigComponent : MonoBehaviour
         
         age++;
         body.mass += MASS_INCREMENT_WITH_AGE;
-        transform.localScale += new Vector3(0.3f, 0.3f, 0.3f);
+        healthComp.RestoreHealth(100);
+        transform.localScale += new Vector3(0.2f, 0.2f, 0.2f);
     }
 
     public FoodContainerComponent GetFoodInFront()
@@ -158,7 +162,8 @@ public class PigComponent : MonoBehaviour
 
     public void TransformIntoCorpse()
     {
-        ItemFactory.CreateCorpse(transform.position, BLOOD_BY_AGE[age], CorpseCreature.Pig, corpseSprite);
+        GameObject corpse = ItemFactory.CreateCorpse(transform.position, BLOOD_BY_AGE[age], CorpseCreature.Pig, corpseSprite);
+        corpse.transform.localScale = transform.localScale;
 
         Destroy(gameObject);
     }

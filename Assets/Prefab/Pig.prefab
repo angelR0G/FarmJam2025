@@ -136,6 +136,7 @@ MonoBehaviour:
   body: {fileID: 0}
   healthComp: {fileID: 0}
   animator: {fileID: 0}
+  sprite: {fileID: 0}
   statesContainer: {fileID: 4917371081522861485}
   currentState: {fileID: 0}
   walkingState: {fileID: 0}
@@ -149,7 +150,7 @@ MonoBehaviour:
   age: 0
   farmyard: {fileID: 0}
   facingDirection: {x: 0, y: -1}
-  corpseSprite: {fileID: 1685272522, guid: e8f5a64bc891c9f4abc59f9b9cc3b9ed, type: 3}
+  corpseSprite: {fileID: -1493330777, guid: 69e8356d61064d64cba86de3baaa61f9, type: 3}
 --- !u!114 &-2222443204524572415
 MonoBehaviour:
   m_ObjectHideFlags: 0
