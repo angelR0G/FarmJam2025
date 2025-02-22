@@ -13,6 +13,7 @@ public class StalkerEnemyComponent : MonoBehaviour
     public SpriteRenderer sprite;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComp;
+    public Animator animator;
 
     // States
     [Header("State Machine")]
@@ -24,6 +25,7 @@ public class StalkerEnemyComponent : MonoBehaviour
     [HideInInspector] public StalkerChaseState chaseState = null;
     [HideInInspector] public StalkerAttackState attackState = null;
     [HideInInspector] public StalkerRecoverState recoverState = null;
+    [HideInInspector] public StalkerDieState dieState = null;
 
     // Other properties
     [Header("Enemy properties")]
@@ -39,6 +41,7 @@ public class StalkerEnemyComponent : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
         attackComp = GetComponent<AttackComponent>();
+        animator = GetComponent<Animator>();
 
         // Init enemy states
         wanderState = statesContainer.GetComponent<StalkerWanderState>();
@@ -46,6 +49,7 @@ public class StalkerEnemyComponent : MonoBehaviour
         chaseState = statesContainer.GetComponent<StalkerChaseState>();
         attackState = statesContainer.GetComponent<StalkerAttackState>();
         recoverState = statesContainer.GetComponent<StalkerRecoverState>();
+        dieState = statesContainer.GetComponent<StalkerDieState>();
 
         ChangeState(wanderState);
 
@@ -118,10 +122,23 @@ public class StalkerEnemyComponent : MonoBehaviour
         return leftAvoid.sqrMagnitude >= rightAvoid.sqrMagnitude ? leftAvoid : rightAvoid;
     }
 
+    public void FlipSprite(bool fliped)
+    {
+        sprite.flipX = fliped;
+    }
+
     private void OnDie()
     {
-        ItemFactory.CreateCorpse(transform.position, 100, CorpseCreature.Stalker, corpseSprite);
-        Destroy(gameObject);
+        if (currentState != dieState)
+        {
+            ChangeState(dieState);
+        }
+        else
+        {
+            GameObject corpse = ItemFactory.CreateCorpse(transform.position, 100, CorpseCreature.Stalker, corpseSprite);
+            corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

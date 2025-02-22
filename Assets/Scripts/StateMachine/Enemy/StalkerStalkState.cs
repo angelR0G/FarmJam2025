@@ -14,6 +14,8 @@ public class StalkerStalkState : StalkerState
     {
         stalkTime = STALK_TIME_TO_ATTACK;
         inSightCheckTimeout = 0.15f;
+
+        enemy.animator.SetTrigger("Stalk");
     }
 
     public override void ExitState()
@@ -27,6 +29,8 @@ public class StalkerStalkState : StalkerState
             inSightCheckTimeout -= Time.deltaTime;
         else
         {
+            UpdateOrientation();
+
             inSightCheckTimeout += 0.15f;
             if (!enemy.IsGameObjectInSight(enemy.attackTarget, STALK_MAX_DISTANCE))
             {
@@ -41,5 +45,13 @@ public class StalkerStalkState : StalkerState
         {
             enemy.ChangeState(enemy.chaseState);
         }
+    }
+
+    public void UpdateOrientation()
+    {
+        Vector3 targetDirection = enemy.attackTarget.transform.position - transform.position;
+
+        if (targetDirection.x > 0) enemy.FlipSprite(true);
+        else if (targetDirection.x < 0) enemy.FlipSprite(false);
     }
 }

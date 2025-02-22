@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 7673605683894246116}
   - component: {fileID: 8316068179178921679}
   - component: {fileID: 8643003365364744475}
+  - component: {fileID: 4586587335726813085}
   m_Layer: 0
   m_Name: StalkerEnemy
   m_TagString: Untagged
@@ -133,6 +134,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   enemyCollider: {fileID: 0}
   attackComp: {fileID: 0}
+  animator: {fileID: 0}
   statesContainer: {fileID: 6833512899187708388}
   currentState: {fileID: 0}
   wanderState: {fileID: 0}
@@ -140,8 +142,9 @@ MonoBehaviour:
   chaseState: {fileID: 0}
   attackState: {fileID: 0}
   recoverState: {fileID: 0}
+  dieState: {fileID: 0}
   attackTarget: {fileID: 0}
-  corpseSprite: {fileID: -1540196596, guid: ec53eea35ccfb874b8a65f7d35ac65a2, type: 3}
+  corpseSprite: {fileID: 1961413689, guid: 540c4b8bbdb47024a97634d94d1efbd5, type: 3}
 --- !u!212 &756774411672922199
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -183,7 +186,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1281857785, guid: 15399fb4e0a9cca4f80416e45257e2be, type: 3}
+  m_Sprite: {fileID: 2046940401, guid: 540c4b8bbdb47024a97634d94d1efbd5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -193,7 +196,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!58 &5708310758190453611
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -226,7 +229,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.02}
   serializedVersion: 2
   m_Radius: 0.08
 --- !u!50 &7673605683894246116
@@ -289,6 +292,27 @@ MonoBehaviour:
   attackAnim: {fileID: 0}
   damageArea: {fileID: 1239753224452977363}
   damage: 40
+--- !u!95 &4586587335726813085
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6780782006218790767}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bd54d07150045ba4eb3a9fc32d5316d5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6833512899187708388
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,6 +327,7 @@ GameObject:
   - component: {fileID: 8351950478153791683}
   - component: {fileID: 9089711058621949583}
   - component: {fileID: 8912563982481555995}
+  - component: {fileID: 7559964216694085567}
   m_Layer: 0
   m_Name: StatesContainer
   m_TagString: Untagged
@@ -387,3 +412,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &7559964216694085567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6833512899187708388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73e6890f0fde5a9478129d600133e9f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

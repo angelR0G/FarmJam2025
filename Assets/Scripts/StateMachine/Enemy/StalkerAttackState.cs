@@ -18,6 +18,8 @@ public class StalkerAttackState : StalkerState
 
         enemy.attackComp.UpdateDamageArea(0.1f, enemy.enemyCollider.radius * 2, Vector2.SignedAngle(Vector2.right, rushDirection));
         enemy.attackComp.SetDamageAreaActive(true);
+
+        enemy.animator.SetTrigger("Attack");
     }
 
     public override void ExitState()

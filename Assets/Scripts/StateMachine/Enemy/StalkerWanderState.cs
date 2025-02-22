@@ -67,6 +67,9 @@ public class StalkerWanderState : StalkerState
         {
             Vector3 movementVector = targetVector.normalized * Mathf.Min(targetVector.magnitude, WALKING_SPEED);
             enemy.body.velocity = movementVector;
+
+            if (movementVector.x > 0) enemy.FlipSprite(true);
+            else if (movementVector.x < 0) enemy.FlipSprite(false);
         }
     }
 
@@ -78,6 +81,8 @@ public class StalkerWanderState : StalkerState
 
         if (hasReachedTarget)
             nextTargetCountdown = STAND_STILL_TIME;
+
+        enemy.animator.SetTrigger(hasReachedTarget ? "StopMoving" : "StartMoving");
     }
 
     private void CheckPlayerInSight()
