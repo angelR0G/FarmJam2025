@@ -9,10 +9,11 @@ public class PlayerDiggingState : PlayerState
     private GameObject plotPrefab;
     private bool canDig = false;
     private Vector3 diggingPosition;
+    private bool createEvilCropPlot = false;
 
     public override void EnterState() 
     {
-        canDig = HasSpaceToDig();
+        canDig = HasSpaceToDig(out createEvilCropPlot);
 
         if (canDig)
         {
@@ -39,6 +40,7 @@ public class PlayerDiggingState : PlayerState
         // Creates the plot to plant crops
         GameObject newPlot = Instantiate(plotPrefab);
         newPlot.transform.position = diggingPosition;
+        newPlot.GetComponent<PlotComponent>().evilCropsAllowed = createEvilCropPlot;
 
         // Remove callback
         player.onAnimFinished = null;
@@ -46,8 +48,10 @@ public class PlayerDiggingState : PlayerState
         player.ChangeState(player.walkingState);
     }
 
-    private bool HasSpaceToDig()
+    private bool HasSpaceToDig(out bool isEvilCropGround)
     {
+        isEvilCropGround = false;
+
         MapComponent map = MapComponent.Instance;
 
         Vector3 digPos = player.transform.position + new Vector3(player.facingDirection.x, player.facingDirection.y) * DIGGING_DISTANCE;
@@ -58,17 +62,25 @@ public class PlayerDiggingState : PlayerState
         digPos = map.GetPositionAlignedToTileset(digPos);
 
         // Check if there is an object there
+        bool isGroundArable = false;
         Collider2D[] collisions = Physics2D.OverlapBoxAll(digPos, map.GetTilesetCellSize()/2, 0);
         foreach (Collider2D c in collisions)
         {
             // Does not take into account the player
             if (c.GetComponent<PlayerComponent>()) continue;
 
+            if (c.CompareTag("ArableLand") || c.CompareTag("ArableEvilLand"))
+            {
+                isGroundArable = true;
+                isEvilCropGround = c.CompareTag("ArableEvilLand");
+                continue;
+            }
+
             return false;
         }
 
         // Save the position aligned with the tilemap
         diggingPosition = digPos;
-        return true;
+        return isGroundArable;
     }
 }

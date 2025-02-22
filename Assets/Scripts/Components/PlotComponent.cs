@@ -12,6 +12,7 @@ public class PlotComponent : MonoBehaviour
     private GameObject plantedCrop;
     public Sprite dryTexture;
     public Sprite wateredTexture;
+    public bool evilCropsAllowed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -49,10 +50,14 @@ public class PlotComponent : MonoBehaviour
         }
         else 
         {
-            if (equipedItemType == ItemType.Seed || equipedItemType == ItemType.EvilCrop)
+            if ((equipedItemType == ItemType.Seed && !evilCropsAllowed) || (equipedItemType == ItemType.EvilCrop && evilCropsAllowed))
             {
                 PlantCrop(equipedItem as SeedItemComponent);
                 player.inventory.RemoveEquipedItem();
+            }
+            else if (equipedItemType == ItemType.Seed || equipedItemType == ItemType.EvilCrop)
+            {
+                Debug.Log("~~ Este suelo no es adecuado para esta planta ~~");
             }
             else
             {
