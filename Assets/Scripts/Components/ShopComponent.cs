@@ -60,12 +60,14 @@ public class ShopComponent : MonoBehaviour
         inventoryToBeSaved.AddItem(itemId, quantity);
         GameManager.Instance.UpdateMoney(-totalPrice);
     }
-
-    public void SellItem(ItemId itemId, int quantity, InventoryComponent inventoryToBeSaved)
+    public void SellItem(ItemId itemId, int quantity, InventoryComponent fromInventory)
     {
         if (!sellItemsValue.ContainsKey(itemId)) return;
 
         GameManager.Instance.UpdateMoney(sellItemsValue[itemId] * quantity);
+
+        fromInventory.RemoveItemById(itemId, quantity);
+
     }
 
 

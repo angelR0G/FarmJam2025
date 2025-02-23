@@ -38,6 +38,7 @@ public class PlayerComponent : MonoBehaviour
     private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
     public UnityAction onAnimFinished;
     public UnityAction onAnimEvent;
+    public LightSourceComponent torch;
 
     public bool IsInteractionEnabled {  
         get { return isInteractionEnabled; } 
@@ -77,11 +78,7 @@ public class PlayerComponent : MonoBehaviour
 
         GetComponent<HealthComponent>().onDamageEvent.AddListener(OnDamaged);
 
-        inventory.AddItem(ItemId.CarrotSeed, 10);
-        inventory.AddItem(ItemId.BeanSeed, 10);
-        inventory.AddItem(ItemId.PotatoSeed, 10);
-        inventory.AddItem(ItemId.PumpkinSeed, 10);
-        inventory.AddItem(ItemId.WheatSeed, 10);
+        torch.SetLightEnabled(false);
     }
 
     // Update is called once per frame
@@ -134,6 +131,10 @@ public class PlayerComponent : MonoBehaviour
         else if (equipedTool.Id == ItemId.Dagger)
         {
             ChangeState(extractingBloodState);
+        }
+        else if (equipedTool.Id == ItemId.Torch)
+        {
+            torch.ToggleLightEnabled();
         }
         else
         {

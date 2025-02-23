@@ -2,50 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Rendering.Universal;
 
 public class LightSourceComponent : MonoBehaviour
 {
-
-    private GameManager gameManager;
-    private Light2D light2D;
-    private CircleCollider2D collider;
-    public UnityAction onEnterInLight;
+    protected Light2D light2D;
+    protected CircleCollider2D lightTrigger;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
-        gameManager = GameManager.Instance;
-        gameManager.nightStart += OnNightStart;
-        gameManager.nightEnd += OnNightEnd;
         light2D = GetComponent<Light2D>();
-        collider = GetComponent<CircleCollider2D>();
+        lightTrigger = GetComponent<CircleCollider2D>();
+
         light2D.enabled = true;
-        collider.enabled = true;
+        lightTrigger.enabled = true;
     }
 
-    private void OnDestroy()
+    public void SetLightEnabled(bool newState)
     {
-        gameManager.nightStart -= OnNightStart;
-        gameManager.nightEnd -= OnNightEnd;
+        light2D.enabled = newState;
+        lightTrigger.enabled = newState;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ToggleLightEnabled()
     {
-        
-    }
-
-    private void OnNightStart(object sender, int hour)
-    {
-        light2D.enabled = true;
-        collider.enabled=true;
-    }
-
-    private void OnNightEnd(object sender, int hour)
-    {
-        light2D.enabled = false;
-        collider.enabled = false;
+        light2D.enabled = !light2D.enabled;
+        lightTrigger.enabled = !lightTrigger.enabled;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -54,7 +38,7 @@ public class LightSourceComponent : MonoBehaviour
 
         if (other.TryGetComponent<SanityComponent>(out sanity))
         {
-            sanity.insideLightSource = true;
+            sanity.lightSourcesCount++;
         }
     }
     private void OnTriggerExit2D(Collider2D other)
@@ -63,7 +47,7 @@ public class LightSourceComponent : MonoBehaviour
 
         if (other.TryGetComponent<SanityComponent>(out sanity))
         {
-            sanity.insideLightSource = false;
+            sanity.lightSourcesCount--;
         }
     }
 }
