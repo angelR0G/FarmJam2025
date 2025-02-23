@@ -9,6 +9,7 @@ public class ItemFactory : MonoBehaviour
     public Dictionary<ItemId, ItemData> itemsData;
     public GameObject itemPrefab;
     public GameObject corpsePrefab;
+    public GameObject torchPrefab;
 
     public static GameObject CreatePickableItem(ItemId id, Transform parent = null, int amount = 1)
     {
@@ -34,6 +35,16 @@ public class ItemFactory : MonoBehaviour
         newCorpse.GetComponent<SpriteRenderer>().sprite = corpseSprite;
 
         return newCorpse;
+    }
+
+    public static GameObject CreateTorch(Vector3 spawnPosition)
+    {
+        if (Instance.torchPrefab == null) return null;
+
+        GameObject newTorch = Instantiate(Instance.torchPrefab);
+        newTorch.transform.position = spawnPosition;
+
+        return newTorch;
     }
 
     public static ItemComponent CreateItem(ItemId id, GameObject owner)

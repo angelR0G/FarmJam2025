@@ -38,7 +38,6 @@ public class PlayerComponent : MonoBehaviour
     private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
     public UnityAction onAnimFinished;
     public UnityAction onAnimEvent;
-    public LightSourceComponent torch;
 
     public bool IsInteractionEnabled {  
         get { return isInteractionEnabled; } 
@@ -77,8 +76,6 @@ public class PlayerComponent : MonoBehaviour
         inventory.AddItem(ItemId.Pumpkin, 10);
 
         GetComponent<HealthComponent>().onDamageEvent.AddListener(OnDamaged);
-
-        torch.SetLightEnabled(false);
     }
 
     // Update is called once per frame
@@ -134,7 +131,8 @@ public class PlayerComponent : MonoBehaviour
         }
         else if (equipedTool.Id == ItemId.Torch)
         {
-            torch.ToggleLightEnabled();
+            GameObject torch = ItemFactory.CreateTorch(transform.position);
+            if (torch != null) inventory.RemoveEquipedItem();
         }
         else
         {

@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPrefab: {fileID: 3219727504712269809, guid: 6b4469767b6db73418adc5c905a326eb, type: 3}
   corpsePrefab: {fileID: 7165927974511255936, guid: f80d6bd05fd395b48a99dfab9b3af003, type: 3}
+  torchPrefab: {fileID: 5732768053273290996, guid: 91a73c797fb0c6d4e888262d0e71e188, type: 3}
