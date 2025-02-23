@@ -19,7 +19,7 @@ public class SanityComponent : MonoBehaviour
     private GameManager gameManager;
     private bool looseSanityState = false;
     private HealthComponent health;
-    public bool insideLightSource = false;
+    public int lightSourcesCount = 0;
     private float timer = 0f;
 
 
@@ -57,7 +57,7 @@ public class SanityComponent : MonoBehaviour
             {
                 health.LooseHealth(looseHealthRate);
             }
-            if (!insideLightSource && looseSanityState && (sanity - looseSanityRate) >= 0)
+            if (!IsInsideLight() && looseSanityState && (sanity - looseSanityRate) >= 0)
             {
                 LooseSanity(looseSanityRate);
             }
@@ -68,6 +68,10 @@ public class SanityComponent : MonoBehaviour
         }
     }
 
+    public bool IsInsideLight()
+    {
+        return lightSourcesCount > 0;
+    }
 
     private void OnNightStart(object sender, int hour)
     {

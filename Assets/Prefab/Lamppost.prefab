@@ -133,6 +133,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: LightSource
       objectReference: {fileID: 0}
+    - target: {fileID: 2302424209435164861, guid: 974baee38e37acc41a18855873245afb, type: 3}
+      propertyPath: m_Intensity
+      value: 2.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 2302424209435164861, guid: 974baee38e37acc41a18855873245afb, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.167
+      objectReference: {fileID: 0}
+    - target: {fileID: 2302424209435164861, guid: 974baee38e37acc41a18855873245afb, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4343268021552975397, guid: 974baee38e37acc41a18855873245afb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -173,11 +185,32 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7502961548881913347, guid: 974baee38e37acc41a18855873245afb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 36975818489855315, guid: 974baee38e37acc41a18855873245afb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6689924184542059264}
   m_SourcePrefab: {fileID: 100100000, guid: 974baee38e37acc41a18855873245afb, type: 3}
+--- !u!1 &2200746875077983860 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 36975818489855315, guid: 974baee38e37acc41a18855873245afb, type: 3}
+  m_PrefabInstance: {fileID: 2164475298560541479}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6689924184542059264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2200746875077983860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a6fab03b878dea4b87bc5f836681e03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2472372368538176770 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4343268021552975397, guid: 974baee38e37acc41a18855873245afb, type: 3}
