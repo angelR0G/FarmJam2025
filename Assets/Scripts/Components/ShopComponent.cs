@@ -33,11 +33,13 @@ public class ShopComponent : MonoBehaviour
         GameManager.Instance.currentMoney -= totalPrice;
     }
 
-    public void SellItem(ItemId itemId)
+    public void SellItem(ItemId itemId, int quantity, InventoryComponent fromInventory)
     {
         if (!sellItemsValue.ContainsKey(itemId)) return;
 
         GameManager.Instance.currentMoney += sellItemsValue[itemId];
+
+        fromInventory.RemoveItemById(itemId, quantity);
     }
 
     // Start is called before the first frame update

@@ -128,11 +128,49 @@ public class StorageComponent : MonoBehaviour
             items[index].AddAmount(-quantity);
     }
 
+    public void RemoveItemById(ItemId id, int quantity = 1)
+    {
+        int searchIndex = 0;
+
+        while (quantity > 0 && searchIndex < items.Count)
+        {
+            int slotIndex = FindSlotIndexById(id, searchIndex);
+
+            if (slotIndex == -1) break;
+
+            ItemSlot itemSlot = items[slotIndex];
+            int amountToReduce = Math.Min(itemSlot.amount, quantity);
+
+            if (itemSlot.amount <= amountToReduce)
+            {
+                Destroy(itemSlot.item);
+                itemSlot.SetItem(null);
+            }
+            else
+            {
+                itemSlot.AddAmount(-amountToReduce);
+            }
+
+            quantity -= amountToReduce;
+            searchIndex = slotIndex + 1;
+        }
+    }
+
     protected int FindIncompleteItemSlotIndex(ItemId itemId, int start = 0)
     {
         for (int i = start; i < items.Count; i++)
         {
             if (items[i].item != null && items[i].item.Id == itemId && !items[i].IsFull()) return i;
+        }
+
+        return -1;
+    }
+
+    protected int FindSlotIndexById(ItemId itemId, int start = 0)
+    {
+        for (int i = start; i < items.Count; i++)
+        {
+            if (items[i].item != null && items[i].item.Id == itemId) return i;
         }
 
         return -1;
