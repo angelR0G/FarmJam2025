@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5475471320558341442}
   - component: {fileID: 9023715041597864760}
   - component: {fileID: 3530382793763929171}
+  - component: {fileID: 1610585842399560729}
   m_Layer: 0
   m_Name: Torch
   m_TagString: Untagged
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 567612723, guid: b4aca670e8222ff47b994f52037c5a56, type: 3}
+  m_Sprite: {fileID: -1736696551, guid: 535531f0d7a304a448d61b40cfbb8bb7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,6 +100,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 20
+--- !u!95 &1610585842399560729
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5732768053273290996}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 87d68081599f1c24fa88a827dce9432c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &8573562665911629905
 PrefabInstance:
   m_ObjectHideFlags: 0
