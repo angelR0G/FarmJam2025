@@ -18,5 +18,6 @@ public class CorpseComponent : MonoBehaviour
 public enum CorpseCreature
 {
     Pig,
-    Stalker
+    Stalker,
+    Corrosive
 }

@@ -8,8 +8,9 @@ public class CorpseOfferingComponent : MonoBehaviour
     public CropOfferingComponent cropOfferingAltar;
 
     private static readonly Dictionary<CorpseCreature, KeyValuePair<ItemId, int>>  offerings = new Dictionary<CorpseCreature, KeyValuePair<ItemId, int>> {
-        {CorpseCreature.Pig, new KeyValuePair<ItemId, int>(ItemId.Carrot, 5) },
-        {CorpseCreature.Stalker, new KeyValuePair<ItemId, int>(ItemId.Potato, 5)},
+        {CorpseCreature.Pig, new KeyValuePair<ItemId, int>(ItemId.Carrot, 4) },
+        {CorpseCreature.Stalker, new KeyValuePair<ItemId, int>(ItemId.Potato, 4)},
+        {CorpseCreature.Corrosive, new KeyValuePair<ItemId, int>(ItemId.Wheat, 8)},
     };
 
     private void OnTriggerEnter2D(Collider2D collision)

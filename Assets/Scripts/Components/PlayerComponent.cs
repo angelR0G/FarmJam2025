@@ -4,8 +4,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(InputComponent))]
-[RequireComponent(typeof(Rigidbody2D))]
 public class PlayerComponent : MonoBehaviour
 {
     // Components
@@ -16,6 +14,7 @@ public class PlayerComponent : MonoBehaviour
     public InventoryComponent inventory;
     public Animator animator;
     public AttackComponent attackComponent;
+    public HealthComponent healthComponent;
 
     // States
     [Header("State Machine")]
@@ -57,6 +56,7 @@ public class PlayerComponent : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
         attackComponent = GetComponent<AttackComponent>();
+        healthComponent = GetComponent<HealthComponent>();
 
         // Init player states
         walkingState = statesContainer.GetComponent<PlayerWalkingState>();
@@ -75,7 +75,7 @@ public class PlayerComponent : MonoBehaviour
         inputComponent.interactInputEvent.AddListener(Interact);
         inventory.AddItem(ItemId.Pumpkin, 10);
 
-        GetComponent<HealthComponent>().onDamageEvent.AddListener(OnDamaged);
+        healthComponent.onDamageEvent.AddListener(OnDamaged);
     }
 
     // Update is called once per frame
