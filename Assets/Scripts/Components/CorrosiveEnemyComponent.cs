@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CorrosiveEnemyComponent : MonoBehaviour
+public class CorrosiveEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
     public HealthComponent healthComp;
     public Rigidbody2D body;
-    public SpriteRenderer sprite;
     public CircleCollider2D enemyCollider;
     public Animator animator;
 
@@ -16,7 +15,6 @@ public class CorrosiveEnemyComponent : MonoBehaviour
     [Header("State Machine")]
     [SerializeField, Tooltip("Game Object that contains enemy's states. Should be a child of enemy game object so that states can update their references correctly.")]
     private GameObject statesContainer = null;
-    public CorrosiveState currentState = null;
     [HideInInspector] public CorrosiveIdleState idleState = null;
     [HideInInspector] public CorrosiveFollowState followState = null;
     [HideInInspector] public CorrosiveChargingState chargingState = null;
@@ -49,6 +47,7 @@ public class CorrosiveEnemyComponent : MonoBehaviour
         dyingState = statesContainer.GetComponent<CorrosiveDyingState>();
         returningState = statesContainer.GetComponent<CorrosiveReturningState>();
 
+        initialState = idleState;
         ChangeState(idleState);
 
         healthComp.onDieCallback = Die;
@@ -56,8 +55,10 @@ public class CorrosiveEnemyComponent : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         currentState.UpdateState();
     }
     private void FixedUpdate()
@@ -67,13 +68,9 @@ public class CorrosiveEnemyComponent : MonoBehaviour
 
     public void ChangeState(CorrosiveState newState)
     {
-        if (currentState == dyingState) return;
+        if (currentState == (dyingState as IState)) return;
 
-        if (currentState != null) currentState.ExitState();
-
-        currentState = newState;
-
-        if (currentState != null) currentState.EnterState();
+        base.ChangeState(newState);
     }
 
     public void FlipSprite(bool fliped)
@@ -83,17 +80,17 @@ public class CorrosiveEnemyComponent : MonoBehaviour
 
     private void Die()
     {
-        if (currentState != dyingState) ChangeState(dyingState);
+        if (currentState != (dyingState as IState)) ChangeState(dyingState);
     }
 
     private void DestroyEnemy()
     {
-        if (currentState == dyingState)
+        if (currentState == (dyingState as IState))
         {
             GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Corrosive, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
         }
 
-        Destroy(gameObject);
+        Deactivate();
     }
 }

@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AmbusherEnemyComponent : MonoBehaviour
+public class AmbusherEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
     public HealthComponent healthComp;
     public Rigidbody2D body;
-    public SpriteRenderer sprite;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComponent;
     public Animator animator;
@@ -17,7 +16,6 @@ public class AmbusherEnemyComponent : MonoBehaviour
     [Header("State Machine")]
     [SerializeField, Tooltip("Game Object that contains enemy's states. Should be a child of enemy game object so that states can update their references correctly.")]
     private GameObject statesContainer = null;
-    public AmbusherState currentState = null;
     [HideInInspector] public AmbusherHidingState hidingState = null;
     [HideInInspector] public AmbusherIdleState idleState = null;
     [HideInInspector] public AmbusherAttackingState attackingState = null;
@@ -48,14 +46,17 @@ public class AmbusherEnemyComponent : MonoBehaviour
         attackingState = statesContainer.GetComponent<AmbusherAttackingState>();
         dyingState = statesContainer.GetComponent<AmbusherDyingState>();
 
+        initialState = hidingState;
         ChangeState(hidingState);
 
         healthComp.onDieCallback = OnDie;
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         currentState.UpdateState();
     }
     private void FixedUpdate()
@@ -65,18 +66,14 @@ public class AmbusherEnemyComponent : MonoBehaviour
 
     public void ChangeState(AmbusherState newState)
     {
-        if (currentState == dyingState) return;
+        if (currentState == (dyingState as IState)) return;
 
-        if (currentState != null) currentState.ExitState();
-
-        currentState = newState;
-
-        if (currentState != null) currentState.EnterState();
+        base.ChangeState(newState);
     }
 
     private void OnDie()
     {
-        if (currentState != dyingState)
+        if (currentState != (dyingState as IState))
         {
             ChangeState(dyingState);
         }
@@ -84,7 +81,7 @@ public class AmbusherEnemyComponent : MonoBehaviour
         {
             GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Ambusher, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
-            Destroy(gameObject);
+            Deactivate();
         }
     }
 
@@ -95,7 +92,7 @@ public class AmbusherEnemyComponent : MonoBehaviour
 
     private void OnAttack()
     {
-        if (currentState == attackingState)
+        if (currentState == (attackingState as IState))
         {
             attackingState.SetProjectileActive(true);
         }

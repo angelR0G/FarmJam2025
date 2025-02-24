@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NightmareEnemyComponent : MonoBehaviour
+public class NightmareEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
     public HealthComponent healthComp;
     public Rigidbody2D body;
-    public SpriteRenderer sprite;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComponent;
     public Animator animator;
@@ -18,7 +17,6 @@ public class NightmareEnemyComponent : MonoBehaviour
     [Header("State Machine")]
     [SerializeField, Tooltip("Game Object that contains enemy's states. Should be a child of enemy game object so that states can update their references correctly.")]
     private GameObject statesContainer = null;
-    public NightmareState currentState = null;
     [HideInInspector] public NightmareFlyingState flyingState = null;
     [HideInInspector] public NightmareAttackState attackState = null;
     [HideInInspector] public NightmareAvoidState avoidState = null;
@@ -51,6 +49,7 @@ public class NightmareEnemyComponent : MonoBehaviour
         teleportState = statesContainer.GetComponent<NightmareTeleportState>();
         dyingState = statesContainer.GetComponent<NightmareDyingState>();
 
+        initialState = flyingState;
         ChangeState(flyingState);
 
         healthComp.onDieCallback = OnDie;
@@ -59,8 +58,10 @@ public class NightmareEnemyComponent : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         currentState.UpdateState();
     }
     private void FixedUpdate()
@@ -70,18 +71,14 @@ public class NightmareEnemyComponent : MonoBehaviour
 
     public void ChangeState(NightmareState newState)
     {
-        if (currentState == dyingState) return;
+        if (currentState == (dyingState as IState)) return;
 
-        if (currentState != null) currentState.ExitState();
-
-        currentState = newState;
-
-        if (currentState != null) currentState.EnterState();
+        base.ChangeState(newState);
     }
 
     private void OnDie()
     {
-        if (currentState != dyingState)
+        if (currentState != (dyingState as IState))
         {
             ChangeState(dyingState);
         }
@@ -89,13 +86,13 @@ public class NightmareEnemyComponent : MonoBehaviour
         {
             GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Ambusher, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
-            Destroy(gameObject);
+            Deactivate();
         }
     }
 
     private void OnAttack()
     {
-        if (currentState == attackState)
+        if (currentState == (attackState as IState))
         {
             attackState.Attack();
         }
@@ -113,8 +110,7 @@ public class NightmareEnemyComponent : MonoBehaviour
 
     public void Disappear()
     {
-        ChangeState(null);
-        Destroy(gameObject);
+        FadeAndDeactivate();
     }
 
     public void FlipSprite(bool fliped)
@@ -124,7 +120,10 @@ public class NightmareEnemyComponent : MonoBehaviour
 
     private void OnDestroy()
     {
-        lightDetector.enterLight.RemoveAllListeners();
-        lightDetector.exitLight.RemoveAllListeners();
+        if (lightDetector)
+        {
+            lightDetector.enterLight.RemoveAllListeners();
+            lightDetector.exitLight.RemoveAllListeners();
+        }
     }
 }

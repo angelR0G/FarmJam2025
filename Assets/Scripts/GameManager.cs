@@ -118,4 +118,9 @@ public class GameManager : MonoBehaviour
         currentMoney += quantity;
         moneyChanged?.Invoke(this, currentMoney);
     }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
 }

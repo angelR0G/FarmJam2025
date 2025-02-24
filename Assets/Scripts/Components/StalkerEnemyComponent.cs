@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.U2D;
 using static UnityEngine.GraphicsBuffer;
 
-public class StalkerEnemyComponent : MonoBehaviour
+public class StalkerEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
     public HealthComponent healthComp;
     public Rigidbody2D body;
-    public SpriteRenderer sprite;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComp;
     public Animator animator;
@@ -19,7 +18,6 @@ public class StalkerEnemyComponent : MonoBehaviour
     [Header("State Machine")]
     [SerializeField, Tooltip("Game Object that contains enemy's states. Should be a child of enemy game object so that states can update their references correctly.")]
     private GameObject statesContainer = null;
-    public StalkerState currentState = null;
     [HideInInspector] public StalkerWanderState wanderState = null;
     [HideInInspector] public StalkerStalkState stalkState = null;
     [HideInInspector] public StalkerChaseState chaseState = null;
@@ -52,14 +50,17 @@ public class StalkerEnemyComponent : MonoBehaviour
         recoverState = statesContainer.GetComponent<StalkerRecoverState>();
         dieState = statesContainer.GetComponent<StalkerDieState>();
 
+        initialState = wanderState;
         ChangeState(wanderState);
 
         healthComp.onDieCallback = OnDie;
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         currentState.UpdateState();
     }
     private void FixedUpdate()
@@ -69,13 +70,9 @@ public class StalkerEnemyComponent : MonoBehaviour
 
     public void ChangeState(StalkerState newState)
     {
-        if (currentState == dieState) return;
+        if (currentState == (dieState as IState)) return;
 
-        if (currentState != null) currentState.ExitState();
-
-        currentState = newState;
-
-        if (currentState != null) currentState.EnterState();
+        base.ChangeState(newState);
     }
 
     public bool IsGameObjectInSight(GameObject obj, float maxDistance = -1)
@@ -132,7 +129,7 @@ public class StalkerEnemyComponent : MonoBehaviour
 
     private void OnDie()
     {
-        if (currentState != dieState)
+        if (currentState != (dieState as IState))
         {
             ChangeState(dieState);
         }
@@ -140,13 +137,13 @@ public class StalkerEnemyComponent : MonoBehaviour
         {
             GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Stalker, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
-            Destroy(gameObject);
+            Deactivate();
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (currentState == attackState)
+        if (currentState == (attackState as IState))
             attackState.FinishAttack();
     }
 }
