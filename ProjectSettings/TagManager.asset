@@ -47,8 +47,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Mid
+    uniqueID: 102140169
+    locked: 0
   - name: Top
     uniqueID: 420100049
+    locked: 0
+  - name: Celing
+    uniqueID: 3225549865
+    locked: 0
+  - name: CelingTop
+    uniqueID: 3999632537
     locked: 0
   - name: UI
     uniqueID: 187201675
