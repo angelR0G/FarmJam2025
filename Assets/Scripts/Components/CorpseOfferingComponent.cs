@@ -11,6 +11,8 @@ public class CorpseOfferingComponent : MonoBehaviour
         {CorpseCreature.Pig, new KeyValuePair<ItemId, int>(ItemId.Carrot, 4) },
         {CorpseCreature.Stalker, new KeyValuePair<ItemId, int>(ItemId.Potato, 4)},
         {CorpseCreature.Corrosive, new KeyValuePair<ItemId, int>(ItemId.Wheat, 8)},
+        {CorpseCreature.Ambusher, new KeyValuePair<ItemId, int>(ItemId.Bean, 6)},
+        {CorpseCreature.Nightmare, new KeyValuePair<ItemId, int>(ItemId.Pumpkin, 8)},
     };
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -39,6 +41,11 @@ public class CorpseOfferingComponent : MonoBehaviour
 
         KeyValuePair<ItemId, int> newCropOffering = offerings[newCorpseOffered.creature];
         cropOfferingAltar.RequestNewOffering(newCropOffering.Key, newCropOffering.Value);
+    }
+
+    public CorpseCreature GetOfferedCreature()
+    {
+        return corpseOffered.creature;
     }
 
     public bool IsOfferingCompleted()

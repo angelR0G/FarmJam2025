@@ -19,5 +19,7 @@ public enum CorpseCreature
 {
     Pig,
     Stalker,
-    Corrosive
+    Corrosive,
+    Ambusher,
+    Nightmare
 }
