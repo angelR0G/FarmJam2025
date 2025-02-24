@@ -14,8 +14,15 @@ public class CorrosiveExplodingState : CorrosiveState
         // Prevents dying during the animation
         enemy.healthComp.RestoreHealth(100);
 
+        enemy.enemyCollider.enabled = false;
+
         playerHit = false;
         enemy.animator.SetTrigger("Explode");
+    }
+
+    public override void ExitState()
+    {
+        enemy.enemyCollider.enabled = true;
     }
 
     public override void FixedUpdateState()
