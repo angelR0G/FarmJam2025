@@ -31,6 +31,7 @@ public class StalkerEnemyComponent : MonoBehaviour
     [Header("Enemy properties")]
     public GameObject attackTarget;
     public Sprite corpseSprite;
+    public int bloodAmount = 150;
 
     // Start is called before the first frame update
     void Start()
@@ -68,6 +69,8 @@ public class StalkerEnemyComponent : MonoBehaviour
 
     public void ChangeState(StalkerState newState)
     {
+        if (currentState == dieState) return;
+
         if (currentState != null) currentState.ExitState();
 
         currentState = newState;
@@ -135,7 +138,7 @@ public class StalkerEnemyComponent : MonoBehaviour
         }
         else
         {
-            GameObject corpse = ItemFactory.CreateCorpse(transform.position, 100, CorpseCreature.Stalker, corpseSprite);
+            GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Stalker, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
             Destroy(gameObject);
         }

@@ -145,6 +145,7 @@ MonoBehaviour:
   dieState: {fileID: 0}
   attackTarget: {fileID: 0}
   corpseSprite: {fileID: 1961413689, guid: 540c4b8bbdb47024a97634d94d1efbd5, type: 3}
+  bloodAmount: 150
 --- !u!212 &756774411672922199
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -186,7 +187,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 2046940401, guid: 540c4b8bbdb47024a97634d94d1efbd5, type: 3}
+  m_Sprite: {fileID: 1148365476, guid: 540c4b8bbdb47024a97634d94d1efbd5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

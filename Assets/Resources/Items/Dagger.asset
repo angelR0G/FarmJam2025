@@ -16,4 +16,4 @@ MonoBehaviour:
   id: 1
   maxStack: 1
   itemName: Dagger
-  sprite: {fileID: -1295211468, guid: ce22d6f3a3b547a4dabb07fceb9464b3, type: 3}
+  sprite: {fileID: 1833704554, guid: 535531f0d7a304a448d61b40cfbb8bb7, type: 3}

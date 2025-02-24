@@ -16,4 +16,4 @@ MonoBehaviour:
   id: 2
   maxStack: 1
   itemName: Hoe
-  sprite: {fileID: 21300000, guid: c7fca46321682d340ab42d981b37d370, type: 3}
+  sprite: {fileID: 107505707, guid: 535531f0d7a304a448d61b40cfbb8bb7, type: 3}
