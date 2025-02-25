@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class DialogueSystem : MonoBehaviour
@@ -10,6 +12,9 @@ public class DialogueSystem : MonoBehaviour
     List<Dialogue> queuedDialogues;
     Dialogue displayedDialogue;
     bool isDisplayingDialogue;
+    [SerializeField]
+    GameObject dialogObject;
+    Vector3 dialogMeasures = new Vector3(340, 80, 0);
 
     void Awake()
     {
@@ -45,6 +50,7 @@ public class DialogueSystem : MonoBehaviour
 
         // TODO: Update UI text
         Debug.Log(dialogueToDisplay.text);
+        dialogObject.GetComponentInChildren<TextMeshProUGUI>().text = dialogueToDisplay.text;
 
         Invoke("OnDialogueDisplayTimeFinished", displayedDialogue.displayTime);
     }
@@ -96,6 +102,10 @@ public class DialogueSystem : MonoBehaviour
     {
         // TODO: Activate UI where dialogue is displayed
         Debug.Log("###############################################");
+        dialogObject.transform.GetChild(0).DOScale(new Vector3(0, 0, 0), 0);
+        dialogObject.SetActive(true);
+
+        dialogObject.transform.GetChild(0).DOScale(new Vector3(1, 1, 1), 0.8f);
 
         isDisplayingDialogue = true;
     }
@@ -104,8 +114,15 @@ public class DialogueSystem : MonoBehaviour
     {
         // TODO: Hide dialogue UI
         Debug.Log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
+        StartCoroutine(HideDialogCorroutine());
+        
         isDisplayingDialogue = false;
+    }
+    IEnumerator HideDialogCorroutine()
+    {
+        dialogObject.transform.GetChild(0).DOScale(new Vector3(0, 0, 0), 0.8f);
+        yield return new WaitForSeconds(1);
+        dialogObject.SetActive(false);
     }
 
     private void OnDestroy()
