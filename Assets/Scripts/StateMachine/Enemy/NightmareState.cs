@@ -60,12 +60,12 @@ public class NightmareState : MonoBehaviour, IState
 
     protected bool IsTargetInLight()
     {
-        SanityComponent targetSanityComponent;
+        LightDetectorComponent targetLightDetector;
 
-        if (enemy.attackTarget == null || !enemy.attackTarget.TryGetComponent<SanityComponent>(out targetSanityComponent))
+        if (enemy.attackTarget == null || !enemy.attackTarget.TryGetComponent<LightDetectorComponent>(out targetLightDetector))
             return true;
 
-        return targetSanityComponent.IsInsideLight();
+        return targetLightDetector.IsInsideLight();
     }
 
     protected float GetDistanceToTarget()

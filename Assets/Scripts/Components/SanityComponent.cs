@@ -10,17 +10,16 @@ public class SanityComponent : MonoBehaviour
     private int sanity = 0;
     [SerializeField]
     private int maxSanity = 100;
-
     [SerializeField]
     private int looseSanityRate = 5;
     [SerializeField]
-    private int looseHealthRate = 5;
+    private float darknessTimeBeforeLoosingSanity = 3f;
 
     private GameManager gameManager;
     private bool looseSanityState = false;
-    private HealthComponent health;
-    public int lightSourcesCount = 0;
-    private float timer = 0f;
+    private float darknessTimer = 0f;
+    private float sanityLost = 0f;
+    LightDetectorComponent lightDetector;
 
 
     // Start is called before the first frame update
@@ -31,7 +30,8 @@ public class SanityComponent : MonoBehaviour
         gameManager.nightStart += OnNightStart;
         gameManager.nightEnd += OnNightEnd;
 
-        health = GetComponentInParent<HealthComponent>();
+        lightDetector = GetComponent<LightDetectorComponent>();
+        lightDetector.enterLight.AddListener(ResetDarknessTimer);
     }
 
     public void LooseSanity(int s)
@@ -49,28 +49,23 @@ public class SanityComponent : MonoBehaviour
 
     public void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= 1f)
+        if (looseSanityState && !lightDetector.IsInsideLight())
         {
-            timer = 0f;
-            if (sanity <= 0)
+            if (darknessTimer < darknessTimeBeforeLoosingSanity)
             {
-                health.LooseHealth(looseHealthRate);
+                darknessTimer += Time.deltaTime;
             }
-            if (!IsInsideLight() && looseSanityState && (sanity - looseSanityRate) >= 0)
+            else
             {
-                LooseSanity(looseSanityRate);
-            }
-            if (!looseSanityState)
-            {
-                RestoreSanity(looseSanityRate);
+                sanityLost += Time.deltaTime * looseSanityRate;
+                if (sanityLost >= 1f)
+                {
+                    int roundedSanityLost = Mathf.FloorToInt(sanityLost);
+                    LooseSanity(roundedSanityLost);
+                    sanityLost -= roundedSanityLost;
+                }
             }
         }
-    }
-
-    public bool IsInsideLight()
-    {
-        return lightSourcesCount > 0;
     }
 
     private void OnNightStart(object sender, int hour)
@@ -81,5 +76,10 @@ public class SanityComponent : MonoBehaviour
     private void OnNightEnd(object sender, int hour)
     {
         looseSanityState = false;
+    }
+
+    private void ResetDarknessTimer()
+    {
+        darknessTimer = 0f;
     }
 }

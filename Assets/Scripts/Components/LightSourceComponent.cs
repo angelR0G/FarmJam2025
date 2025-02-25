@@ -34,28 +34,18 @@ public class LightSourceComponent : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        SanityComponent sanity;
         LightDetectorComponent lightDetector;
-
-        if (other.TryGetComponent<SanityComponent>(out sanity))
-        {
-            sanity.lightSourcesCount++;
-        }
-        else if (other.TryGetComponent<LightDetectorComponent>(out lightDetector))
+        
+        if (other.TryGetComponent<LightDetectorComponent>(out lightDetector))
         {
             lightDetector.AddLightCount();
         }
     }
     private void OnTriggerExit2D(Collider2D other)
     {
-        SanityComponent sanity;
         LightDetectorComponent lightDetector;
 
-        if (other.TryGetComponent<SanityComponent>(out sanity))
-        {
-            sanity.lightSourcesCount--;
-        }
-        else if (other.TryGetComponent<LightDetectorComponent>(out lightDetector))
+        if (other.TryGetComponent<LightDetectorComponent>(out lightDetector))
         {
             lightDetector.ReduceLightCount();
         }
