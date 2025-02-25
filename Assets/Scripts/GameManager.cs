@@ -56,6 +56,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         sunSource = GetComponent<Light2D>();
         gradient = new Gradient();
         GradientColorKey[] gradientColorKeys = { 
@@ -70,6 +76,7 @@ public class GameManager : MonoBehaviour
         GradientAlphaKey[] gradientAlphaKeys = { };
         gradient.SetKeys(gradientColorKeys, gradientAlphaKeys);
         Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
