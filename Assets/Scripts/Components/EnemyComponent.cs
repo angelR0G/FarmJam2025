@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,32 +8,18 @@ public class EnemyComponent : MonoBehaviour
     public SpriteRenderer sprite;
     public IState initialState;
     public IState currentState;
-    bool fadingEnemy = false;
-    bool deactivated = false;
+    protected bool deactivated = false;
 
-    private void Start()
+    private void Awake()
     {
         sprite = GetComponent<SpriteRenderer>();
-    }
-
-    protected virtual void Update()
-    {
-        if (fadingEnemy)
-        {
-            float currentAlpha = sprite.color.a;
-
-            if (currentAlpha <= 0)
-                Deactivate();
-            else
-            {
-                Color spriteColor = sprite.color;
-                sprite.color = new Color(spriteColor.r, spriteColor.g, spriteColor.b, currentAlpha - Time.deltaTime);
-            }
-        }
+        sprite.color = new Color(1, 1, 1, 0);
     }
 
     public void ChangeState(IState newState)
     {
+        if (deactivated) return;
+
         if (currentState != null) currentState.ExitState();
 
         currentState = newState;
@@ -43,31 +30,24 @@ public class EnemyComponent : MonoBehaviour
     public void Spawn(Vector3 spawnPosition)
     {
         transform.position = spawnPosition;
+        
+        deactivated = false;
+
         gameObject.SetActive(true);
+        sprite.DOFade(1f, 1f);
 
         ChangeState(initialState);
-
-        fadingEnemy = false;
-        deactivated = false;
-        if (sprite != null)
-            sprite.color = Color.white;
-    }
-
-    public void FadeAndDeactivate()
-    {
-        if (deactivated) return;
-
-        deactivated = true;
-
-        if (sprite != null && gameObject.activeSelf)
-            fadingEnemy = true;
-        else
-            Deactivate();
     }
 
     public void Deactivate()
     {
+        if (!gameObject.activeSelf) return;
+
         deactivated = true;
-        gameObject.SetActive(false);
+
+        Sequence enemyDisappear = DOTween.Sequence();
+
+        enemyDisappear.Append(sprite.DOFade(0f, 1f))
+            .AppendCallback(() => gameObject.SetActive(false));
     }
 }

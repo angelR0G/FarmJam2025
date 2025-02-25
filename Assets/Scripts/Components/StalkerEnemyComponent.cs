@@ -57,10 +57,8 @@ public class StalkerEnemyComponent : EnemyComponent
     }
 
     // Update is called once per frame
-    protected override void Update()
+    void Update()
     {
-        base.Update();
-
         currentState.UpdateState();
     }
     private void FixedUpdate()

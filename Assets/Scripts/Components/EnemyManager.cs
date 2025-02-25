@@ -33,7 +33,6 @@ public class EnemyManager : MonoBehaviour
     void Awake()
     {
         CreateMonstersPool();
-        DeactivateMonsters();
     }
 
     private void Start()
@@ -59,6 +58,7 @@ public class EnemyManager : MonoBehaviour
         {
             GameObject stalker = Instantiate(stalkerPrefab, transform);
             stalkersList.Add(stalker.GetComponent<StalkerEnemyComponent>());
+            stalker.SetActive(false);
         }
 
         ambushersList = new List<AmbusherEnemyComponent>(ambushersCount);
@@ -66,6 +66,7 @@ public class EnemyManager : MonoBehaviour
         {
             GameObject ambusher = Instantiate(ambusherPrefab, transform);
             ambushersList.Add(ambusher.GetComponent<AmbusherEnemyComponent>());
+            ambusher.SetActive(false);
         }
 
         corrosivesList = new List<CorrosiveEnemyComponent>(corrosivesCount);
@@ -73,10 +74,12 @@ public class EnemyManager : MonoBehaviour
         {
             GameObject corrosive = Instantiate(corrosivePrefab, transform);
             corrosivesList.Add(corrosive.GetComponent<CorrosiveEnemyComponent>());
+            corrosive.SetActive(false);
         }
 
         nightmareEnemy = Instantiate(nightmarePrefab, transform).GetComponent<NightmareEnemyComponent>();
         nightmareEnemy.GetComponent<NightmareEnemyComponent>().attackTarget = playerReference.gameObject;
+        nightmareEnemy.gameObject.SetActive(false);
     }
 
     private void SpawnMonsters(object sender, int hour)
@@ -123,15 +126,15 @@ public class EnemyManager : MonoBehaviour
     private void DeactivateMonsters(object sender = null, int hour = 0)
     {
         foreach (StalkerEnemyComponent stalker in stalkersList)
-            stalker.FadeAndDeactivate();
+            stalker.Deactivate();
 
         foreach (CorrosiveEnemyComponent corrosive in corrosivesList)
-            corrosive.FadeAndDeactivate();
+            corrosive.Deactivate();
 
         foreach (AmbusherEnemyComponent ambusher in ambushersList)
-            ambusher.FadeAndDeactivate();
+            ambusher.Deactivate();
 
-        nightmareEnemy.FadeAndDeactivate();
+        nightmareEnemy.Deactivate();
         canNightmareSpawn = false;
     }
 
