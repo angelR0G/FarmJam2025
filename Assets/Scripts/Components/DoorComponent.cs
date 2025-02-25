@@ -8,6 +8,11 @@ public class DoorComponent : MonoBehaviour
     public Sprite closedSprite;
     public SpriteRenderer spriteComponent;
 
+    [SerializeField]
+    private GameObject insidePoint;
+    [SerializeField]
+    private GameObject outsidePoint;
+
     bool isDoorOpened = false;
 
     private void Start()
@@ -33,11 +38,20 @@ public class DoorComponent : MonoBehaviour
             isDoorOpened = false;
 
             UpdateSprite();
+            UpdateMapVisibility(collider.transform.position);
         }
     }
 
     private void UpdateSprite()
     {
         spriteComponent.sprite = isDoorOpened ? openedSprite : closedSprite;
+    }
+
+    private void UpdateMapVisibility(Vector3 playerPos)
+    {
+        float distanceToInside = (insidePoint.transform.position - playerPos).sqrMagnitude;
+        float distanceToOutside = (outsidePoint.transform.position - playerPos).sqrMagnitude;
+
+        MapComponent.Instance.SetTopTilemapsVisibility(distanceToOutside <= distanceToInside);
     }
 }

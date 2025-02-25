@@ -7,31 +7,46 @@ using static UnityEditor.PlayerSettings;
 public class MapComponent : MonoBehaviour
 {
     [SerializeField]
-    private List<Tilemap> tilemaps = new List<Tilemap>();
+    private List<Tilemap> tilemapsWithCollisions = new List<Tilemap>();
+    [SerializeField]
+    private List<Tilemap> topTilemaps = new List<Tilemap>();
+    [SerializeField]
+    private Tilemap groundTilemap = null;
+
     public static MapComponent Instance;
+    private bool hasToUpdateTilemaps = false;
+    private float tilemapsTargetOpacity = 1f;
 
     private void Awake()
     {
         Instance = this;
     }
 
+    private void Update()
+    {
+        if (hasToUpdateTilemaps)
+        {
+            UpdateTilemapsOpacity();
+        }
+    }
+
     public Vector3 GetPositionAlignedToTileset(Vector3 pos)
     {
-        if (tilemaps.Count == 0 || tilemaps[0] == null) return pos;
+        if (groundTilemap == null) return pos;
 
-        return tilemaps[0].CellToWorld(tilemaps[0].WorldToCell(pos)) + tilemaps[0].cellSize/2;
+        return groundTilemap.CellToWorld(groundTilemap.WorldToCell(pos)) + groundTilemap.cellSize/2;
     }
 
     public Vector2 GetTilesetCellSize()
     {
-        if (tilemaps.Count == 0 || tilemaps[0] == null) return Vector2.zero;
+        if (groundTilemap == null) return Vector2.zero;
 
-        return tilemaps[0].cellSize;
+        return groundTilemap.cellSize;
     }
 
     public bool IsPositionFree(Vector3 pos)
     {
-        foreach (Tilemap t in tilemaps)
+        foreach (Tilemap t in tilemapsWithCollisions)
         {
             if (t != null && !IsPositionFreeOnTilemap(pos, t)) return false;
         }
@@ -70,5 +85,35 @@ public class MapComponent : MonoBehaviour
 
         // If no point could be found, return the origin
         return origin;
+    }
+
+    public void SetTopTilemapsVisibility(bool newVisibility)
+    {
+        tilemapsTargetOpacity = newVisibility ? 1f : 0f;
+        hasToUpdateTilemaps = true;
+    }
+
+    private void UpdateTilemapsOpacity()
+    {
+        if (topTilemaps.Count == 0) return;
+
+        // Calculates final color
+        Color currentColor = topTilemaps[0].color;
+        if (currentColor.a > tilemapsTargetOpacity)
+            currentColor.a = Mathf.Max(currentColor.a - Time.deltaTime, tilemapsTargetOpacity);
+        else
+            currentColor.a = Mathf.Min(currentColor.a + Time.deltaTime, tilemapsTargetOpacity);
+            
+        if (currentColor.a == tilemapsTargetOpacity)
+        {
+            currentColor.a = tilemapsTargetOpacity;
+            hasToUpdateTilemaps = false;
+        }
+
+        // Updates all tilemaps color
+        foreach (Tilemap t in topTilemaps)
+        {
+            t.color = currentColor;
+        }
     }
 }
