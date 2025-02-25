@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 
 public class SanityComponent : MonoBehaviour
@@ -14,6 +15,8 @@ public class SanityComponent : MonoBehaviour
     private int looseSanityRate = 5;
     [SerializeField]
     private float darknessTimeBeforeLoosingSanity = 3f;
+
+    public UnityEvent onInsane;
 
     private GameManager gameManager;
     private bool looseSanityState = false;
@@ -36,7 +39,16 @@ public class SanityComponent : MonoBehaviour
 
     public void LooseSanity(int s)
     {
-        sanity -= s;
+        if (sanity - s <= 0)
+        {
+            if (sanity > 0) onInsane.Invoke();
+
+            sanity = 0;
+        }
+        else
+        {
+            sanity -= s;
+        }
     }
 
     public void RestoreSanity(int s)
@@ -81,5 +93,10 @@ public class SanityComponent : MonoBehaviour
     private void ResetDarknessTimer()
     {
         darknessTimer = 0f;
+    }
+
+    public bool IsInsane()
+    {
+        return sanity <= 0;
     }
 }

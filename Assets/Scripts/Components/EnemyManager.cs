@@ -27,6 +27,7 @@ public class EnemyManager : MonoBehaviour
     private List<CorrosiveEnemyComponent> corrosivesList;
     private NightmareEnemyComponent nightmareEnemy;
     private bool nightmareAlreadySpawnedTonight = false;
+    private bool canNightmareSpawn = false;
     
     // Start is called before the first frame update
     void Awake()
@@ -46,6 +47,9 @@ public class EnemyManager : MonoBehaviour
 
         gameManager.nightStart += SpawnMonsters;
         gameManager.nightEnd += DeactivateMonsters;
+        gameManager.hourChanged += EnableNightmareSpawn;
+
+        playerReference.GetComponent<SanityComponent>().onInsane.AddListener(SpawnNightmare);
     }
 
     private void CreateMonstersPool()
@@ -110,7 +114,7 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnNightmare()
     {
-        if (nightmareAlreadySpawnedTonight) return;
+        if (nightmareAlreadySpawnedTonight || !canNightmareSpawn) return;
 
         nightmareEnemy.Spawn(nightmareSpawn);
         nightmareAlreadySpawnedTonight = true;
@@ -128,6 +132,7 @@ public class EnemyManager : MonoBehaviour
             ambusher.FadeAndDeactivate();
 
         nightmareEnemy.FadeAndDeactivate();
+        canNightmareSpawn = false;
     }
 
     private void OnDestroy()
@@ -154,5 +159,17 @@ public class EnemyManager : MonoBehaviour
         }
 
         return randomIndex;
+    }
+
+    private void EnableNightmareSpawn(object sender, int hour)
+    {
+        if (hour == 22)
+        {
+            canNightmareSpawn = true;
+            if (playerReference.GetComponent<SanityComponent>().IsInsane())
+            {
+                SpawnNightmare();
+            }
+        }
     }
 }
