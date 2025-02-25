@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ public class PlayerComponent : MonoBehaviour
     public Animator animator;
     public AttackComponent attackComponent;
     public HealthComponent healthComponent;
+    public SpriteRenderer interactionKeySprite;
 
     // States
     [Header("State Machine")]
@@ -171,15 +173,30 @@ public class PlayerComponent : MonoBehaviour
     public void SetInteractableObject(InteractionTriggerComponent newInteraction)
     {
         interactables.Add(newInteraction);
-        sprite.color = Color.red;
+
+        if (interactables.Count == 1)
+        {
+            Sequence showKeySequence = DOTween.Sequence();
+            showKeySequence.AppendCallback(() => interactionKeySprite.enabled = true)
+                .Append(interactionKeySprite.transform.DOScale(0.125f, 0.4f).SetEase(Ease.OutBack))
+                .Join(interactionKeySprite.transform.DOLocalMoveY(0.3f, 0.4f).SetEase(Ease.OutBack))
+                .Join(interactionKeySprite.DOFade(1f, 0.15f));
+        }
     }
 
     public void RemoveInteractableObject(InteractionTriggerComponent removedInteraction)
     {
         interactables.Remove(removedInteraction);
 
-        if (interactables.Count == 0 )
-            sprite.color = Color.white;
+        if (interactables.Count == 0)
+        {
+            Sequence hideKeySequence = DOTween.Sequence();
+            
+            hideKeySequence.Append(interactionKeySprite.transform.DOScale(0f, 0.4f).SetEase(Ease.InBack))
+                .Join(interactionKeySprite.transform.DOLocalMoveY(0.2f, 0.4f).SetEase(Ease.InBack))
+                .Join(interactionKeySprite.DOFade(0f, 0.15f).SetDelay(0.25f))
+                .AppendCallback(() => interactionKeySprite.enabled = false);
+        }
     }
 
     private void OnAnimationFinished()
