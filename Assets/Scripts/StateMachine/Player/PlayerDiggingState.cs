@@ -66,7 +66,7 @@ public class PlayerDiggingState : PlayerState
         Collider2D[] collisions = Physics2D.OverlapBoxAll(digPos, map.GetTilesetCellSize()/2, 0);
         foreach (Collider2D c in collisions)
         {
-            // Triggers are ignored, not blocking interaction
+            // Triggers are ignored, not blocking interaction, except for other plots
             if (c.isTrigger)
             {
                 // Needs to be over an arable land
@@ -75,6 +75,11 @@ public class PlayerDiggingState : PlayerState
                     isGroundArable = true;
                     isEvilCropGround = c.CompareTag("ArableEvilLand");
                 }
+                else if (c.GetComponent<PlotComponent>() != null)
+                {
+                    return false;
+                }
+
                 continue;
             }
 
