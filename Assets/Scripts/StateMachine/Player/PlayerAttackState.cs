@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerAttackState : PlayerState
 {
-    private const float COOLDOWN_TIME = 0.15f;
+    private const float COOLDOWN_TIME = 0.18f;
     private const float IMPULSE_SPEED = 0.5f;
     private const float ATTACK_RANGE = 0.25f;
     private const float ATTACK_WIDTH = 0.25f;
-    private const float MIN_TIME_REQUIRED_FOR_COMBO = 0.1f;
+    private const float MIN_TIME_REQUIRED_FOR_COMBO = 0.06f;
 
     private float cooldown = 0;
     private bool isOnCooldown = false;

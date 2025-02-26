@@ -9,6 +9,7 @@ public class InputComponent : MonoBehaviour
 {
     public Vector2 movementDirection {  get; private set; } = Vector2.zero;
     public bool interact { get; private set; } = false;
+    private int interactionRemainingFrames = 0;
 
 
     public UnityEvent interactInputEvent;
@@ -27,9 +28,14 @@ public class InputComponent : MonoBehaviour
     public UnityEvent unequipItemEvent;
     public UnityEvent dropItemEvent;
 
-    public void Update()
+    public void LateUpdate()
     {
-        interact = false;
+        if (interact)
+        {
+            interactionRemainingFrames--;
+
+            interact = interactionRemainingFrames > 0;
+        }
     }
 
     public void OnMove(InputValue value)
@@ -44,6 +50,7 @@ public class InputComponent : MonoBehaviour
         if (interact)
         {
             interactInputEvent.Invoke();
+            interactionRemainingFrames = 3;
         }
     }
 
