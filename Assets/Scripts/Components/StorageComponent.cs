@@ -19,13 +19,13 @@ public class StorageComponent : MonoBehaviour
         }
     }
 
-    public ItemComponent GetItemByIndex(int index)
+    public ItemSlot GetItemByIndex(int index)
     {
         // Check if it is a valid index
         if (index < 0 || index >= storageSize) return null;
 
         // Get the item from the correct array
-        return items[index].item;
+        return items[index];
     }
 
     public virtual int AddItem(ItemId itemId, int amount = 1)
