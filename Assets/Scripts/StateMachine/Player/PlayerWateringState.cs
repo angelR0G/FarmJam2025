@@ -29,14 +29,14 @@ public class PlayerWateringState : PlayerState
                 if (liquidAmount <= 0)
                 {
                     cropBeingWatered = null;
+                    DialogueSystem.Instance.QueueDialogue(new Dialogue("The watering can is empty. I need to fill it."));
                     player.ChangeState(player.walkingState);
-                    Debug.Log("~~ La regadera esta vacia. Tengo que llenarla ~~");
                 }
                 else if (!IsLiquidCompatibleWithCrop(cropBeingWatered))
                 {
                     cropBeingWatered = null;
+                    DialogueSystem.Instance.QueueDialogue(new Dialogue("I can't water this plant with this."));
                     player.ChangeState(player.walkingState);
-                    Debug.Log("~~ No puedo regar esta planta con esto ~~");
                 }
                 else
                 {
@@ -55,8 +55,8 @@ public class PlayerWateringState : PlayerState
         }
         else
         {
+            DialogueSystem.Instance.QueueDialogue(new Dialogue("Nothing to water here."));
             player.ChangeState(player.walkingState);
-            Debug.Log("~~ Aqui no hay nada para mojar ~~");
         }
     }
 

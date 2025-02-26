@@ -78,6 +78,7 @@ public class PlayerComponent : MonoBehaviour
         inventory.AddItem(ItemId.Pumpkin, 10);
 
         healthComponent.onDamageEvent.AddListener(OnDamaged);
+        inventory.AddItem(ItemId.PumpkinSeed, 10);
     }
 
     // Update is called once per frame

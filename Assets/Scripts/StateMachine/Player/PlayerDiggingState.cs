@@ -21,7 +21,7 @@ public class PlayerDiggingState : PlayerState
         }
         else {
             player.ChangeState(player.walkingState);
-            Debug.Log("~~ No puedo cavar aqui ~~");
+            DialogueSystem.Instance.QueueDialogue(new Dialogue("I can't till here."));
         }
     }
 

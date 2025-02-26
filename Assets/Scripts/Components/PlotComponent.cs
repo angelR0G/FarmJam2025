@@ -46,7 +46,7 @@ public class PlotComponent : MonoBehaviour
             }
             else
             {
-                Debug.Log("~~ Que hermosa planta ~~");
+                DialogueSystem.Instance.QueueDialogue(new Dialogue("What a beautiful crop!"));
             }
         }
         else 
@@ -62,11 +62,11 @@ public class PlotComponent : MonoBehaviour
             }
             else if (equipedItemType == ItemType.Seed || equipedItemType == ItemType.EvilCrop)
             {
-                Debug.Log("~~ Este suelo no es adecuado para esta planta ~~");
+                DialogueSystem.Instance.QueueDialogue(new Dialogue("This soil is not suitable for this plant."));
             }
             else
             {
-                Debug.Log("~~ Aquí podría plantar una semilla ~~");
+                DialogueSystem.Instance.QueueDialogue(new Dialogue("I can plant a seed here."));
             }
         }
     }

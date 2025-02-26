@@ -32,7 +32,7 @@ public class PlayerExtractingBloodState : PlayerState
         }
 
         player.ChangeState(player.walkingState);
-        Debug.Log("~~ No hay sangre que extraer ~~");
+        DialogueSystem.Instance.QueueDialogue(new Dialogue("There is no blood to extract here."));
     }
 
     public override void ExitState()

@@ -27,7 +27,7 @@ public class PickableComponent : MonoBehaviour
         if (savedItems == amount)
             Destroy(gameObject);
         else if (savedItems == 0)
-            Debug.Log("~~ Esto no me cabe ~~");
+            DialogueSystem.Instance.DisplayDialogue(new Dialogue("I don't have enough space for this."));
         else
             amount -= savedItems;
     }

@@ -57,12 +57,17 @@ public class DialogueSystem : MonoBehaviour
 
     public void QueueDialogue(Dialogue newDialogue)
     {
-        if (queuedDialogues == null) return;
+        if (queuedDialogues == null || IsTheSameDialogue(displayedDialogue, newDialogue)) return;
         bool dialogueQueued = false;
 
         for (int i = 0; i < queuedDialogues.Count; i++)
         {
-            if (queuedDialogues[i].priority < newDialogue.priority)
+                // If the dialogue being queued is the same as another queued dialogue, do not queue it again
+            if (IsTheSameDialogue(queuedDialogues[i], newDialogue))
+            {
+                return;
+            }
+            else if (queuedDialogues[i].priority < newDialogue.priority)
             {
                 queuedDialogues.Insert(i, newDialogue);
                 dialogueQueued = true;
@@ -75,6 +80,13 @@ public class DialogueSystem : MonoBehaviour
 
         if (!isDisplayingDialogue)
             DisplayNextDialogue();
+    }
+
+    public bool IsTheSameDialogue(Dialogue dialogue1, Dialogue dialogue2)
+    {
+        if (dialogue1 == null || dialogue2 == null) return false;
+
+        return dialogue1.priority == dialogue2.priority && dialogue1.text == dialogue2.text;
     }
 
     private void DisplayNextDialogue()
