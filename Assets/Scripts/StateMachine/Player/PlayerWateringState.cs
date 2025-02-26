@@ -14,6 +14,9 @@ public class PlayerWateringState : PlayerState
     private int liquidAmount = 0;
     public bool isBlood = false;
 
+    public AudioClip wateringSound;
+    public AudioClip fillingWaterCanSound;
+
     public int LiquidAmount { get { return liquidAmount; } private set { liquidAmount = value; } }
 
     private CropComponent cropBeingWatered;
@@ -43,6 +46,10 @@ public class PlayerWateringState : PlayerState
                     player.animator.SetTrigger("Water");
                     player.animator.SetBool("LoopWater", true);
                     player.IsInteractionEnabled = false;
+
+                    player.audioSource.clip = wateringSound;
+                    player.audioSource.loop = true;
+                    player.audioSource.Play();
                 }
             }
             else 
@@ -51,6 +58,10 @@ public class PlayerWateringState : PlayerState
                 player.animator.SetTrigger("Water");
                 player.animator.SetBool("LoopWater", false);
                 player.IsInteractionEnabled = false;
+
+                player.audioSource.clip = fillingWaterCanSound;
+                player.audioSource.loop = true;
+                player.audioSource.Play();
             }
         }
         else
@@ -121,6 +132,9 @@ public class PlayerWateringState : PlayerState
     {
         cropBeingWatered = null;
         waterSource = null;
+
+        player.audioSource.loop = false;
+        player.audioSource.Stop();
     }
 
     private bool IsLiquidCompatibleWithCrop(CropComponent crop)

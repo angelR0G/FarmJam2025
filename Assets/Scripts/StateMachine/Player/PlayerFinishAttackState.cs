@@ -12,6 +12,7 @@ public class PlayerFinishAttackState : PlayerState
     private float cooldown = 0;
     private bool isOnCooldown = false;
     public int attackDamage = 20;
+    public AudioClip attackSound = null;
 
     public override void EnterState()
     {
@@ -23,6 +24,7 @@ public class PlayerFinishAttackState : PlayerState
         player.attackComponent.damage = attackDamage;
         player.attackComponent.ConfigureSprite(new Vector3(0.14f, 0));
         player.attackComponent.PlayAnimation("FinishAttack");
+        player.audioSource.PlayOneShot(attackSound);
 
         isOnCooldown = false;
 

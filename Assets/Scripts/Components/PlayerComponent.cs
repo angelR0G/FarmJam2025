@@ -17,6 +17,7 @@ public class PlayerComponent : MonoBehaviour
     public AttackComponent attackComponent;
     public HealthComponent healthComponent;
     public SpriteRenderer interactionKeySprite;
+    public AudioSource audioSource;
 
     // States
     [Header("State Machine")]
@@ -59,6 +60,7 @@ public class PlayerComponent : MonoBehaviour
         animator = GetComponent<Animator>();
         attackComponent = GetComponent<AttackComponent>();
         healthComponent = GetComponent<HealthComponent>();
+        audioSource = GetComponent<AudioSource>();
 
         // Init player states
         walkingState = statesContainer.GetComponent<PlayerWalkingState>();
@@ -198,6 +200,11 @@ public class PlayerComponent : MonoBehaviour
                 .Join(interactionKeySprite.DOFade(0f, 0.15f).SetDelay(0.25f))
                 .AppendCallback(() => interactionKeySprite.enabled = false);
         }
+    }
+
+    private void PlaySoundRequested()
+    {
+        audioSource.Play();
     }
 
     private void OnAnimationFinished()

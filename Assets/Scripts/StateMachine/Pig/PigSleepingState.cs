@@ -17,7 +17,7 @@ public class PigSleepingState : PigState
 
     public void CheckWakeUpTime(object sender, int hour)
     {
-        if (hour > 6 && hour < 20)
+        if (hour > 5 && hour < 19)
             pig.ChangeState(pig.walkingState);
     }
 }

@@ -10,6 +10,7 @@ public class PlayerDiggingState : PlayerState
     private bool canDig = false;
     private Vector3 diggingPosition;
     private bool createEvilCropPlot = false;
+    public AudioClip digSound;
 
     public override void EnterState() 
     {
@@ -32,7 +33,16 @@ public class PlayerDiggingState : PlayerState
             player.animator.SetTrigger("Dig");
             player.onAnimFinished = OnAnimationFinished;
             canDig = false;
+
+            player.audioSource.clip = digSound;
+            player.audioSource.volume = 0.3f;
+            player.audioSource.PlayDelayed(0.1f);
         }
+    }
+
+    public override void ExitState()
+    {
+        player.audioSource.volume = 1f;
     }
 
     public void OnAnimationFinished()

@@ -13,6 +13,8 @@ public class PigPanicState : PigState
 
     private float defaultAnimSpeed = 0;
 
+    public AudioClip pigPanicSound;
+
     public override void EnterState()
     {
         RequestNewTargetPosition();
@@ -21,6 +23,8 @@ public class PigPanicState : PigState
         pig.animator.SetTrigger("StartMoving");
         defaultAnimSpeed = pig.animator.GetFloat("AnimSpeed");
         pig.animator.SetFloat("AnimSpeed", 0.75f);
+
+        pig.audioSource.PlayOneShot(pigPanicSound);
     }
 
     public override void ExitState()

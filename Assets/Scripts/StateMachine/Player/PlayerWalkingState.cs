@@ -10,17 +10,23 @@ public class PlayerWalkingState : PlayerState
     public float maxSpeed = 1f;
     private float currentSpeed = 0f;
 
+    public AudioClip walkingSound;
+
     public override void EnterState()
     {
         player.body.velocity = Vector2.zero;
         currentSpeed = 0f;
         UpdateAnimation(true);
         player.IsInteractionEnabled = true;
+
+        player.audioSource.clip = walkingSound;
     }
 
     public override void ExitState()
     {
         player.body.velocity = Vector2.zero;
+
+        player.audioSource.loop = false;
     }
 
     public override void FixedUpdateState()
@@ -69,6 +75,16 @@ public class PlayerWalkingState : PlayerState
 
         player.animator.SetInteger("Direction", direction);
         if (updateMovingState)
+        {
             player.animator.SetTrigger(currentSpeed > 0f ? "StartMoving" : "StopMoving");
+
+            if (currentSpeed > 0f)
+            {
+                player.audioSource.loop = true;
+                player.audioSource.Play();
+            }
+            else
+                player.audioSource.loop = false;
+        }
     }
 }

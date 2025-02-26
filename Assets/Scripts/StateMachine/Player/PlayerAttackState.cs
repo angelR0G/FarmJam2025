@@ -15,6 +15,7 @@ public class PlayerAttackState : PlayerState
     private bool comboActivated = false;
     private float comboTimer = 1f;
     public int attackDamage = 10;
+    public AudioClip attackSound = null;
 
     public override void EnterState()
     {
@@ -26,6 +27,7 @@ public class PlayerAttackState : PlayerState
         player.attackComponent.damage = attackDamage;
         player.attackComponent.ConfigureSprite(new Vector3(0.04f, 0), false, player.animator.GetInteger("Direction") == 3);
         player.attackComponent.PlayAnimation("Attack");
+        player.audioSource.PlayOneShot(attackSound);
 
         isOnCooldown = false;
         comboActivated = false;

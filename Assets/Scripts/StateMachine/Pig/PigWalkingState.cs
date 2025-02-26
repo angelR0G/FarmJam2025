@@ -14,6 +14,8 @@ public class PigWalkingState : PigState
     private float nextTargetCountdown;
     private bool hasReachedTarget;
 
+    public AudioClip idlePigSound;
+
     public override void EnterState()
     {
         GameManager.Instance.hourChanged += CheckSleepTime;
@@ -22,11 +24,15 @@ public class PigWalkingState : PigState
         nextTargetCountdown = MAX_TIME_TO_REACH_TARGET;
 
         pig.animator.SetTrigger("StartMoving");
+
+        pig.audioSource.clip = idlePigSound;
+        Invoke("PlayRandomOink", Random.Range(3f, 10f));
     }
 
     public override void ExitState()
     {
         GameManager.Instance.hourChanged -= CheckSleepTime;
+        CancelInvoke("PlayRandomOink");
     }
 
     public override void FixedUpdateState()
@@ -89,7 +95,14 @@ public class PigWalkingState : PigState
 
     public void CheckSleepTime(object sender, int hour)
     {
-        if (hour > 20 || hour < 8)
+        if (hour > 19 || hour < 5)
             pig.ChangeState(pig.sleepingState);
+    }
+
+    private void PlayRandomOink()
+    {
+        pig.audioSource.Play();
+
+        Invoke("PlayRandomOink", Random.Range(3f, 10f));
     }
 }

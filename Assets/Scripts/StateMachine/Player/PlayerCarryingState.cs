@@ -14,6 +14,8 @@ public class PlayerCarryingState : PlayerState
     private float dropCooldown = 0;
     private float animatorBaseSpeed = 0f;
 
+    public AudioClip carringSound;
+
     public override void EnterState()
     {
         player.IsInteractionEnabled = false;
@@ -23,6 +25,9 @@ public class PlayerCarryingState : PlayerState
         player.animator.SetTrigger("Carry");
         player.facingDirection = -(carriedObject.transform.position - transform.position).normalized;
         UpdateAnimation(false);
+
+        player.audioSource.pitch = 0.5f;
+        player.audioSource.clip = carringSound;
     }
 
     public override void ExitState()
@@ -32,6 +37,9 @@ public class PlayerCarryingState : PlayerState
 
         player.facingDirection = -player.facingDirection;
         player.animator.SetFloat("AnimSpeed", animatorBaseSpeed);
+
+        player.audioSource.pitch = 1f;
+        player.audioSource.loop = false;
     }
 
     public override void FixedUpdateState()
@@ -97,5 +105,16 @@ public class PlayerCarryingState : PlayerState
         
         player.animator.SetInteger("Direction", direction);
         player.animator.SetFloat("AnimSpeed", isPlayerMoving ? animatorBaseSpeed : 0f);
+
+        if (isPlayerMoving)
+        {
+            if (!player.audioSource.isPlaying)
+            {
+                player.audioSource.loop = true;
+                player.audioSource.Play();
+            }
+        }
+        else
+            player.audioSource.loop = false;
     }
 }

@@ -21,6 +21,7 @@ public class PigComponent : MonoBehaviour
     public HealthComponent healthComp;
     public Animator animator;
     public SpriteRenderer sprite;
+    public AudioSource audioSource;
 
     // States
     [Header("State Machine")]
@@ -50,6 +51,7 @@ public class PigComponent : MonoBehaviour
         healthComp = GetComponent<HealthComponent>();
         animator = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
 
         // Init pig states
         walkingState = statesContainer.GetComponent<PigWalkingState>();
