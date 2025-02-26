@@ -14,6 +14,8 @@ public class DialogueSystem : MonoBehaviour
     bool isDisplayingDialogue;
     [SerializeField]
     GameObject dialogObject;
+
+    Sequence dialogueBoxSequence;
     Vector3 dialogMeasures = new Vector3(340, 80, 0);
 
     void Awake()
@@ -29,6 +31,10 @@ public class DialogueSystem : MonoBehaviour
         queuedDialogues = new List<Dialogue>(2);
         displayedDialogue = null;
         isDisplayingDialogue = false;
+
+        // Intial dialog box values
+        dialogObject.SetActive(false);
+        dialogObject.transform.GetChild(0).transform.localScale = Vector3.zero;
     }
 
     public bool DisplayDialogue(Dialogue dialogueToDisplay)
@@ -122,11 +128,13 @@ public class DialogueSystem : MonoBehaviour
     private void ShowDialogueDisplay()
     {
         // TODO: Activate UI where dialogue is displayed
-        Debug.Log("###############################################");
-        dialogObject.transform.GetChild(0).DOScale(new Vector3(0, 0, 0), 0);
-        dialogObject.SetActive(true);
+        if (dialogueBoxSequence != null && dialogueBoxSequence.IsActive())
+            dialogueBoxSequence.Kill();
 
-        dialogObject.transform.GetChild(0).DOScale(new Vector3(1, 1, 1), 0.8f);
+        dialogueBoxSequence = DOTween.Sequence();
+        dialogueBoxSequence.AppendCallback(() => dialogObject.SetActive(true))
+            .Append(dialogObject.transform.GetChild(0).DOScale(1, 0.8f))
+            .OnKill(() => dialogueBoxSequence = null);
 
         isDisplayingDialogue = true;
     }
@@ -134,16 +142,15 @@ public class DialogueSystem : MonoBehaviour
     private void HideDialogueDisplay()
     {
         // TODO: Hide dialogue UI
-        Debug.Log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        StartCoroutine(HideDialogCorroutine());
+        if (dialogueBoxSequence != null && dialogueBoxSequence.IsActive())
+            dialogueBoxSequence.Kill();
+
+        dialogueBoxSequence = DOTween.Sequence();
+        dialogueBoxSequence.Append(dialogObject.transform.GetChild(0).DOScale(0, 0.8f))
+            .AppendCallback(() => dialogObject.SetActive(false))
+            .OnKill(() => dialogueBoxSequence = null);
         
         isDisplayingDialogue = false;
-    }
-    IEnumerator HideDialogCorroutine()
-    {
-        dialogObject.transform.GetChild(0).DOScale(new Vector3(0, 0, 0), 0.8f);
-        yield return new WaitForSeconds(1);
-        dialogObject.SetActive(false);
     }
 
     private void OnDestroy()
