@@ -19,11 +19,11 @@ public class CropOfferingComponent : MonoBehaviour
     {
         if (IsOfferingCompleted())
         {
-            DialogueSystem.Instance.QueueDialogue(new Dialogue("The crops are placed. Now, I have to offer my blood."));
+            DialogueSystem.Instance.DisplayDialogue(new Dialogue("The crops are placed. Now, I have to offer my blood."));
         }
         else if (expectedOffering == ItemId.Default)
         {
-            DialogueSystem.Instance.QueueDialogue(new Dialogue("I don't have to do anything here... For now."));
+            DialogueSystem.Instance.DisplayDialogue(new Dialogue("I don't have to do anything here... For now."));
         }
         else
         {
@@ -32,7 +32,7 @@ public class CropOfferingComponent : MonoBehaviour
 
             if (offering == null || offering.Id != expectedOffering)
             {
-                DialogueSystem.Instance.QueueDialogue(new Dialogue("This isn't right. I have to offer something else."));
+                DialogueSystem.Instance.DisplayDialogue(new Dialogue("This isn't right. I have to offer something else."));
             }
             else
             {

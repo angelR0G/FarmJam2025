@@ -31,14 +31,14 @@ public class DialogueSystem : MonoBehaviour
         isDisplayingDialogue = false;
     }
 
-    public void DisplayDialogue(Dialogue dialogueToDisplay)
+    public bool DisplayDialogue(Dialogue dialogueToDisplay)
     {
-        if (dialogueToDisplay == null) return;
+        if (dialogueToDisplay == null || IsTheSameDialogue(displayedDialogue, dialogueToDisplay)) return false;
 
         if (displayedDialogue != null)
         {
-            if (displayedDialogue.forcedToFinish)
-                return;
+            if (displayedDialogue.forcedToFinish || displayedDialogue.priority > dialogueToDisplay.priority)
+                return false;
             else
                 CancelInvoke("OnDialogueDisplayTimeFinished");
         }
@@ -53,6 +53,15 @@ public class DialogueSystem : MonoBehaviour
         dialogObject.GetComponentInChildren<TextMeshProUGUI>().text = dialogueToDisplay.text;
 
         Invoke("OnDialogueDisplayTimeFinished", displayedDialogue.displayTime);
+        return true;
+    }
+
+    public void DisplayOrQueueDialogue(Dialogue dialogueToDisplay)
+    {
+        bool dialogueDisplayed = DisplayDialogue(dialogueToDisplay);
+
+        if (!dialogueDisplayed)
+            QueueDialogue(dialogueToDisplay);
     }
 
     public void QueueDialogue(Dialogue newDialogue)
@@ -65,7 +74,7 @@ public class DialogueSystem : MonoBehaviour
                 // If the dialogue being queued is the same as another queued dialogue, do not queue it again
             if (IsTheSameDialogue(queuedDialogues[i], newDialogue))
             {
-                return;
+                 return;
             }
             else if (queuedDialogues[i].priority < newDialogue.priority)
             {
@@ -154,7 +163,7 @@ public class Dialogue
     public bool forcedToFinish;
     public float displayTime;
 
-    public Dialogue(string t, int p = 0, bool finish = false, float time = 5f)
+    public Dialogue(string t, int p = 0, bool finish = false, float time = 3f)
     {
         text = t; priority = p; forcedToFinish = finish; displayTime = time;
     }

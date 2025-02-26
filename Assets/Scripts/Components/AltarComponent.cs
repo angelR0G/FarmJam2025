@@ -30,11 +30,11 @@ public class AltarComponent : MonoBehaviour
     {
         if (!corpseOfferingAltar.IsOfferingCompleted() || !cropOfferingAltar.IsOfferingCompleted())
         {
-            DialogueSystem.Instance.QueueDialogue(new Dialogue("To perform the ritual, I have to make three offerings: meat, vegetables, and blood."));
+            DialogueSystem.Instance.DisplayDialogue(new Dialogue("To perform the ritual, I have to make three offerings: meat, vegetables, and blood."));
         }
         else if (player.inventory.GetEquipedItem().Id != ItemId.Dagger)
         {
-            DialogueSystem.Instance.QueueDialogue(new Dialogue("The offerings are ready. Now, all that's left is my blood."));
+            DialogueSystem.Instance.DisplayDialogue(new Dialogue("The offerings are ready. Now, all that's left is my blood."));
         }
         else
         {

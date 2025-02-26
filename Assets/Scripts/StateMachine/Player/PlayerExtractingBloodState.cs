@@ -32,7 +32,7 @@ public class PlayerExtractingBloodState : PlayerState
         }
 
         player.ChangeState(player.walkingState);
-        DialogueSystem.Instance.QueueDialogue(new Dialogue("There is no blood to extract here."));
+        DialogueSystem.Instance.DisplayDialogue(new Dialogue("There is no blood to extract here."));
     }
 
     public override void ExitState()

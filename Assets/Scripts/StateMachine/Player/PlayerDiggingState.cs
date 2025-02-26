@@ -21,7 +21,7 @@ public class PlayerDiggingState : PlayerState
         }
         else {
             player.ChangeState(player.walkingState);
-            DialogueSystem.Instance.QueueDialogue(new Dialogue("I can't till here."));
+            DialogueSystem.Instance.DisplayDialogue(new Dialogue("I can't till here."));
         }
     }
 
