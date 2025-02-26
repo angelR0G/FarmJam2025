@@ -9,6 +9,7 @@ public class InsanityAreaComponent : MonoBehaviour
     public float looseSanitySpeed = 1f;
     private SanityComponent affectedSanityComp = null;
     private float looseSanityTimer = 0f;
+    private float sanityLostCounter = 0f;
 
     // Update is called once per frame
     void Update()
@@ -26,8 +27,13 @@ public class InsanityAreaComponent : MonoBehaviour
 
     private void ReduceSanity()
     {
-        int sanityLost = Mathf.CeilToInt(looseSanitySpeed * EFFECT_TIME_INTERVAL);
-        affectedSanityComp.LooseSanity(sanityLost);
+        sanityLostCounter += looseSanitySpeed * EFFECT_TIME_INTERVAL;
+        if (sanityLostCounter >= 1f)
+        {
+            int sanityLost = Mathf.FloorToInt(sanityLostCounter);
+            affectedSanityComp.LooseSanity(sanityLost);
+            sanityLostCounter -= sanityLost;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -37,6 +43,7 @@ public class InsanityAreaComponent : MonoBehaviour
         {
             affectedSanityComp = enteringSanity;
             looseSanityTimer = 0;
+            sanityLostCounter = 0;
         }
     }
 

@@ -906,7 +906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sanity: 0
   maxSanity: 100
-  looseSanityRate: 5
+  looseSanityRate: 0.5
   darknessTimeBeforeLoosingSanity: 3
   onInsane:
     m_PersistentCalls:

@@ -12,7 +12,7 @@ public class SanityComponent : MonoBehaviour
     [SerializeField]
     private int maxSanity = 100;
     [SerializeField]
-    private int looseSanityRate = 5;
+    private float looseSanityRate = 5;
     [SerializeField]
     private float darknessTimeBeforeLoosingSanity = 3f;
 
@@ -70,6 +70,7 @@ public class SanityComponent : MonoBehaviour
             else
             {
                 sanityLost += Time.deltaTime * looseSanityRate;
+                
                 if (sanityLost >= 1f)
                 {
                     int roundedSanityLost = Mathf.FloorToInt(sanityLost);
@@ -93,6 +94,7 @@ public class SanityComponent : MonoBehaviour
     private void ResetDarknessTimer()
     {
         darknessTimer = 0f;
+        sanityLost = 0f;
     }
 
     public bool IsInsane()

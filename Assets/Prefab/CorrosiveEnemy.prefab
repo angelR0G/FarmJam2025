@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 230aa621d73760a4b8208c3d7b806bd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  looseSanitySpeed: 10
+  looseSanitySpeed: 1
 --- !u!1 &6780782006218790767
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,13 +184,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ea5dc8fc90e824a869ff9d079b27c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite: {fileID: 0}
   healthComp: {fileID: 0}
   body: {fileID: 0}
-  sprite: {fileID: 0}
   enemyCollider: {fileID: 0}
   animator: {fileID: 0}
   statesContainer: {fileID: 6833512899187708388}
-  currentState: {fileID: 0}
   idleState: {fileID: 0}
   followState: {fileID: 0}
   chargingState: {fileID: 0}
