@@ -10,49 +10,44 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public event EventHandler<TimeSpan> worldTimeChanged;
-    public event EventHandler<int> dayChanged;
     public event EventHandler<int> moneyChanged;
+    public event EventHandler<int> dayChanged;
     public event EventHandler<int> hourChanged;
     public event EventHandler<int> nightStart;
     public event EventHandler<int> nightEnd;
-    
+    public event EventHandler<int> dayStart;
 
-    public const int MinutesInDay = 1440;
-
+    // Total duration of day/hours (in seconds)
     [SerializeField]
     private float dayLength;
+    private float hourLength;
 
-    private TimeSpan currentTime;
-    private float minuteLenght => dayLength / MinutesInDay;
+    // Timers that increase automatically and reset each day/hour
+    private float currentDayTimer;
+    private float currentHourTimer;
+
+    // The numbers that represent current state
+    private int numDays;
+    private int numHours;
+
+    [Header("Day key hours")]
+    [SerializeField] private int nightStartHour = 22;
+    [SerializeField] private int nightEndHour = 6;
+    [SerializeField] private int dawnDuration = 1;
+    [SerializeField] private int duskDuration = 1;
+
+    // Light color
     [SerializeField]
     private Gradient gradient;
-
-    private Light2D sunSource;
-
-    [SerializeField]
-    private int numDays;
-
-    public int currentMoney = 0;
-
-    [Header("Gradient Configure")]
-    [SerializeField] private int nightDuration = 4;
-    [SerializeField] private int nighStartDuration = 6;
-    [SerializeField] private int dayDuration = 11;
-    [SerializeField] private int dawnDuration = 1;
-    [SerializeField] private int duskDuration = 2;
 
     [SerializeField] private Color NIGHT_COLOR = new Color(0.1553594f, 0.1443129f, 0.6509434f);
     [SerializeField] private Color DAY_COLOR = new Color(1f, 1f, 1f);
     [SerializeField] private Color DAWN_COLOR = new Color(1f, 0.7158657f, 0.1745283f);
     [SerializeField] private Color DUSK_DOWN = new Color(1f, 0.7158657f, 0.1745283f);
 
-
-
-    private bool nightStartState = false;
-    private bool nightEndState = false;
-
-
+    private bool isDayNightCyclePaused = false;
+    public int currentMoney = 0;
+    private Light2D sunSource;
 
     private void Awake()
     {
@@ -62,68 +57,106 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        sunSource = GetComponent<Light2D>();
-        gradient = new Gradient();
-        GradientColorKey[] gradientColorKeys = { 
-            new GradientColorKey(NIGHT_COLOR, 0),
-            new GradientColorKey(DAWN_COLOR, ((nighStartDuration+dawnDuration/2)*60*minuteLenght)/(24*60*minuteLenght)),
-            new GradientColorKey(DAY_COLOR, ((nighStartDuration+dawnDuration) * 60 * minuteLenght)/(24*60*minuteLenght)), 
-            new GradientColorKey(DAY_COLOR, ((nighStartDuration+dawnDuration+dayDuration) * 60 * minuteLenght)/(24*60*minuteLenght)), 
-            new GradientColorKey(DUSK_DOWN, ((nighStartDuration+dawnDuration+dayDuration+duskDuration/2) * 60 * minuteLenght)/(24*60*minuteLenght)), 
-            new GradientColorKey(NIGHT_COLOR, ((nighStartDuration+dawnDuration+dayDuration+duskDuration) * 60 * minuteLenght)/(24*60*minuteLenght)),
-            new GradientColorKey(NIGHT_COLOR, ((nighStartDuration+dawnDuration+dayDuration+duskDuration+nightDuration) * 60 * minuteLenght)/(24*60*minuteLenght)) 
-        };
-        GradientAlphaKey[] gradientAlphaKeys = { };
-        gradient.SetKeys(gradientColorKeys, gradientAlphaKeys);
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        CalculateDayNightCycleTimes();
+        ResetTimeToFirstDay();
+        InitGradient();
+
+        sunSource = GetComponent<Light2D>();
     }
 
-    private void Start()
+    private void Update()
     {
-        StartCoroutine(AddMinute());
-    }
-    private IEnumerator AddMinute()
-    {
-        currentTime += TimeSpan.FromMinutes(1);
-        worldTimeChanged?.Invoke(this, currentTime);
+        UpdateTime();
         sunSource.color = gradient.Evaluate(PercentOfDay());
-        if(currentTime.ToString(@"mm")=="00")
-        {
-            hourChanged?.Invoke(this, int.Parse(currentTime.ToString(@"hh")));
-        }
-        String nightStartHourString = (nighStartDuration+ dawnDuration + dayDuration + duskDuration) < 10 ? "0" + (nighStartDuration + dawnDuration + dayDuration + duskDuration).ToString() : (nighStartDuration + dawnDuration + dayDuration + duskDuration).ToString();
-        String nightEndHourString = (nighStartDuration + dawnDuration) < 10 ? "0" + (nighStartDuration + dawnDuration).ToString() : (nighStartDuration + dawnDuration).ToString();
-        if (!nightStartState && currentTime.ToString(@"hh") == nightStartHourString)
-        {
-            nightStartState = true;
-            nightEndState = false;
-            nightStart?.Invoke(this, int.Parse(currentTime.ToString(@"hh")));
-        }
-        if (!nightEndState && currentTime.ToString(@"hh") == nightEndHourString)
-        {
-            nightStartState = false;
-            nightEndState = true;
-            nightEnd?.Invoke(this, int.Parse(currentTime.ToString(@"hh")));
-        }
-
-        if (PercentOfDay() == 0) 
-        {
-            numDays++;
-            dayChanged?.Invoke(this, numDays);
-        }
-        yield return new WaitForSeconds(minuteLenght);
-        StartCoroutine(AddMinute());
     }
 
     public float PercentOfDay() { 
-        return (float)currentTime.TotalMinutes % MinutesInDay / MinutesInDay;
+        return currentDayTimer/dayLength;
+    }
+
+    public void UpdateTime()
+    {
+        if (isDayNightCyclePaused) return;
+
+        currentDayTimer += Time.deltaTime;
+        currentHourTimer += Time.deltaTime;
+
+        if (currentHourTimer >= hourLength && numHours < 23)
+        {
+            numHours++;
+            hourChanged?.Invoke(this, numHours);
+
+            currentHourTimer -= hourLength;
+            CallEventsByHour(numHours);
+        }
+        else if (currentDayTimer >= dayLength)
+        {
+            numDays++;
+            numHours = 0;
+
+            dayChanged?.Invoke(this, numDays);
+            hourChanged?.Invoke(this, 0);
+
+            currentDayTimer -= dayLength;
+            currentHourTimer = currentDayTimer;
+        }
     }
 
     public void UpdateMoney(int quantity)
     {
         currentMoney += quantity;
         moneyChanged?.Invoke(this, currentMoney);
+    }
+
+    public void PauseDayNightCycle(bool newState)
+    {
+        isDayNightCyclePaused = newState;
+    }
+
+    private void CalculateDayNightCycleTimes()
+    {
+        hourLength = dayLength / 24f;
+    }
+
+    public void ResetTimeToFirstDay()
+    {
+        numDays = 0;
+        numHours = 6;
+        currentDayTimer = dayLength * (numHours/24f);
+        currentHourTimer = 0;
+    }
+
+    public void CallEventsByHour(int hour)
+    {
+        if (hour == nightStartHour)
+            nightStart?.Invoke(this, hour);
+
+        else if (hour == nightEndHour)
+            nightEnd?.Invoke(this, hour);
+
+        else if (hour == nightEndHour + dawnDuration)
+            dayStart?.Invoke(this, hour);
+    }
+
+    public void InitGradient()
+    {
+        gradient = new Gradient();
+        GradientColorKey[] gradientColorKeys = {
+            new GradientColorKey(NIGHT_COLOR, 0),
+            new GradientColorKey(NIGHT_COLOR, nightEndHour/24f),
+            new GradientColorKey(DAWN_COLOR, ((float)nightEndHour + dawnDuration/2f)/24f),
+            new GradientColorKey(DAY_COLOR, (nightEndHour + dawnDuration)/24f),
+            new GradientColorKey(DAY_COLOR, (nightStartHour - duskDuration)/24f),
+            new GradientColorKey(DUSK_DOWN, ((float)nightStartHour - duskDuration/2f)/24f),
+            new GradientColorKey(NIGHT_COLOR, (nightStartHour)/24f),
+            new GradientColorKey(NIGHT_COLOR, 1)
+        };
+
+        GradientAlphaKey[] gradientAlphaKeys = { };
+        gradient.SetKeys(gradientColorKeys, gradientAlphaKeys);
     }
 
     private void OnDestroy()
