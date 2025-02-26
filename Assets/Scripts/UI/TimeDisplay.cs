@@ -10,7 +10,6 @@ public class TimeDisplay : MonoBehaviour
 
     [SerializeField]
     private GameManager gameManager;
-    private TMP_Text text;
     [SerializeField]
     private TMP_Text textDay;
     [SerializeField]
@@ -21,23 +20,24 @@ public class TimeDisplay : MonoBehaviour
 
     private void Awake()
     {
-        gameManager.worldTimeChanged += OnWorldTimeChanged;
         gameManager.dayChanged += OnDayChanged;
         gameManager.hourChanged += OnHourChanged;
         gameManager.moneyChanged += OnMoneyChanged;
-        text = GetComponent<TMP_Text>();
+    }
+
+    public void Update()
+    {
+        UpdateClockSprite();
     }
 
     private void OnDestroy()
     {
-        gameManager.worldTimeChanged -= OnWorldTimeChanged;
         gameManager.dayChanged -= OnDayChanged;
         gameManager.hourChanged -= OnHourChanged;
     }
-    private void OnWorldTimeChanged(object sender, TimeSpan newTime)
+    private void UpdateClockSprite()
     {
-        text.SetText(newTime.ToString(@"hh\:mm"));
-        float angle = (gameManager.PercentOfDay() *0.995f) * 360f;
+        float angle = (gameManager.PercentOfDay() * 0.995f) * 360f;
         timeCircleImage.rectTransform.rotation = Quaternion.Euler(0, 0, angle);
     }
     private void OnDayChanged(object sender, int newDay)
