@@ -38,6 +38,9 @@ public class CorrosiveIdleState : CorrosiveState
 
     private void MakeRandomNoise()
     {
+        if (!enemy.gameObject.activeSelf)
+            return;
+
         enemy.audioSource.PlayOneShot(idleSound);
 
         Invoke("MakeRandomNoise", Random.Range(3f, 6f));

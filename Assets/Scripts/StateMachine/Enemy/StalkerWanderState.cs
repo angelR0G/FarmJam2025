@@ -130,6 +130,9 @@ public class StalkerWanderState : StalkerState
 
     private void MakeRandomNoise()
     {
+        if (!enemy.gameObject.activeSelf)
+            return;
+
         enemy.audioSource.PlayOneShot(idleSound);
 
         Invoke("MakeRandomNoise", Random.Range(4f, 7f));

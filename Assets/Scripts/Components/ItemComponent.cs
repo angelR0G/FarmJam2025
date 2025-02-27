@@ -105,5 +105,7 @@ public enum ItemId
     EvilLightSeed,
     EvilSpikeSeed,
     EvilLettuceSeed,
-    EvilHeartSeed
+    EvilHeartSeed,
+    Painkillers,
+    Antipsychotic
 }

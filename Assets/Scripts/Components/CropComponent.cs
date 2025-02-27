@@ -25,6 +25,10 @@ public class CropComponent : MonoBehaviour
     public short wateredDays = 0;
     public List<Sprite> cropSprites = new List<Sprite>();
     public ItemId collectableCrop = ItemId.Default;
+    public int minCropProduction = 1;
+    public int maxCropProduction = 1;
+    [HideInInspector]
+    public int cropsProducedCount = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -40,6 +44,11 @@ public class CropComponent : MonoBehaviour
         grownState = statesContainer.GetComponent<CropGrownState>();
 
         ChangeState(dryState);
+
+        if (minCropProduction <= 0) minCropProduction = 1;
+        if (maxCropProduction < minCropProduction) maxCropProduction = minCropProduction;
+
+        cropsProducedCount = Random.Range(minCropProduction, maxCropProduction + 1);
     }
 
     public void ChangeState(CropState newState)

@@ -22,12 +22,14 @@ public class ShopComponent : MonoBehaviour
     private int quantity = 1;
     private static Dictionary<ItemId, int> shopItems = new Dictionary<ItemId, int> {
         {ItemId.WheatSeed, 1 },
-        {ItemId.PotatoSeed, 5 },
-        {ItemId.TomatoSeed, 5 },
-        {ItemId.BeanSeed, 5 },
-        {ItemId.CarrotSeed, 5 },
-        {ItemId.PumpkinSeed, 5 },
-        {ItemId.WaterCan, 10 },
+        {ItemId.PotatoSeed, 4 },
+        {ItemId.TomatoSeed, 6 },
+        {ItemId.BeanSeed, 7 },
+        {ItemId.CarrotSeed, 8 },
+        {ItemId.PumpkinSeed, 12 },
+        {ItemId.Torch, 10 },
+        {ItemId.Painkillers, 10 },
+        {ItemId.Antipsychotic, 10 },
     };
 
     private static List<ItemId> shopSeedList = new List<ItemId> {
@@ -35,17 +37,17 @@ public class ShopComponent : MonoBehaviour
     };
 
     private static List<ItemId> shopItemsList = new List<ItemId> {
-        ItemId.WaterCan
+        ItemId.Torch, ItemId.Painkillers, ItemId.Antipsychotic
     };
 
     private static Dictionary<ItemId, int> sellItemsValue = new Dictionary<ItemId, int>
     {
-        {ItemId.Wheat, 1},
-        {ItemId.Potato, 1},
-        {ItemId.Tomato, 1},
-        {ItemId.Bean, 1},
-        {ItemId.Carrot, 1},
-        {ItemId.Pumpkin, 1},
+        {ItemId.Wheat, 2},
+        {ItemId.Potato, 3},
+        {ItemId.Tomato, 2},
+        {ItemId.Bean, 3},
+        {ItemId.Carrot, 6},
+        {ItemId.Pumpkin, 30},
     };
 
 

@@ -67,6 +67,9 @@ public class NightmareFlyingState : NightmareState
 
     private void MakeRandomNoise()
     {
+        if (!enemy.gameObject.activeSelf)
+            return;
+
         enemy.audioSource.Play();
 
         Invoke("MakeRandomNoise", Random.Range(5f, 8f));

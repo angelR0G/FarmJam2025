@@ -16,6 +16,7 @@ public class PlayerComponent : MonoBehaviour
     public Animator animator;
     public AttackComponent attackComponent;
     public HealthComponent healthComponent;
+    public SanityComponent sanityComponent;
     public SpriteRenderer interactionKeySprite;
     public AudioSource audioSource;
 
@@ -41,6 +42,7 @@ public class PlayerComponent : MonoBehaviour
     public UnityAction onAnimFinished;
     public UnityAction onAnimEvent;
     public AudioClip painSound;
+    public AudioClip pillSound;
 
     public bool IsInteractionEnabled {  
         get { return isInteractionEnabled; } 
@@ -62,6 +64,7 @@ public class PlayerComponent : MonoBehaviour
         attackComponent = GetComponent<AttackComponent>();
         healthComponent = GetComponent<HealthComponent>();
         audioSource = GetComponent<AudioSource>();
+        sanityComponent = GetComponent<SanityComponent>();
 
         // Init player states
         walkingState = statesContainer.GetComponent<PlayerWalkingState>();
@@ -137,6 +140,23 @@ public class PlayerComponent : MonoBehaviour
         {
             GameObject torch = ItemFactory.CreateTorch(transform.position);
             if (torch != null) inventory.RemoveEquipedItem();
+        }
+        else if (equipedTool.Id == ItemId.Painkillers)
+        {
+            if (healthComponent.GetHealthPercentage() < 1)
+            {
+                healthComponent.RestoreHealth(50);
+                audioSource.PlayOneShot(pillSound);
+                inventory.RemoveEquipedItem();
+            }
+        }else if (equipedTool.Id == ItemId.Antipsychotic)
+        {
+            if (sanityComponent.GetSanityPercentage() < 1)
+            {
+                sanityComponent.RestoreSanity(50);
+                audioSource.PlayOneShot(pillSound);
+                inventory.RemoveEquipedItem();
+            }
         }
         else
         {
