@@ -93,6 +93,8 @@ GameObject:
   - component: {fileID: 8316068179178921679}
   - component: {fileID: 8643003365364744475}
   - component: {fileID: 4586587335726813085}
+  - component: {fileID: 567906673931965313}
+  - component: {fileID: 4552342040310067154}
   m_Layer: 0
   m_Name: StalkerEnemy
   m_TagString: Untagged
@@ -129,14 +131,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52fcb1adc343b574197308fd4d21bc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite: {fileID: 0}
   healthComp: {fileID: 0}
   body: {fileID: 0}
-  sprite: {fileID: 0}
   enemyCollider: {fileID: 0}
   attackComp: {fileID: 0}
   animator: {fileID: 0}
+  audioSource: {fileID: 0}
+  positionedAudioComp: {fileID: 0}
   statesContainer: {fileID: 6833512899187708388}
-  currentState: {fileID: 0}
   wanderState: {fileID: 0}
   stalkState: {fileID: 0}
   chaseState: {fileID: 0}
@@ -315,6 +318,117 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!82 &567906673931965313
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6780782006218790767}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 0
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4552342040310067154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6780782006218790767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb8272855b371d54da208c9dfe7d2003, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  minDistance: 1
+  maxDistance: 2
 --- !u!1 &6833512899187708388
 GameObject:
   m_ObjectHideFlags: 0
@@ -365,6 +479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rushDistance: 2
+  attackSound: {fileID: 8300000, guid: 46fe5249d6912f843adad833d3378302, type: 3}
 --- !u!114 &3766090391752758419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,6 +516,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 733869ecf831c0240b6bcd50a2c5cfba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stalkSound: {fileID: 8300000, guid: 0470023d56d472f428a18597ef68407b, type: 3}
 --- !u!114 &8912563982481555995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,6 +530,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPosition: {x: 0, y: 0, z: 0}
+  idleSound: {fileID: 8300000, guid: ca27fae93475b9e47a35fb4055c9e0ca, type: 3}
 --- !u!114 &7559964216694085567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -426,3 +543,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73e6890f0fde5a9478129d600133e9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dieSound: {fileID: 8300000, guid: 047ab3f13bf1de04cae9201fcfe5ce5b, type: 3}

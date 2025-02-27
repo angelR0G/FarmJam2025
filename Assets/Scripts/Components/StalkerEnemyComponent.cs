@@ -13,6 +13,8 @@ public class StalkerEnemyComponent : EnemyComponent
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComp;
     public Animator animator;
+    public AudioSource audioSource;
+    public PositionedAudioComponent positionedAudioComp;
 
     // States
     [Header("State Machine")]
@@ -41,6 +43,8 @@ public class StalkerEnemyComponent : EnemyComponent
         enemyCollider = GetComponent<CircleCollider2D>();
         attackComp = GetComponent<AttackComponent>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
+        positionedAudioComp = GetComponent<PositionedAudioComponent>();
 
         // Init enemy states
         wanderState = statesContainer.GetComponent<StalkerWanderState>();
@@ -135,7 +139,7 @@ public class StalkerEnemyComponent : EnemyComponent
         {
             GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Stalker, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
-            Deactivate();
+            Deactivate(false);
         }
     }
 

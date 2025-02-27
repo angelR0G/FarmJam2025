@@ -13,11 +13,21 @@ public class StalkerRecoverState : StalkerState
         enemy.animator.SetTrigger("Recover");
     }
 
+    public override void ExitState()
+    {
+        enemy.positionedAudioComp.VolumeMultiplier = 1f;
+    }
+
     public override void UpdateState()
     {
         recoveringTime -= Time.deltaTime;
 
         if (recoveringTime <= 0f)
             enemy.ChangeState(enemy.chaseState);
+        
+        else if (enemy.audioSource.isPlaying)
+        {
+            enemy.positionedAudioComp.VolumeMultiplier -= Time.deltaTime;
+        }
     }
 }

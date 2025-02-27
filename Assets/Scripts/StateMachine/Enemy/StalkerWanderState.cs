@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,10 +16,39 @@ public class StalkerWanderState : StalkerState
     private bool hasReachedTarget;
     private float playerDetectionCountdown;
 
+    public AudioClip idleSound;
+    private Sequence soundSequence;
+
     public override void EnterState()
     {
         nextTargetCountdown = STAND_STILL_TIME;
+        hasReachedTarget = false;
         UpdateTargetReached(true);
+
+        if (enemy.audioSource.isPlaying)
+        {
+            soundSequence = DOTween.Sequence();
+
+            soundSequence.Append(DOTween.To(() => enemy.positionedAudioComp.VolumeMultiplier, (v) => enemy.positionedAudioComp.VolumeMultiplier = v, 0, 1))
+                .AppendCallback(MakeRandomNoise)
+                .AppendCallback(enemy.audioSource.Stop)
+                .OnKill(() => { soundSequence = null; enemy.positionedAudioComp.VolumeMultiplier = 1; });
+        }
+        else
+        {
+            MakeRandomNoise();
+            enemy.audioSource.Stop();
+        }
+    }
+
+    public override void ExitState()
+    {
+        CancelInvoke("MakeRandomNoise");
+
+        if (soundSequence != null && soundSequence.IsActive())
+        {
+            soundSequence.Kill();
+        }
     }
 
     public override void FixedUpdateState()
@@ -96,5 +126,12 @@ public class StalkerWanderState : StalkerState
 
         enemy.attackTarget = player.gameObject;
         enemy.ChangeState(enemy.stalkState);
+    }
+
+    private void MakeRandomNoise()
+    {
+        enemy.audioSource.PlayOneShot(idleSound);
+
+        Invoke("MakeRandomNoise", Random.Range(4f, 7f));
     }
 }

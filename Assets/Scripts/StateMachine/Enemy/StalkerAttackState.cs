@@ -11,6 +11,8 @@ public class StalkerAttackState : StalkerState
     public float rushDistance = 2f;
     private Vector3 rushDirection;
 
+    public AudioClip attackSound;
+
     public override void EnterState()
     {
         rushDirection = (enemy.attackTarget.transform.position - transform.position).normalized;
@@ -20,6 +22,9 @@ public class StalkerAttackState : StalkerState
         enemy.attackComp.SetDamageAreaActive(true);
 
         enemy.animator.SetTrigger("Attack");
+
+        enemy.audioSource.clip = attackSound;
+        enemy.audioSource.Play();
     }
 
     public override void ExitState()

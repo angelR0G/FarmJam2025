@@ -10,12 +10,17 @@ public class StalkerStalkState : StalkerState
     private float stalkTime;
     private float inSightCheckTimeout;
 
+    public AudioClip stalkSound;
+
     public override void EnterState()
     {
         stalkTime = STALK_TIME_TO_ATTACK;
         inSightCheckTimeout = 0.15f;
 
         enemy.animator.SetTrigger("Stalk");
+
+        enemy.audioSource.clip = stalkSound;
+        enemy.audioSource.Play();
     }
 
     public override void ExitState()

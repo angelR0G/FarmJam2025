@@ -9,10 +9,13 @@ public class PositionedAudioComponent : MonoBehaviour
     public float minDistance;
     public float maxDistance;
     private static Transform listenerTransform;
+    private float volumeMultiplier = 1f;
 
     private float sqrMinDistance = 0;
     private float sqrMaxDistance = 0;
     private float updateTimer = 0;
+
+    public float VolumeMultiplier {  get { return volumeMultiplier; } set { volumeMultiplier = Mathf.Max(value, 0); } }
 
     // Start is called before the first frame update
     void Start()
@@ -45,9 +48,9 @@ public class PositionedAudioComponent : MonoBehaviour
             updateTimer = sqrDistance > sqrMaxDistance + 5 ? 2f : 0.2f;
         }
         else if (sqrDistance <= sqrMinDistance)
-            audioSource.volume = 1;
+            audioSource.volume = volumeMultiplier;
         else
-            audioSource.volume = 1f - (sqrDistance - minDistance)/(sqrMaxDistance - sqrMinDistance);
+            audioSource.volume = 1f - (sqrDistance - minDistance)/(sqrMaxDistance - sqrMinDistance) * volumeMultiplier;
 
         if (sqrDistance < sqrMaxDistance)
         {
