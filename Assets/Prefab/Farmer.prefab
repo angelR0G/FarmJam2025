@@ -857,6 +857,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   attackComponent: {fileID: 0}
   healthComponent: {fileID: 0}
+  sanityComponent: {fileID: 0}
   interactionKeySprite: {fileID: 6292759833759518670}
   audioSource: {fileID: 0}
   statesContainer: {fileID: 2109259853284597907}
@@ -871,6 +872,7 @@ MonoBehaviour:
   sacrificeState: {fileID: 0}
   facingDirection: {x: 0, y: -1}
   painSound: {fileID: 8300000, guid: 5408245d1a8589a4e94b6cc1b65fbcd1, type: 3}
+  pillSound: {fileID: 8300000, guid: fe166838fa87b12408d545c4c603625d, type: 3}
 --- !u!212 &4321393230077232236
 SpriteRenderer:
   m_ObjectHideFlags: 0

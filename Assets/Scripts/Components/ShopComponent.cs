@@ -27,7 +27,9 @@ public class ShopComponent : MonoBehaviour
         {ItemId.BeanSeed, 5 },
         {ItemId.CarrotSeed, 5 },
         {ItemId.PumpkinSeed, 5 },
-        {ItemId.WaterCan, 10 },
+        {ItemId.Torch, 10 },
+        {ItemId.Painkillers, 10 },
+        {ItemId.Antipsychotic, 10 },
     };
 
     private static List<ItemId> shopSeedList = new List<ItemId> {
@@ -35,7 +37,7 @@ public class ShopComponent : MonoBehaviour
     };
 
     private static List<ItemId> shopItemsList = new List<ItemId> {
-        ItemId.WaterCan
+        ItemId.Torch, ItemId.Painkillers, ItemId.Antipsychotic
     };
 
     private static Dictionary<ItemId, int> sellItemsValue = new Dictionary<ItemId, int>
