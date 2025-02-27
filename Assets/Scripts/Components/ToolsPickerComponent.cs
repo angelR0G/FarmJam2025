@@ -17,7 +17,7 @@ public class ToolsPickerComponent : MonoBehaviour
         player.inventory.AddTool(ItemId.Hoe);
         player.inventory.AddTool(ItemId.Dagger);
         player.inventory.AddTool(ItemId.Pitchfork);
-        player.inventory.AddTool(ItemId.Torch);
+        player.inventory.AddItem(ItemId.Torch);
 
         Destroy(gameObject);
     }

@@ -9,6 +9,7 @@ public class PositionedAudioComponent : MonoBehaviour
     public float minDistance;
     public float maxDistance;
     private static Transform listenerTransform;
+    [SerializeField]
     private float volumeMultiplier = 1f;
 
     private float sqrMinDistance = 0;
@@ -50,7 +51,9 @@ public class PositionedAudioComponent : MonoBehaviour
         else if (sqrDistance <= sqrMinDistance)
             audioSource.volume = volumeMultiplier;
         else
-            audioSource.volume = 1f - (sqrDistance - minDistance)/(sqrMaxDistance - sqrMinDistance) * volumeMultiplier;
+        {
+            audioSource.volume = (1f - (sqrDistance - sqrMinDistance)/(sqrMaxDistance - sqrMinDistance)) * volumeMultiplier;
+        }
 
         if (sqrDistance < sqrMaxDistance)
         {
