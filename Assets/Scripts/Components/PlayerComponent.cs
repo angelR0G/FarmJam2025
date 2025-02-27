@@ -40,6 +40,7 @@ public class PlayerComponent : MonoBehaviour
     private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
     public UnityAction onAnimFinished;
     public UnityAction onAnimEvent;
+    public AudioClip painSound;
 
     public bool IsInteractionEnabled {  
         get { return isInteractionEnabled; } 
@@ -103,7 +104,7 @@ public class PlayerComponent : MonoBehaviour
 
     private void Interact()
     {
-        if (!isInteractionEnabled) return;
+        if (!isInteractionEnabled || healthComponent.IsStunned()) return;
 
         ItemComponent equipedItem = inventory.GetEquipedItem();
 
@@ -217,6 +218,7 @@ public class PlayerComponent : MonoBehaviour
 
     private void OnDamaged()
     {
+        audioSource.PlayOneShot(painSound);
         ChangeState(walkingState);
     }
 }

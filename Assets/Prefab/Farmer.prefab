@@ -870,6 +870,7 @@ MonoBehaviour:
   extractingBloodState: {fileID: 0}
   sacrificeState: {fileID: 0}
   facingDirection: {x: 0, y: -1}
+  painSound: {fileID: 8300000, guid: 5408245d1a8589a4e94b6cc1b65fbcd1, type: 3}
 --- !u!212 &4321393230077232236
 SpriteRenderer:
   m_ObjectHideFlags: 0
