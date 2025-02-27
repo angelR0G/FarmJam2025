@@ -9,10 +9,15 @@ public class CorrosiveChargingState : CorrosiveState
 
     public float chargeTime = 0;
 
+    public AudioClip chargingSound;
+
     public override void EnterState()
     {
         chargeTime = 0;
         enemy.animator.SetTrigger("ChargeExplosion");
+
+        enemy.audioSource.clip = chargingSound;
+        enemy.audioSource.Play();
     }
 
     public override void FixedUpdateState()

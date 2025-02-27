@@ -10,6 +10,7 @@ public class CorrosiveEnemyComponent : EnemyComponent
     public Rigidbody2D body;
     public CircleCollider2D enemyCollider;
     public Animator animator;
+    public AudioSource audioSource;
 
     // States
     [Header("State Machine")]
@@ -38,6 +39,7 @@ public class CorrosiveEnemyComponent : EnemyComponent
         sprite = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
         // Init enemy states
         idleState = statesContainer.GetComponent<CorrosiveIdleState>();
@@ -89,6 +91,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
         }
 
-        Deactivate();
+        Deactivate(false);
     }
 }

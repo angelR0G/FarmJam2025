@@ -9,6 +9,8 @@ public class CorrosiveExplodingState : CorrosiveState
 
     private bool playerHit = false;
 
+    public AudioClip explosionSound;
+
     public override void EnterState()
     {
         // Prevents dying during the animation
@@ -18,6 +20,9 @@ public class CorrosiveExplodingState : CorrosiveState
 
         playerHit = false;
         enemy.animator.SetTrigger("Explode");
+
+        enemy.audioSource.clip = explosionSound;
+        enemy.audioSource.Play();
     }
 
     public override void ExitState()

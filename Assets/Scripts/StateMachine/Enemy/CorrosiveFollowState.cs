@@ -8,9 +8,18 @@ public class CorrosiveFollowState : CorrosiveState
     private const float UNFOLLOW_DISTANCE = 1.35f;
     private const float START_EXPLOSION_DISTANCE = 0.4f;
 
+    public AudioClip startFollowingSound;
+
     public override void EnterState()
     {
         enemy.animator.SetTrigger("StartMoving");
+
+        if (enemy.audioSource.isPlaying)
+            enemy.audioSource.Stop();
+        else
+        {
+            enemy.audioSource.PlayOneShot(startFollowingSound);
+        }
     }
 
     public override void FixedUpdateState()

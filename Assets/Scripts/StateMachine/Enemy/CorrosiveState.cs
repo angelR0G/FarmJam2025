@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CorrosiveState : MonoBehaviour, IState
 {
+    protected const float DETECTION_DISTANCE = 1f;
     protected CorrosiveEnemyComponent enemy;
 
     public void Awake()
@@ -28,9 +29,7 @@ public class CorrosiveState : MonoBehaviour, IState
     }
     protected void CheckPlayerInsideDetectionRange()
     {
-        const float detectionDistance = 1f;
-
-        Collider2D player = Physics2D.OverlapCircle(transform.position, detectionDistance, LayerMask.GetMask("Player"));
+        Collider2D player = Physics2D.OverlapCircle(transform.position, DETECTION_DISTANCE, LayerMask.GetMask("Player"));
         PlayerComponent playerComponent = player?.GetComponent<PlayerComponent>();
 
         if (player != null)
