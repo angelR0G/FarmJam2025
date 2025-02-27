@@ -17,12 +17,12 @@ public class InputComponent : MonoBehaviour
     public UnityEvent equipTool2Event;
     public UnityEvent equipTool3Event;
     public UnityEvent equipWeaponEvent;
-    public UnityEvent equipTorchEvent;
     public UnityEvent equipItem1Event;
     public UnityEvent equipItem2Event;
     public UnityEvent equipItem3Event;
     public UnityEvent equipItem4Event;
     public UnityEvent equipItem5Event;
+    public UnityEvent equipItem6Event;
     public UnityEvent equipNextItemEvent;
     public UnityEvent equipPreviousItemEvent;
     public UnityEvent unequipItemEvent;
@@ -86,14 +86,6 @@ public class InputComponent : MonoBehaviour
         }
     }
 
-    public void OnEquipTorch(InputValue value)
-    {
-        if (value.isPressed)
-        {
-            equipTorchEvent.Invoke();
-        }
-    }
-
     public void OnEquipItem1(InputValue value)
     {
         if (value.isPressed)
@@ -128,6 +120,14 @@ public class InputComponent : MonoBehaviour
         if (value.isPressed)
         {
             equipItem5Event.Invoke();
+        }
+    }
+
+    public void OnEquipItem6(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            equipItem6Event.Invoke();
         }
     }
 

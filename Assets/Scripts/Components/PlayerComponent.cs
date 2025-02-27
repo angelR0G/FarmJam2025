@@ -77,10 +77,8 @@ public class PlayerComponent : MonoBehaviour
         // Bind inputs
         inventory.BindInput(inputComponent);
         inputComponent.interactInputEvent.AddListener(Interact);
-        inventory.AddItem(ItemId.Pumpkin, 10);
 
         healthComponent.onDamageEvent.AddListener(OnDamaged);
-        inventory.AddItem(ItemId.PumpkinSeed, 10);
     }
 
     // Update is called once per frame

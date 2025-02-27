@@ -3,10 +3,19 @@ using UnityEngine;
 
 public class InventoryComponent : StorageComponent
 {
-    public readonly int TOOLS_SLOTS = 5;
+    public const int TOOLS_SLOTS = 4;
 
     private int activeItemIndex = 0;
     public bool blockInventory = false;
+
+    public AudioSource audioSource;
+    public AudioClip newItemSound;
+    public AudioClip equipItemSound;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     public void BindInput(InputComponent input)
     {
@@ -14,12 +23,12 @@ public class InventoryComponent : StorageComponent
         input.equipTool2Event.AddListener(() => EquipItem(1));
         input.equipTool3Event.AddListener(() => EquipItem(2));
         input.equipWeaponEvent.AddListener(() => EquipItem(3));
-        input.equipTorchEvent.AddListener(() => EquipItem(4));
-        input.equipItem1Event.AddListener(() => EquipItem(5));
-        input.equipItem2Event.AddListener(() => EquipItem(6));
-        input.equipItem3Event.AddListener(() => EquipItem(7));
-        input.equipItem4Event.AddListener(() => EquipItem(8));
-        input.equipItem5Event.AddListener(() => EquipItem(9));
+        input.equipItem1Event.AddListener(() => EquipItem(4));
+        input.equipItem2Event.AddListener(() => EquipItem(5));
+        input.equipItem3Event.AddListener(() => EquipItem(6));
+        input.equipItem4Event.AddListener(() => EquipItem(7));
+        input.equipItem5Event.AddListener(() => EquipItem(8));
+        input.equipItem6Event.AddListener(() => EquipItem(9));
         input.equipNextItemEvent.AddListener(EquipNextItem);
         input.equipPreviousItemEvent.AddListener(EquipPreviousItem);
         input.dropItemEvent.AddListener(DropItem);
@@ -75,6 +84,8 @@ public class InventoryComponent : StorageComponent
                 return;
             }
         }
+
+        audioSource.PlayOneShot(newItemSound);
     }
 
     public override int AddItem(ItemId itemId, int amount = 1)
@@ -103,6 +114,12 @@ public class InventoryComponent : StorageComponent
             amountSaved += AddItemToSlot(itemId, amount - amountSaved, itemIndex);
 
             itemIndex++;
+        }
+
+        if (amountSaved > 0)
+        {
+            audioSource.clip = newItemSound;
+            audioSource.Play();
         }
 
         return amountSaved;
@@ -142,6 +159,11 @@ public class InventoryComponent : StorageComponent
     public void EquipItem(int index)
     {
         if (blockInventory || index < 0 || index >= storageSize) return;
+
+        if (!audioSource.isPlaying) audioSource.clip = equipItemSound;
+
+        if (audioSource.clip == equipItemSound)
+            audioSource.Play();
 
         if (activeItemIndex == index)
         {

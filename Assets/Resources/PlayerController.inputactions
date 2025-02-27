@@ -60,15 +60,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "EquipTorch",
-                    "type": "Button",
-                    "id": "e6178f40-7b66-4e11-a42d-da5fb44f3058",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "EquipItem1",
                     "type": "Button",
                     "id": "6ec2529e-02ff-492a-8800-9c3f62fe8f78",
@@ -108,6 +99,15 @@
                     "name": "EquipItem5",
                     "type": "Button",
                     "id": "c68e34eb-61cc-4165-98f6-3b4ee8bde310",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "EquipItem6",
+                    "type": "Button",
+                    "id": "e6178f40-7b66-4e11-a42d-da5fb44f3058",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -274,17 +274,6 @@
                 },
                 {
                     "name": "",
-                    "id": "ce7157d4-9693-4499-a6da-14d5e1bfdcae",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "EquipTorch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "2e70962e-5590-4a3c-a364-130265f464e6",
                     "path": "<Keyboard>/5",
                     "interactions": "",
@@ -379,6 +368,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "UnequipItem",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ce7157d4-9693-4499-a6da-14d5e1bfdcae",
+                    "path": "<Keyboard>/0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EquipItem6",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
