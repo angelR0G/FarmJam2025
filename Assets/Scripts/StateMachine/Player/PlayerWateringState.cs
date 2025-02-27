@@ -187,4 +187,9 @@ public class PlayerWateringState : PlayerState
     {
         return Vector3.SqrMagnitude(obj.transform.position - player.transform.position);
     }
+
+    public float getFillPorcentage()
+    {
+        return Math.Clamp((float)liquidAmount / (float)MAX_LIQUID_AMOUNT, 0, 1);
+    }
 }

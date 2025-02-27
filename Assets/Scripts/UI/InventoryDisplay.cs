@@ -6,10 +6,13 @@ using UnityEngine.UI;
 
 public class InventoryDisplay : MonoBehaviour
 {
-
+    [SerializeField] private GameObject player;
     [SerializeField] private InventoryComponent playerInventory;
     private List<GameObject> inventorySlots = new List<GameObject>();
     [SerializeField] private Image marker;
+    [SerializeField] private Image liquidBar;
+    [SerializeField] private Color waterLiquid;
+    [SerializeField] private Color bloodLiguid;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,14 +33,14 @@ public class InventoryDisplay : MonoBehaviour
             if(itemSlot.item != null)
             {
                 inventorySlots[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = itemSlot.item.Sprite;
-                if((i !=playerInventory.GetActiveIndex() && inventorySlots[i].transform.childCount==3) || (i == playerInventory.GetActiveIndex() && inventorySlots[i].transform.childCount == 4))
+                if(inventorySlots[i].transform.GetChild(1).name=="ItemNumber")
                     inventorySlots[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = itemSlot.amount.ToString();
                 inventorySlots[i].transform.GetChild(0).gameObject.SetActive(true);
             }
             else
             {
                 inventorySlots[i].transform.GetChild(0).gameObject.GetComponent<Image>().sprite = null;
-                if ((i != playerInventory.GetActiveIndex() && inventorySlots[i].transform.childCount == 3) || (i == playerInventory.GetActiveIndex() && inventorySlots[i].transform.childCount == 4))
+                if (inventorySlots[i].transform.GetChild(1).name == "ItemNumber")
                     inventorySlots[i].transform.GetChild(1).gameObject.GetComponent<TextMeshProUGUI>().text = "0";
                 inventorySlots[i].transform.GetChild(0).gameObject.SetActive(false);
             }
@@ -60,10 +63,19 @@ public class InventoryDisplay : MonoBehaviour
         }
     }
 
+    private void UpdateLiquidBar()
+    {
+        PlayerWateringState watering = player.GetComponent<PlayerComponent>().wateringState;
+        Debug.Log(watering.getFillPorcentage());
+        liquidBar.color = (watering.isBlood) ? bloodLiguid : waterLiquid;
+        liquidBar.fillAmount = watering.getFillPorcentage();
+    }
+
     // Update is called once per frame
     void Update()
     {
         UpdateSlotMark(playerInventory.GetActiveIndex());
         UpdateItemSprites();
+        UpdateLiquidBar();
     }
 }
