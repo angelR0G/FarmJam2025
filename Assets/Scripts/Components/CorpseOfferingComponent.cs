@@ -9,10 +9,10 @@ public class CorpseOfferingComponent : MonoBehaviour
 
     private static readonly Dictionary<CorpseCreature, KeyValuePair<ItemId, int>>  offerings = new Dictionary<CorpseCreature, KeyValuePair<ItemId, int>> {
         {CorpseCreature.Pig, new KeyValuePair<ItemId, int>(ItemId.Carrot, 4) },
-        {CorpseCreature.Stalker, new KeyValuePair<ItemId, int>(ItemId.Potato, 4)},
-        {CorpseCreature.Corrosive, new KeyValuePair<ItemId, int>(ItemId.Wheat, 8)},
+        {CorpseCreature.Stalker, new KeyValuePair<ItemId, int>(ItemId.Potato, 8)},
+        {CorpseCreature.Corrosive, new KeyValuePair<ItemId, int>(ItemId.Wheat, 10)},
         {CorpseCreature.Ambusher, new KeyValuePair<ItemId, int>(ItemId.Bean, 6)},
-        {CorpseCreature.Nightmare, new KeyValuePair<ItemId, int>(ItemId.Pumpkin, 8)},
+        {CorpseCreature.Nightmare, new KeyValuePair<ItemId, int>(ItemId.Pumpkin, 2)},
     };
 
     private void OnTriggerEnter2D(Collider2D collision)

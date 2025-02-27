@@ -110,10 +110,15 @@ public class PlotComponent : MonoBehaviour
         else
         {
             // Normal plants are added to player's inventory
-            bool plantAdded = player.inventory.AddItem(plantedCrop.GetComponent<CropComponent>().collectableCrop) > 0;
+            CropComponent cropComp = plantedCrop.GetComponent<CropComponent>();
+            int cropsCollected = player.inventory.AddItem(cropComp.collectableCrop, cropComp.cropsProducedCount);
 
-            if (plantAdded)
+            if (cropsCollected >= cropComp.cropsProducedCount)
                 Destroy(gameObject);
+            else if (cropsCollected > 0)
+                cropComp.cropsProducedCount -= cropsCollected;
+            else
+                DialogueSystem.Instance.DisplayDialogue(new Dialogue("I don't have enough space for this."));
         }
     }
 

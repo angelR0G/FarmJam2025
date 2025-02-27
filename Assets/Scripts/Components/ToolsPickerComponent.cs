@@ -17,7 +17,12 @@ public class ToolsPickerComponent : MonoBehaviour
         player.inventory.AddTool(ItemId.Hoe);
         player.inventory.AddTool(ItemId.Dagger);
         player.inventory.AddTool(ItemId.Pitchfork);
-        player.inventory.AddItem(ItemId.Torch);
+        player.inventory.AddItem(ItemId.WheatSeed, 3);
+        player.inventory.AddItem(ItemId.TomatoSeed, 3);
+        player.inventory.AddItem(ItemId.PumpkinSeed, 3);
+        player.inventory.AddItem(ItemId.BeanSeed, 3);
+        player.inventory.AddItem(ItemId.PotatoSeed, 3);
+        player.inventory.AddItem(ItemId.CarrotSeed, 3);
 
         Destroy(gameObject);
     }

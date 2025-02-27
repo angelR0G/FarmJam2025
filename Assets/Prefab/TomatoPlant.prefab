@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2568920310313648328, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y
-      value: 0.2
+      value: 0.125
       objectReference: {fileID: 0}
     - target: {fileID: 3167825043214925856, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
       propertyPath: m_Name
@@ -67,6 +67,14 @@ PrefabInstance:
     - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
       propertyPath: collectableCrop
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
+      propertyPath: maxCropProduction
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
+      propertyPath: minCropProduction
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8592148715776223701, guid: 9be70e9f64d40bf43a4956956b197fa3, type: 3}
       propertyPath: cropSprites.Array.data[0]
