@@ -11,10 +11,16 @@ public class NightmareAttackState : NightmareState
 
     private float attackCooldown = ATTACK_TIME;
 
+    public AudioClip attackSound;
+
     public override void EnterState()
     {
         enemy.animator.SetTrigger("Attack");
         attackCooldown = enemy.lightDetector.IsInsideLight() ? ATTACK_TIME_IN_LIGHT : ATTACK_TIME;
+
+        enemy.SetWingSoundEnabled(false);
+        enemy.audioSource.clip = attackSound;
+        enemy.audioSource.Play();
     }
 
     public override void ExitState()

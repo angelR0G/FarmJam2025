@@ -12,6 +12,7 @@ public class NightmareEnemyComponent : EnemyComponent
     public AttackComponent attackComponent;
     public Animator animator;
     public LightDetectorComponent lightDetector;
+    public AudioSource audioSource;
 
     // States
     [Header("State Machine")]
@@ -29,6 +30,7 @@ public class NightmareEnemyComponent : EnemyComponent
     public float targetTimeInLight = 0;
     public Sprite corpseSprite;
     public int bloodAmount = 800;
+    public AudioClip wingSound;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +43,7 @@ public class NightmareEnemyComponent : EnemyComponent
         animator = GetComponent<Animator>();
         attackComponent = GetComponent<AttackComponent>();
         lightDetector = GetComponent<LightDetectorComponent>();
+        audioSource = GetComponent<AudioSource>();
 
         // Init enemy states
         flyingState = statesContainer.GetComponent<NightmareFlyingState>();
@@ -49,8 +52,8 @@ public class NightmareEnemyComponent : EnemyComponent
         teleportState = statesContainer.GetComponent<NightmareTeleportState>();
         dyingState = statesContainer.GetComponent<NightmareDyingState>();
 
-        initialState = flyingState;
-        ChangeState(flyingState);
+        initialState = teleportState;
+        ChangeState(teleportState);
 
         healthComp.onDieCallback = OnDie;
         lightDetector.enterLight.AddListener(OnEnterLight);
@@ -84,7 +87,7 @@ public class NightmareEnemyComponent : EnemyComponent
         {
             GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Ambusher, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
-            Deactivate();
+            Deactivate(false);
         }
     }
 
@@ -114,6 +117,24 @@ public class NightmareEnemyComponent : EnemyComponent
     public void FlipSprite(bool fliped)
     {
         sprite.flipX = fliped;
+    }
+
+    public void SetWingSoundEnabled(bool newState)
+    {
+        CancelInvoke("PlayWingSound");
+
+        if (newState)
+        {
+            InvokeRepeating("PlayWingSound", 0f, 0.5f);
+        }
+    }
+
+    private void PlayWingSound()
+    {
+        if (deactivated)
+            CancelInvoke("PlayWingSound");
+        else
+            audioSource.PlayOneShot(wingSound);
     }
 
     private void OnDestroy()

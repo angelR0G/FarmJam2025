@@ -5,10 +5,17 @@ using UnityEngine;
 public class NightmareTeleportState : NightmareState
 {
     private const float MAX_DISTANCE_FROM_TARGET = 1f;
+
+    public AudioClip teleportSound;
+
     public override void EnterState()
     {
         enemy.transform.position = GetTeleportPosition();
         enemy.animator.SetTrigger("Teleport");
+
+        enemy.SetWingSoundEnabled(false);
+        enemy.audioSource.clip = teleportSound;
+        enemy.audioSource.Play();
     }
 
     public override void UpdateState()

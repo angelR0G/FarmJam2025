@@ -10,6 +10,8 @@ public class NightmareFlyingState : NightmareState
     private const float DISTANCE_TO_ATTACK = 0.3f;
     private const float DISTANCE_TO_TELEPORT = 3f;
 
+    public AudioClip idleSound;
+
     public override void EnterState()
     {
         if (enemy.attackTarget == null)
@@ -19,7 +21,16 @@ public class NightmareFlyingState : NightmareState
         else
         {
             enemy.animator.SetTrigger("Fly");
+
+            enemy.SetWingSoundEnabled(true);
+            enemy.audioSource.clip = idleSound;
+            Invoke("MakeRandomNoise", Random.Range(5f, 8f));
         }
+    }
+
+    public override void ExitState()
+    {
+        CancelInvoke("MakeRandomNoise");
     }
 
     public override void UpdateState()
@@ -52,5 +63,12 @@ public class NightmareFlyingState : NightmareState
                 MoveTo(targetVector.normalized, enemy.lightDetector.IsInsideLight() ? FLYING_SPEED_IN_LIGHT : FLYING_SPEED);
             }
         }
+    }
+
+    private void MakeRandomNoise()
+    {
+        enemy.audioSource.Play();
+
+        Invoke("MakeRandomNoise", Random.Range(5f, 8f));
     }
 }
