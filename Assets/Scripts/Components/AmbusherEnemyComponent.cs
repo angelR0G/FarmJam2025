@@ -11,6 +11,7 @@ public class AmbusherEnemyComponent : EnemyComponent
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComponent;
     public Animator animator;
+    public AudioSource audioSource;
 
     // States
     [Header("State Machine")]
@@ -39,6 +40,7 @@ public class AmbusherEnemyComponent : EnemyComponent
         enemyCollider = GetComponent<CircleCollider2D>();
         animator = GetComponent<Animator>();
         attackComponent = GetComponent<AttackComponent>();
+        audioSource = GetComponent<AudioSource>();
 
         // Init enemy states
         hidingState = statesContainer.GetComponent<AmbusherHidingState>();
@@ -79,7 +81,8 @@ public class AmbusherEnemyComponent : EnemyComponent
         {
             GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Ambusher, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
-            Deactivate();
+            Deactivate(false);
+            hidden = true;
         }
     }
 

@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public event EventHandler<int> dayStart;
 
     // Total duration of day/hours (in seconds)
+    [SerializeField, Range(0, 24)]
+    private int initialHour;
     [SerializeField]
     private float dayLength;
     private float hourLength;
@@ -124,8 +126,8 @@ public class GameManager : MonoBehaviour
     public void ResetTimeToFirstDay()
     {
         numDays = 0;
-        numHours = 6;
-        currentDayTimer = dayLength * (numHours/24f);
+        numHours = initialHour;
+        currentDayTimer = dayLength * (initialHour/24f);
         currentHourTimer = 0;
     }
 

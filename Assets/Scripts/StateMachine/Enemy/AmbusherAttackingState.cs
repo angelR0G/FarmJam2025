@@ -10,6 +10,8 @@ public class AmbusherAttackingState : AmbusherState
 
     private Vector3 attackDirection;
 
+    public AudioClip attackSound;
+
     public override void EnterState()
     {
         attackDirection = (enemy.attackTarget.transform.position - transform.position).normalized;
@@ -19,6 +21,9 @@ public class AmbusherAttackingState : AmbusherState
         enemy.attackProjectile.transform.position = transform.position + attackDirection * ATTACK_INITIAL_DISTANCE;
 
         enemy.animator.SetTrigger("Attack");
+
+        enemy.audioSource.clip = attackSound;
+        enemy.audioSource.Play();
     }
 
     public override void ExitState()

@@ -39,15 +39,22 @@ public class EnemyComponent : MonoBehaviour
         ChangeState(initialState);
     }
 
-    public void Deactivate()
+    public void Deactivate(bool fade = true)
     {
         if (!gameObject.activeSelf) return;
 
         deactivated = true;
 
-        Sequence enemyDisappear = DOTween.Sequence();
+        if (fade)
+        {
+            Sequence enemyDisappear = DOTween.Sequence();
 
-        enemyDisappear.Append(sprite.DOFade(0f, 1f))
-            .AppendCallback(() => gameObject.SetActive(false));
+            enemyDisappear.Append(sprite.DOFade(0f, 1f))
+                .AppendCallback(() => gameObject.SetActive(false));
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

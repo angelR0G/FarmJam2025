@@ -31,10 +31,12 @@ public class HealthComponent : MonoBehaviour
 
     public void LooseHealth(int h)
     {
+        if (health <= 0) return;
+
         health -= h;
 
         if (health <= 0) 
-        { 
+        {
             if (onDieCallback != null)
                 onDieCallback();
         }

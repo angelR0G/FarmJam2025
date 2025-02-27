@@ -9,6 +9,9 @@ public class AmbusherIdleState : AmbusherState
     private const float HIDE_DISTANCE = 2f;
 
     private float attackTimer = 0f;
+
+    public AudioClip appearSound;
+
     public override void EnterState()
     {
         if (enemy.hidden)
@@ -16,6 +19,9 @@ public class AmbusherIdleState : AmbusherState
             enemy.hidden = false;
             enemy.sprite.enabled = true;
             enemy.animator.SetTrigger("Appear");
+
+            enemy.audioSource.clip = appearSound;
+            enemy.audioSource.Play();
         }
         else
         {
