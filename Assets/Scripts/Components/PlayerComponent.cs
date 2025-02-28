@@ -19,6 +19,7 @@ public class PlayerComponent : MonoBehaviour
     public SanityComponent sanityComponent;
     public SpriteRenderer interactionKeySprite;
     public AudioSource audioSource;
+    public SpriteMask spriteMask;
 
     // States
     [Header("State Machine")]
@@ -65,6 +66,7 @@ public class PlayerComponent : MonoBehaviour
         healthComponent = GetComponent<HealthComponent>();
         audioSource = GetComponent<AudioSource>();
         sanityComponent = GetComponent<SanityComponent>();
+        spriteMask = GetComponent<SpriteMask>();
 
         // Init player states
         walkingState = statesContainer.GetComponent<PlayerWalkingState>();
@@ -88,6 +90,8 @@ public class PlayerComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        spriteMask.sprite = sprite.sprite;
+
         currentState.UpdateState();
     }
 

@@ -66,7 +66,7 @@ public class InventoryDisplay : MonoBehaviour
     private void UpdateLiquidBar()
     {
         PlayerWateringState watering = player.GetComponent<PlayerComponent>().wateringState;
-        Debug.Log(watering.getFillPorcentage());
+
         liquidBar.color = (watering.isBlood) ? bloodLiguid : waterLiquid;
         liquidBar.fillAmount = watering.getFillPorcentage();
     }
