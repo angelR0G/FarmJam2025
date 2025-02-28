@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,20 +15,10 @@ public class MapComponent : MonoBehaviour
     private Tilemap groundTilemap = null;
 
     public static MapComponent Instance;
-    private bool hasToUpdateTilemaps = false;
-    private float tilemapsTargetOpacity = 1f;
 
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Update()
-    {
-        if (hasToUpdateTilemaps)
-        {
-            UpdateTilemapsOpacity();
-        }
     }
 
     public Vector3 GetPositionAlignedToTileset(Vector3 pos)
@@ -89,31 +80,11 @@ public class MapComponent : MonoBehaviour
 
     public void SetTopTilemapsVisibility(bool newVisibility)
     {
-        tilemapsTargetOpacity = newVisibility ? 1f : 0f;
-        hasToUpdateTilemaps = true;
-    }
+        Color newColor = newVisibility ? Color.white : new Color(1, 1, 1, 0);
 
-    private void UpdateTilemapsOpacity()
-    {
-        if (topTilemaps.Count == 0) return;
-
-        // Calculates final color
-        Color currentColor = topTilemaps[0].color;
-        if (currentColor.a > tilemapsTargetOpacity)
-            currentColor.a = Mathf.Max(currentColor.a - Time.deltaTime, tilemapsTargetOpacity);
-        else
-            currentColor.a = Mathf.Min(currentColor.a + Time.deltaTime, tilemapsTargetOpacity);
-            
-        if (currentColor.a == tilemapsTargetOpacity)
-        {
-            currentColor.a = tilemapsTargetOpacity;
-            hasToUpdateTilemaps = false;
-        }
-
-        // Updates all tilemaps color
         foreach (Tilemap t in topTilemaps)
         {
-            t.color = currentColor;
+            DOTween.To(() => t.color, (c) => t.color = c, newColor, 0.7f);
         }
     }
 }
