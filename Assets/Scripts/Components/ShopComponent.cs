@@ -15,11 +15,19 @@ public class ShopComponent : MonoBehaviour
     [SerializeField] private GameObject objectTotalCost;
     [SerializeField] private GameObject objectTextButtonConfirm;
     [SerializeField] private GameObject objectPlayer;
+    [SerializeField] private GameObject shopUiObject;
 
     private List<GameObject> itemObjects = new List<GameObject>();
     public int currentTab = 0;
     public ItemId currentItem = 0;
     private int quantity = 1;
+
+    [Header("Sounds")]
+    public AudioSource audioSource;
+    public AudioClip buySound;
+    public AudioClip openShopSound;
+
+
     private static Dictionary<ItemId, int> shopItems = new Dictionary<ItemId, int> {
         {ItemId.WheatSeed, 1 },
         {ItemId.PotatoSeed, 4 },
@@ -50,6 +58,40 @@ public class ShopComponent : MonoBehaviour
         {ItemId.Pumpkin, 30},
     };
 
+    void Start()
+    {
+        foreach (Transform child in itemList.transform)
+        {
+            itemObjects.Add(child.gameObject);
+        }
+        RenderSeedDetails();
+        RenderQuantity();
+        RenderTotalPrice();
+
+        audioSource = GetComponent<AudioSource>();
+        GetComponent<InteractionTriggerComponent>().interactionCallback = ToogleShop;
+        SetShopEnabled(false);
+    }
+
+    void Update()
+    {
+        RenderTotalPrice();
+    }
+
+    public void ToogleShop(PlayerComponent player)
+    {
+        SetShopEnabled(!shopUiObject.activeSelf);
+    }
+
+    public void SetShopEnabled(bool newState)
+    {
+        shopUiObject.SetActive(newState);
+
+        if (newState)
+        {
+            audioSource.PlayOneShot(openShopSound);
+        }
+    }
 
     public void BuyItem(ItemId itemId, int quantity, InventoryComponent inventoryToBeSaved)
     {
@@ -61,6 +103,8 @@ public class ShopComponent : MonoBehaviour
 
         inventoryToBeSaved.AddItem(itemId, quantity);
         GameManager.Instance.UpdateMoney(-totalPrice);
+
+        audioSource.PlayOneShot(buySound);
     }
     public void SellItem(ItemId itemId, int quantity, InventoryComponent fromInventory)
     {
@@ -240,22 +284,5 @@ public class ShopComponent : MonoBehaviour
     {
         if(quantity>1) quantity--;
         RenderQuantity();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        foreach (Transform child in itemList.transform)
-        {
-            itemObjects.Add(child.gameObject);
-        }
-        RenderSeedDetails();
-        RenderQuantity();
-        RenderTotalPrice();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        RenderTotalPrice();
     }
 }

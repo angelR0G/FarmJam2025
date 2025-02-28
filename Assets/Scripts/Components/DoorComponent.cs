@@ -4,20 +4,30 @@ using UnityEngine;
 
 public class DoorComponent : MonoBehaviour
 {
+    [Header("Components")]
+    public SpriteRenderer spriteComponent;
+    public AudioSource audioSource;
+
+    [Header("Sprites")]
     public Sprite openedSprite;
     public Sprite closedSprite;
-    public SpriteRenderer spriteComponent;
 
-    [SerializeField]
+    [SerializeField, Header("Space point references")]
     private GameObject insidePoint;
     [SerializeField]
     private GameObject outsidePoint;
+
+    [Header("Sounds")]
+    public AudioClip doorOpenSound;
+    public AudioClip doorCloseSound;
 
     bool isDoorOpened = false;
 
     private void Start()
     {
         spriteComponent = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
+
         UpdateSprite();
     }
 
@@ -26,6 +36,8 @@ public class DoorComponent : MonoBehaviour
         if (collider.gameObject.GetComponent<PlayerComponent>() != null)
         {
             isDoorOpened = true;
+
+            audioSource.PlayOneShot(doorOpenSound);
 
             UpdateSprite();
         }
@@ -36,6 +48,8 @@ public class DoorComponent : MonoBehaviour
         if (collider.gameObject.GetComponent<PlayerComponent>() != null)
         {
             isDoorOpened = false;
+
+            audioSource.PlayOneShot(doorCloseSound);
 
             UpdateSprite();
             UpdateMapVisibility(collider.transform.position);
