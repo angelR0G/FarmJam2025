@@ -15,7 +15,7 @@ public class WaterSourceComponent : MonoBehaviour
     {
         if (player.wateringState.GetFillPorcentage() < 1)
         {
-            DialogueSystem.Instance.DisplayDialogue(new Dialogue("I can fill my watering can here."));
+            DialogueSystem.Instance.DisplayDialogue(new Dialogue("I can fill my watering can up here."));
         }
         else
         {
