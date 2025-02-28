@@ -34,6 +34,7 @@ public class PlayerComponent : MonoBehaviour
     [HideInInspector] public PlayerCarryingState carringState = null;
     [HideInInspector] public PlayerExtractingBloodState extractingBloodState = null;
     [HideInInspector] public PlayerSacrificingState sacrificeState = null;
+    [HideInInspector] public PlayerDisabledState disabledState = null;
 
     // Other variables
     [Header("Player properties")]
@@ -77,6 +78,7 @@ public class PlayerComponent : MonoBehaviour
         carringState = statesContainer.GetComponent<PlayerCarryingState>();
         extractingBloodState = statesContainer.GetComponent<PlayerExtractingBloodState>();
         sacrificeState = statesContainer.GetComponent<PlayerSacrificingState>();
+        disabledState = statesContainer.GetComponent<PlayerDisabledState>();
 
         ChangeState(walkingState);
 
@@ -98,6 +100,13 @@ public class PlayerComponent : MonoBehaviour
     private void FixedUpdate()
     {
         currentState.FixedUpdateState();
+    }
+
+    public void SetEnabled(bool enabled)
+    {
+        IsInteractionEnabled = enabled;
+
+        ChangeState(enabled ? walkingState : disabledState);
     }
 
     public void ChangeState(PlayerState newState)

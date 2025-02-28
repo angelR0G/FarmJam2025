@@ -12,11 +12,12 @@ public class DialogueSystem : MonoBehaviour
     List<Dialogue> queuedDialogues;
     Dialogue displayedDialogue;
     bool isDisplayingDialogue;
+    Sequence dialogueBoxSequence;
     [SerializeField]
     GameObject dialogObject;
+    AudioSource audioSource;
 
-    Sequence dialogueBoxSequence;
-    Vector3 dialogMeasures = new Vector3(340, 80, 0);
+    public AudioClip dialogueSound;
 
     void Awake()
     {
@@ -35,6 +36,8 @@ public class DialogueSystem : MonoBehaviour
         // Intial dialog box values
         dialogObject.SetActive(false);
         dialogObject.transform.GetChild(0).transform.localScale = Vector3.zero;
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     public bool DisplayDialogue(Dialogue dialogueToDisplay)
@@ -54,9 +57,8 @@ public class DialogueSystem : MonoBehaviour
 
         displayedDialogue = dialogueToDisplay;
 
-        // TODO: Update UI text
-        Debug.Log(dialogueToDisplay.text);
         dialogObject.GetComponentInChildren<TextMeshProUGUI>().text = dialogueToDisplay.text;
+        audioSource.PlayOneShot(dialogueSound);
 
         Invoke("OnDialogueDisplayTimeFinished", displayedDialogue.displayTime);
         return true;

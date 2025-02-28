@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 4
   id: 5
-  maxStack: 1
+  maxStack: 10
   itemName: Torch
   sprite: {fileID: -1142978245, guid: 535531f0d7a304a448d61b40cfbb8bb7, type: 3}
