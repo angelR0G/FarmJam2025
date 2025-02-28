@@ -217,11 +217,15 @@ public class InventoryComponent : StorageComponent
 
     public void UnequipItem()
     {
+        if (blockInventory) return;
+
         activeItemIndex = -1;
     }
 
     public void DropItem()
     {
+        if (blockInventory) return;
+
         if (activeItemIndex < TOOLS_SLOTS || activeItemIndex >= storageSize || items[activeItemIndex].item == null)
             return;
 

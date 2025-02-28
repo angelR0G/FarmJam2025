@@ -14,8 +14,8 @@ public class ShopComponent : MonoBehaviour
     [SerializeField] private GameObject objectQuantity;
     [SerializeField] private GameObject objectTotalCost;
     [SerializeField] private GameObject objectTextButtonConfirm;
-    [SerializeField] private GameObject objectPlayer;
     [SerializeField] private GameObject shopUiObject;
+    private PlayerComponent player;
 
     private List<GameObject> itemObjects = new List<GameObject>();
     public int currentTab = 0;
@@ -69,7 +69,7 @@ public class ShopComponent : MonoBehaviour
         RenderTotalPrice();
 
         audioSource = GetComponent<AudioSource>();
-        GetComponent<InteractionTriggerComponent>().interactionCallback = ToogleShop;
+        GetComponent<InteractionTriggerComponent>().interactionCallback = OpenShop;
         SetShopEnabled(false);
     }
 
@@ -78,9 +78,22 @@ public class ShopComponent : MonoBehaviour
         RenderTotalPrice();
     }
 
-    public void ToogleShop(PlayerComponent player)
+    public void OpenShop(PlayerComponent p)
     {
-        SetShopEnabled(!shopUiObject.activeSelf);
+        player = p;
+
+        player.inputComponent.interactInputEvent.AddListener(CloseShop);
+        player.SetEnabled(false);
+
+        SetShopEnabled(true);
+    }
+
+    public void CloseShop()
+    {
+        player.inputComponent.interactInputEvent.RemoveListener(CloseShop);
+        player.SetEnabled(true);
+
+        SetShopEnabled(false);
     }
 
     public void SetShopEnabled(bool newState)
@@ -165,26 +178,29 @@ public class ShopComponent : MonoBehaviour
 
     public void RenderSellItems()
     {
-        InventoryComponent inventory = objectPlayer.GetComponent<PlayerComponent>().inventory;
-        List<ItemSlot> itemsInventory = inventory.GetAllItems();
-        for (int i = 0; i < itemObjects.Count; i++)
+        List<ItemSlot> itemsInventory = player.inventory.GetAllItems();
+        int uiObjectIndex = 0;
+        for (int i = InventoryComponent.TOOLS_SLOTS; i < itemObjects.Count; i++)
         {
-            if (i < itemsInventory.Count/2 && itemsInventory[i + 5].item!= null)
+            if (itemsInventory[i].item != null && sellItemsValue.ContainsKey(itemsInventory[i].item.Id))
             {
-                itemObjects[i].SetActive(true);
-                Transform itemImage = itemObjects[i].transform.GetChild(0);
-                Transform itemName = itemObjects[i].transform.GetChild(1);
-                Transform itemPrice = itemObjects[i].transform.GetChild(2);
-                ItemData itemData = ItemFactory.GetItemData(itemsInventory[i+5].item.Id);
+                itemObjects[uiObjectIndex].SetActive(true);
+                Transform itemImage = itemObjects[uiObjectIndex].transform.GetChild(0);
+                Transform itemName = itemObjects[uiObjectIndex].transform.GetChild(1);
+                Transform itemPrice = itemObjects[uiObjectIndex].transform.GetChild(2);
+                ItemData itemData = ItemFactory.GetItemData(itemsInventory[i].item.Id);
 
                 itemImage.GetComponent<Image>().sprite = itemData.sprite;
                 itemName.GetComponent<TextMeshProUGUI>().text = itemData.itemName;
-                itemPrice.GetComponent<TextMeshProUGUI>().text = sellItemsValue[itemsInventory[i+5].item.Id].ToString();
+                itemPrice.GetComponent<TextMeshProUGUI>().text = sellItemsValue[itemsInventory[i].item.Id].ToString();
+
+                uiObjectIndex++;
             }
-            else
-            {
-                itemObjects[i].SetActive(false);
-            }
+        }
+
+        for (int i= uiObjectIndex; i < itemObjects.Count; i++)
+        { 
+            itemObjects[i].SetActive(false);
         }
     }
     public void RenderQuantity()
@@ -226,6 +242,10 @@ public class ShopComponent : MonoBehaviour
                 objectTextButtonConfirm.GetComponent<TextMeshProUGUI>().text = "Sell";
                 break;
         }
+
+        quantity = 1;
+        currentItem = ItemId.Default;
+        RenderQuantity();
     }
 
 
@@ -240,10 +260,12 @@ public class ShopComponent : MonoBehaviour
                 currentItem = shopItemsList[pos];
                 break;
             case 2:
-                InventoryComponent inventory = objectPlayer.GetComponent<PlayerComponent>().inventory;
-                currentItem = inventory.GetAllItems()[pos+5].item.Id;
+                currentItem = player.inventory.GetAllItems()[pos+InventoryComponent.TOOLS_SLOTS].item.Id;
                 break;
         }
+
+        quantity = 1;
+        RenderQuantity();
     }
 
     public void BuyItemInterface()
@@ -252,10 +274,10 @@ public class ShopComponent : MonoBehaviour
         {
             case 0:
             case 1:
-                BuyItem(currentItem, quantity, objectPlayer.GetComponent<PlayerComponent>().inventory);
+                BuyItem(currentItem, quantity, player.inventory);
                 break;
             case 2:
-                SellItem(currentItem, quantity, objectPlayer.GetComponent<PlayerComponent>().inventory);
+                SellItem(currentItem, quantity, player.inventory);
                 break;
         }
         
@@ -264,6 +286,8 @@ public class ShopComponent : MonoBehaviour
     public void addQuantity()
     {
         ItemData itemData = ItemFactory.GetItemData(currentItem);
+        if (itemData == null) return;
+
         switch (currentTab)
         {
             case 0:
@@ -272,8 +296,7 @@ public class ShopComponent : MonoBehaviour
                 if (quantity < itemData.maxStack) quantity++;
                 break;
             case 2:
-                InventoryComponent inventory = objectPlayer.GetComponent<PlayerComponent>().inventory;
-                if (quantity < inventory.GetItemQuantity(currentItem)) quantity++;
+                if (quantity < player.inventory.GetItemQuantity(currentItem)) quantity++;
                 break;
         }
         

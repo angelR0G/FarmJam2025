@@ -13,12 +13,24 @@ public class MapComponent : MonoBehaviour
     private List<Tilemap> topTilemaps = new List<Tilemap>();
     [SerializeField]
     private Tilemap groundTilemap = null;
+    [SerializeField]
+    private GameObject shadowCasters;
 
     public static MapComponent Instance;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        ResetGameManager();
+    }
+
+    public void ResetGameManager()
+    {
+        SetTopTilemapsVisibility(false);
     }
 
     public Vector3 GetPositionAlignedToTileset(Vector3 pos)
@@ -86,5 +98,7 @@ public class MapComponent : MonoBehaviour
         {
             DOTween.To(() => t.color, (c) => t.color = c, newColor, 0.7f);
         }
+
+        shadowCasters.SetActive(!newVisibility);
     }
 }
