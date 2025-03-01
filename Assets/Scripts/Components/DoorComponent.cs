@@ -16,6 +16,8 @@ public class DoorComponent : MonoBehaviour
     private GameObject insidePoint;
     [SerializeField]
     private GameObject outsidePoint;
+    [SerializeField]
+    private bool fadeTopLayers = true;
 
     [Header("Sounds")]
     public AudioClip doorOpenSound;
@@ -52,7 +54,9 @@ public class DoorComponent : MonoBehaviour
             audioSource.PlayOneShot(doorCloseSound);
 
             UpdateSprite();
-            UpdateMapVisibility(collider.transform.position);
+
+            if (fadeTopLayers)
+                UpdateMapVisibility(collider.transform.position);
         }
     }
 
