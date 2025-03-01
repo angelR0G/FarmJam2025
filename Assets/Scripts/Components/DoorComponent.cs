@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class DoorComponent : MonoBehaviour
 {
     [Header("Components")]
     public SpriteRenderer spriteComponent;
     public AudioSource audioSource;
+
+    [Header("Events")]
+    public UnityEvent onEnterPlace;
+    public UnityEvent onExitPlace;
 
     [Header("Sprites")]
     public Sprite openedSprite;
@@ -55,8 +60,16 @@ public class DoorComponent : MonoBehaviour
 
             UpdateSprite();
 
-            if (fadeTopLayers)
-                UpdateMapVisibility(collider.transform.position);
+            bool isPlayerOutside = IsOutside(collider.transform.position);
+
+            if (fadeTopLayers) {
+                UpdateMapVisibility(isPlayerOutside);
+            }
+
+            if (isPlayerOutside)
+                onExitPlace.Invoke();
+            else
+                onEnterPlace.Invoke();
         }
     }
 
@@ -65,11 +78,16 @@ public class DoorComponent : MonoBehaviour
         spriteComponent.sprite = isDoorOpened ? openedSprite : closedSprite;
     }
 
-    private void UpdateMapVisibility(Vector3 playerPos)
+    private void UpdateMapVisibility(bool newVisibility)
+    {
+        MapComponent.Instance.SetTopTilemapsVisibility(newVisibility);
+    }
+
+    private bool IsOutside(Vector3 playerPos)
     {
         float distanceToInside = (insidePoint.transform.position - playerPos).sqrMagnitude;
         float distanceToOutside = (outsidePoint.transform.position - playerPos).sqrMagnitude;
 
-        MapComponent.Instance.SetTopTilemapsVisibility(distanceToOutside <= distanceToInside);
+        return distanceToOutside <= distanceToInside;
     }
 }
