@@ -90,7 +90,7 @@ public class EnemyManager : MonoBehaviour
 
         foreach (StalkerEnemyComponent stalker in stalkersList)
         {
-            randomIndex = GetRandomIndex(stalkersCount, spawnedPositionsIndexes);
+            randomIndex = GetRandomIndex(stalkerSpawns.Count, spawnedPositionsIndexes);
             stalker.Spawn(stalkerSpawns[randomIndex]);
             spawnedPositionsIndexes.Add(randomIndex);
         }
@@ -99,8 +99,9 @@ public class EnemyManager : MonoBehaviour
 
         foreach (CorrosiveEnemyComponent corrosive in corrosivesList)
         {
-            randomIndex = GetRandomIndex(corrosivesCount, spawnedPositionsIndexes);
+            randomIndex = GetRandomIndex(corrosiveSpawns.Count, spawnedPositionsIndexes);
             corrosive.Spawn(corrosiveSpawns[randomIndex]);
+            corrosive.originPosition = corrosiveSpawns[randomIndex];
             spawnedPositionsIndexes.Add(randomIndex);
         }
 
@@ -108,7 +109,7 @@ public class EnemyManager : MonoBehaviour
 
         foreach (AmbusherEnemyComponent ambusher in ambushersList)
         {
-            randomIndex = GetRandomIndex(ambushersCount, spawnedPositionsIndexes);
+            randomIndex = GetRandomIndex(ambusherSpawns.Count, spawnedPositionsIndexes);
             ambusher.Spawn(ambusherSpawns[randomIndex]);
             spawnedPositionsIndexes.Add(randomIndex);
         }
