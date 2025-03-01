@@ -188,8 +188,8 @@ MonoBehaviour:
   sprite: {fileID: 0}
   body: {fileID: 0}
   spriteMask: {fileID: 0}
+  healthComponent: {fileID: 0}
   enemyTarget: {fileID: 0}
-  healthComp: {fileID: 0}
   enemyCollider: {fileID: 0}
   attackComponent: {fileID: 0}
   animator: {fileID: 0}
@@ -202,7 +202,7 @@ MonoBehaviour:
   teleportState: {fileID: 0}
   dyingState: {fileID: 0}
   targetTimeInLight: 0
-  corpseSprite: {fileID: 0}
+  corpseSprite: {fileID: -1686882989, guid: 35b15ca29b7e48d429e7db4c905fb0cc, type: 3}
   bloodAmount: 800
   wingSound: {fileID: 8300000, guid: c4112b1e2606877489e788710226c2a6, type: 3}
 --- !u!58 &5708310758190453611
@@ -280,10 +280,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  maxHealth: 700
+  maxHealth: 500
   onDamageEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 756774411672922199}
+        m_TargetAssemblyTypeName: UnityEngine.SpriteRenderer, UnityEngine
+        m_MethodName: set_flipY
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &8643003365364744475
 MonoBehaviour:
   m_ObjectHideFlags: 0

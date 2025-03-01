@@ -6,7 +6,6 @@ public class NightmareEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
-    public HealthComponent healthComp;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComponent;
     public Animator animator;
@@ -34,7 +33,6 @@ public class NightmareEnemyComponent : EnemyComponent
     void Start()
     {
         // Get components
-        healthComp = GetComponent<HealthComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
@@ -53,7 +51,7 @@ public class NightmareEnemyComponent : EnemyComponent
         initialState = teleportState;
         ChangeState(teleportState);
 
-        healthComp.onDieCallback = OnDie;
+        healthComponent.onDieCallback = OnDie;
         lightDetector.enterLight.AddListener(OnEnterLight);
         lightDetector.exitLight.AddListener(OnExitLight);
     }
@@ -83,7 +81,7 @@ public class NightmareEnemyComponent : EnemyComponent
         }
         else
         {
-            GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Ambusher, corpseSprite);
+            GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Nightmare, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
             Deactivate(false);
         }

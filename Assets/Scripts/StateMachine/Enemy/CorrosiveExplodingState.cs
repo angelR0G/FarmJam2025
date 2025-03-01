@@ -14,7 +14,7 @@ public class CorrosiveExplodingState : CorrosiveState
     public override void EnterState()
     {
         // Prevents dying during the animation
-        enemy.healthComp.RestoreHealth(100);
+        enemy.healthComponent.RestoreFullHealth();
 
         enemy.enemyCollider.enabled = false;
 

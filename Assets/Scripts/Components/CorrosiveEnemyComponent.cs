@@ -6,7 +6,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
-    public HealthComponent healthComp;
     public CircleCollider2D enemyCollider;
     public Animator animator;
     public AudioSource audioSource;
@@ -32,7 +31,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
     void Start()
     {
         // Get components
-        healthComp = GetComponent<HealthComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
@@ -50,7 +48,7 @@ public class CorrosiveEnemyComponent : EnemyComponent
         initialState = idleState;
         ChangeState(idleState);
 
-        healthComp.onDieCallback = Die;
+        healthComponent.onDieCallback = Die;
         originPosition = transform.position;
     }
 

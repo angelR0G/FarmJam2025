@@ -84,7 +84,7 @@ public class StalkerWanderState : StalkerState
 
     private void MoveToTarget()
     {
-        if (hasReachedTarget || enemy.healthComp.IsStunned())
+        if (hasReachedTarget || enemy.healthComponent.IsStunned())
             return;
 
         // Check if it is in the target position

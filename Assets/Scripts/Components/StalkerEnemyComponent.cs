@@ -8,7 +8,6 @@ public class StalkerEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
-    public HealthComponent healthComp;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComp;
     public Animator animator;
@@ -35,7 +34,6 @@ public class StalkerEnemyComponent : EnemyComponent
     void Start()
     {
         // Get components
-        healthComp = GetComponent<HealthComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
@@ -55,7 +53,7 @@ public class StalkerEnemyComponent : EnemyComponent
         initialState = wanderState;
         ChangeState(wanderState);
 
-        healthComp.onDieCallback = OnDie;
+        healthComponent.onDieCallback = OnDie;
     }
 
     // Update is called once per frame

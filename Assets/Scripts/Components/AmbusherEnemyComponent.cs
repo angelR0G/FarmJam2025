@@ -6,7 +6,6 @@ public class AmbusherEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
-    public HealthComponent healthComp;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComponent;
     public Animator animator;
@@ -32,7 +31,6 @@ public class AmbusherEnemyComponent : EnemyComponent
     void Start()
     {
         // Get components
-        healthComp = GetComponent<HealthComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
@@ -49,7 +47,7 @@ public class AmbusherEnemyComponent : EnemyComponent
         initialState = hidingState;
         ChangeState(hidingState);
 
-        healthComp.onDieCallback = OnDie;
+        healthComponent.onDieCallback = OnDie;
     }
 
     // Update is called once per frame

@@ -8,6 +8,7 @@ public class EnemyComponent : MonoBehaviour
     public SpriteRenderer sprite;
     public Rigidbody2D body;
     public SpriteMask spriteMask;
+    public HealthComponent healthComponent;
     public IState initialState;
     public IState currentState;
     protected bool deactivated = false;
@@ -18,6 +19,7 @@ public class EnemyComponent : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         body = GetComponent<Rigidbody2D>();
         spriteMask = GetComponent<SpriteMask>();
+        healthComponent = GetComponent<HealthComponent>();
 
         sprite.color = new Color(1, 1, 1, 0);
     }
@@ -43,6 +45,7 @@ public class EnemyComponent : MonoBehaviour
         transform.position = spawnPosition;
         
         deactivated = false;
+        healthComponent.RestoreFullHealth();
 
         gameObject.SetActive(true);
         sprite.DOFade(1f, 1f);
