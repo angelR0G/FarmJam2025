@@ -14,7 +14,7 @@ public class AmbusherAttackingState : AmbusherState
 
     public override void EnterState()
     {
-        attackDirection = (enemy.attackTarget.transform.position - transform.position).normalized;
+        attackDirection = (enemy.enemyTarget.transform.position - transform.position).normalized;
 
         // Updates attack values to start attacking in a new direction
         enemy.attackComponent.UpdateDamageArea(0.16f, 0.3f, Vector2.SignedAngle(Vector2.right, attackDirection));

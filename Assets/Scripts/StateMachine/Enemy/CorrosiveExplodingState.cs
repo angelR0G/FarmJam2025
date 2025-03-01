@@ -34,7 +34,7 @@ public class CorrosiveExplodingState : CorrosiveState
     {
         if (playerHit) return;
 
-        PlayerComponent player = GetPlayerInsideRange(EPXLOSION_RANGE);
+        PlayerComponent player = enemy.GetPlayerInRange(EPXLOSION_RANGE);
         if (player != null)
         {
             player.healthComponent.LooseHealth(explosionDamage);

@@ -9,7 +9,6 @@ public class StalkerEnemyComponent : EnemyComponent
     // Components
     [Header("Components")]
     public HealthComponent healthComp;
-    public Rigidbody2D body;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComp;
     public Animator animator;
@@ -29,7 +28,6 @@ public class StalkerEnemyComponent : EnemyComponent
 
     // Other properties
     [Header("Enemy properties")]
-    public GameObject attackTarget;
     public Sprite corpseSprite;
     public int bloodAmount = 150;
 
@@ -75,58 +73,6 @@ public class StalkerEnemyComponent : EnemyComponent
         if (currentState == (dieState as IState)) return;
 
         base.ChangeState(newState);
-    }
-
-    public bool IsGameObjectInSight(GameObject obj, float maxDistance = -1)
-    {
-        if (obj == null) return false;
-
-        Vector2 vectorToObject = obj.transform.position - transform.position;
-
-        if (maxDistance > 0 && vectorToObject.magnitude > maxDistance) return false;
-
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, vectorToObject.normalized, vectorToObject.magnitude);
-
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.collider.isTrigger || hit.collider.gameObject == gameObject || hit.collider.gameObject == obj.gameObject) continue;
-
-            // Another object's collision is in the line of sight
-            return false;
-        }
-
-        return true;
-    }
-
-    public Vector3 GetAvoidanceDirection(Vector3 targetDirection, float rayDistance, List<GameObject> ignoreObjects)
-    {
-        Vector3 leftAvoid = Vector3.zero;
-        Vector3 rightAvoid = Vector3.zero;
-
-        // Left raycast
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Quaternion.Euler(0, 0, 30f) * targetDirection, rayDistance);
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.collider.isTrigger || ignoreObjects.Contains(hit.collider.gameObject)) continue;
-
-            leftAvoid += Quaternion.Euler(0, 0, -90) * targetDirection * 1f * (1 - (hit.distance/rayDistance));
-        }
-
-        // Right raycast
-        hits = Physics2D.RaycastAll(transform.position, Quaternion.Euler(0, 0, -30f) * targetDirection, rayDistance);
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.collider.isTrigger || ignoreObjects.Contains(hit.collider.gameObject)) continue;
-
-            rightAvoid += Quaternion.Euler(0, 0, 90) * targetDirection * 1f * (1 - (hit.distance / rayDistance));
-        }
-
-        return leftAvoid.sqrMagnitude >= rightAvoid.sqrMagnitude ? leftAvoid : rightAvoid;
-    }
-
-    public void FlipSprite(bool fliped)
-    {
-        sprite.flipX = fliped;
     }
 
     private void OnDie()

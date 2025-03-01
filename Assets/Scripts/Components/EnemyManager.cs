@@ -48,7 +48,8 @@ public class EnemyManager : MonoBehaviour
         gameManager.nightEnd += DeactivateMonsters;
         gameManager.hourChanged += EnableNightmareSpawn;
 
-        playerReference.GetComponent<SanityComponent>().onInsane.AddListener(SpawnNightmare);
+        playerReference.sanityComponent.onInsane.AddListener(SpawnNightmareIfPossible);
+        playerReference.onExitSafeArea.AddListener(SpawnNightmareIfPossible);
     }
 
     private void CreateMonstersPool()
@@ -78,7 +79,7 @@ public class EnemyManager : MonoBehaviour
         }
 
         nightmareEnemy = Instantiate(nightmarePrefab, transform).GetComponent<NightmareEnemyComponent>();
-        nightmareEnemy.GetComponent<NightmareEnemyComponent>().attackTarget = playerReference.gameObject;
+        nightmareEnemy.GetComponent<NightmareEnemyComponent>().enemyTarget = playerReference;
         nightmareEnemy.gameObject.SetActive(false);
     }
 
@@ -115,8 +116,9 @@ public class EnemyManager : MonoBehaviour
         nightmareAlreadySpawnedTonight = false;
     }
 
-    private void SpawnNightmare()
+    private void SpawnNightmareIfPossible()
     {
+        if (!playerReference.sanityComponent.IsInsane() || playerReference.IsSafe()) return;
         if (nightmareAlreadySpawnedTonight || !canNightmareSpawn) return;
 
         nightmareEnemy.Spawn(nightmareSpawn);
@@ -169,10 +171,7 @@ public class EnemyManager : MonoBehaviour
         if (hour == 22)
         {
             canNightmareSpawn = true;
-            if (playerReference.GetComponent<SanityComponent>().IsInsane())
-            {
-                SpawnNightmare();
-            }
+            SpawnNightmareIfPossible();
         }
     }
 }

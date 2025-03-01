@@ -22,7 +22,7 @@ public class CorrosiveChargingState : CorrosiveState
 
     public override void FixedUpdateState()
     {
-        if (GetTargetDistance() > DETECTION_RANGE) 
+        if (enemy.GetDistanceToTarget() > DETECTION_RANGE) 
         {
             enemy.ChangeState(enemy.followState);
         }

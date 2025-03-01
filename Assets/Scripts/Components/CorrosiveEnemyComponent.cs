@@ -7,7 +7,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
     // Components
     [Header("Components")]
     public HealthComponent healthComp;
-    public Rigidbody2D body;
     public CircleCollider2D enemyCollider;
     public Animator animator;
     public AudioSource audioSource;
@@ -26,7 +25,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
     // Other properties
     [Header("Enemy properties")]
     public Vector3 originPosition;
-    public GameObject followTarget;
     public Sprite corpseSprite;
     public int bloodAmount = 80;
 
@@ -71,11 +69,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
         if (currentState == (dyingState as IState)) return;
 
         base.ChangeState(newState);
-    }
-
-    public void FlipSprite(bool fliped)
-    {
-        sprite.flipX = fliped;
     }
 
     private void Die()

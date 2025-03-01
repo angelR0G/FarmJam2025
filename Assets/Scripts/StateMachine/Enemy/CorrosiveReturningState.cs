@@ -18,7 +18,7 @@ public class CorrosiveReturningState : CorrosiveState
         }
         else
         {
-            MoveTo(enemy.originPosition, RETURNING_SPEED);
+            enemy.MoveTo(enemy.originPosition, RETURNING_SPEED, true);
             CheckPlayerInsideDetectionRange();
         }
     }

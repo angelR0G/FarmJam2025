@@ -38,13 +38,20 @@ public class PlayerComponent : MonoBehaviour
 
     // Other variables
     [Header("Player properties")]
-    private bool isInteractionEnabled = true;
     public Vector2 facingDirection = Vector2.down;
-    private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
+    [SerializeField]
+    private int safeAreasCount = 0;
+    [Header("Events")]
     public UnityAction onAnimFinished;
     public UnityAction onAnimEvent;
+    public UnityEvent onEnterSafeArea;
+    public UnityEvent onExitSafeArea;
+    [Header("Sounds")]
     public AudioClip painSound;
     public AudioClip pillSound;
+
+    private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
+    private bool isInteractionEnabled = true;
 
     public bool IsInteractionEnabled {  
         get { return isInteractionEnabled; } 
@@ -54,9 +61,23 @@ public class PlayerComponent : MonoBehaviour
         } 
     }
 
+    public int SafeAreasCount
+    {
+        get { return safeAreasCount; }
+        set
+        {
+            int previousValue = safeAreasCount;
+            safeAreasCount = value;
 
-    // Start is called before the first frame update
-    void Start()
+            if (previousValue <= 0 && value >= 1)
+                onEnterSafeArea.Invoke();
+            else if (previousValue >= 1 && value <= 0)
+                onExitSafeArea.Invoke();
+        }
+    }
+
+
+    private void Awake()
     {
         // Get components
         inputComponent = GetComponent<InputComponent>();
@@ -79,7 +100,11 @@ public class PlayerComponent : MonoBehaviour
         extractingBloodState = statesContainer.GetComponent<PlayerExtractingBloodState>();
         sacrificeState = statesContainer.GetComponent<PlayerSacrificingState>();
         disabledState = statesContainer.GetComponent<PlayerDisabledState>();
+    }
 
+    // Start is called before the first frame update
+    void Start()
+    {
         ChangeState(walkingState);
 
         // Bind inputs
@@ -232,6 +257,11 @@ public class PlayerComponent : MonoBehaviour
                 .Join(interactionKeySprite.DOFade(0f, 0.15f).SetDelay(0.25f))
                 .AppendCallback(() => interactionKeySprite.enabled = false);
         }
+    }
+
+    public bool IsSafe()
+    {
+        return safeAreasCount > 0;
     }
 
     private void PlaySoundRequested()

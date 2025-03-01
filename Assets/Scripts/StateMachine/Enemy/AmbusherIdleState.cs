@@ -14,6 +14,13 @@ public class AmbusherIdleState : AmbusherState
 
     public override void EnterState()
     {
+        if (enemy.enemyTarget == null || enemy.enemyTarget.IsSafe())
+        {
+            enemy.ChangeState(enemy.hidingState);
+            return;
+        }
+
+
         if (enemy.hidden)
         {
             enemy.hidden = false;
@@ -29,11 +36,17 @@ public class AmbusherIdleState : AmbusherState
         }
 
         attackTimer = 0;
+        enemy.enemyTarget.onEnterSafeArea.AddListener(OnTargetEnterSafeArea);
+    }
+
+    public override void ExitState()
+    {
+        enemy.enemyTarget.onEnterSafeArea.RemoveListener(OnTargetEnterSafeArea);
     }
 
     public override void UpdateState()
     {
-        Vector3 targetVector = enemy.attackTarget.transform.position - transform.position;
+        Vector3 targetVector = enemy.enemyTarget.transform.position - transform.position;
         if (targetVector.x > 0) enemy.FlipSprite(true);
         else if (targetVector.x < 0) enemy.FlipSprite(false);
 
@@ -49,7 +62,7 @@ public class AmbusherIdleState : AmbusherState
             // When attack has charged enough, player must be exposed for a short amount of time before attacking
             if (attackTimer < attackReadyTime)
                 attackTimer = Mathf.Min(attackTimer + Time.deltaTime, attackReadyTime);
-            else if (IsTargetInSight())
+            else if (enemy.IsGameObjectInSight(enemy.enemyTarget.gameObject))
                 attackTimer += Time.deltaTime;
             else
                 attackTimer = attackReadyTime;
@@ -59,22 +72,8 @@ public class AmbusherIdleState : AmbusherState
         }
     }
 
-    public bool IsTargetInSight()
+    private void OnTargetEnterSafeArea()
     {
-        if (enemy.attackTarget == null) return false;
-
-        Vector2 vectorToObject = enemy.attackTarget.transform.position - transform.position;
-
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, vectorToObject.normalized, vectorToObject.magnitude);
-
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.collider.isTrigger || hit.collider.gameObject == enemy.gameObject || hit.collider.gameObject == enemy.attackTarget) continue;
-
-            // Another object's collision is in the line of sight
-            return false;
-        }
-
-        return true;
+        enemy.ChangeState(enemy.hidingState);
     }
 }

@@ -29,11 +29,11 @@ public class AmbusherHidingState : AmbusherState
 
     public override void FixedUpdateState()
     {
-        PlayerComponent player = GetPlayerInsideRange(ACTIVATION_RANGE);
+        PlayerComponent player = enemy.GetPlayerInRange(ACTIVATION_RANGE);
 
         if (player != null)
         {
-            enemy.attackTarget = player.gameObject;
+            enemy.enemyTarget = player;
             enemy.ChangeState(enemy.idleState);
         }
     }

@@ -19,57 +19,13 @@ public class NightmareState : MonoBehaviour, IState
 
     public virtual void FixedUpdateState() { }
 
-    protected Vector3 GetAvoidanceDirection(Vector3 targetDirection, float rayDistance)
-    {
-        Vector3 leftAvoid = Vector3.zero;
-        Vector3 rightAvoid = Vector3.zero;
-        List<GameObject> ignoredObjects = new List<GameObject> {enemy.gameObject, enemy.attackTarget};
-
-        // Left raycast
-        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Quaternion.Euler(0, 0, 30f) * targetDirection, rayDistance);
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.collider.isTrigger || ignoredObjects.Contains(hit.collider.gameObject)) continue;
-
-            leftAvoid += Quaternion.Euler(0, 0, -90) * targetDirection * 1f * (1 - (hit.distance / rayDistance));
-        }
-
-        // Right raycast
-        hits = Physics2D.RaycastAll(transform.position, Quaternion.Euler(0, 0, -30f) * targetDirection, rayDistance);
-        foreach (RaycastHit2D hit in hits)
-        {
-            if (hit.collider.isTrigger || ignoredObjects.Contains(hit.collider.gameObject)) continue;
-
-            rightAvoid += Quaternion.Euler(0, 0, 90) * targetDirection * 1f * (1 - (hit.distance / rayDistance));
-        }
-
-        return leftAvoid.sqrMagnitude >= rightAvoid.sqrMagnitude ? leftAvoid : rightAvoid;
-    }
-
-    protected void MoveTo(Vector3 direction, float speed)
-    {
-        // Obstacle detection
-        Vector3 avoidVector = GetAvoidanceDirection(direction, speed);
-        direction = (direction + avoidVector).normalized;
-
-        enemy.body.MovePosition(enemy.transform.position + direction * speed * Time.fixedDeltaTime);
-
-        if (direction.x > 0) enemy.FlipSprite(true);
-        else if (direction.x < 0) enemy.FlipSprite(false);
-    }
-
     protected bool IsTargetInLight()
     {
         LightDetectorComponent targetLightDetector;
 
-        if (enemy.attackTarget == null || !enemy.attackTarget.TryGetComponent<LightDetectorComponent>(out targetLightDetector))
+        if (enemy.enemyTarget == null || !enemy.enemyTarget.TryGetComponent<LightDetectorComponent>(out targetLightDetector))
             return true;
 
         return targetLightDetector.IsInsideLight();
-    }
-
-    protected float GetDistanceToTarget()
-    {
-        return enemy.attackTarget != null ? Vector3.Distance(enemy.attackTarget.transform.position, transform.position) : 0f;
     }
 }

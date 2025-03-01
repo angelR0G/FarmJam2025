@@ -37,7 +37,7 @@ public class StalkerStalkState : StalkerState
             UpdateOrientation();
 
             inSightCheckTimeout += 0.15f;
-            if (!enemy.IsGameObjectInSight(enemy.attackTarget, STALK_MAX_DISTANCE))
+            if (!enemy.IsGameObjectInSight(enemy.enemyTarget.gameObject, STALK_MAX_DISTANCE))
             {
                 enemy.ChangeState(enemy.wanderState);
                 return;
@@ -54,7 +54,7 @@ public class StalkerStalkState : StalkerState
 
     public void UpdateOrientation()
     {
-        Vector3 targetDirection = enemy.attackTarget.transform.position - transform.position;
+        Vector3 targetDirection = enemy.enemyTarget.transform.position - transform.position;
 
         if (targetDirection.x > 0) enemy.FlipSprite(true);
         else if (targetDirection.x < 0) enemy.FlipSprite(false);

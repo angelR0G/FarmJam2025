@@ -14,7 +14,7 @@ public class NightmareFlyingState : NightmareState
 
     public override void EnterState()
     {
-        if (enemy.attackTarget == null)
+        if (enemy.enemyTarget == null || enemy.enemyTarget.IsSafe())
         {
             enemy.ChangeState(enemy.avoidState);
         }
@@ -25,12 +25,15 @@ public class NightmareFlyingState : NightmareState
             enemy.SetWingSoundEnabled(true);
             enemy.audioSource.clip = idleSound;
             Invoke("MakeRandomNoise", Random.Range(5f, 8f));
+
+            enemy.enemyTarget.onEnterSafeArea.AddListener(OnTargetEnterSafeArea);
         }
     }
 
     public override void ExitState()
     {
         CancelInvoke("MakeRandomNoise");
+        enemy.enemyTarget.onEnterSafeArea.RemoveListener(OnTargetEnterSafeArea);
     }
 
     public override void UpdateState()
@@ -48,19 +51,19 @@ public class NightmareFlyingState : NightmareState
         }
         else
         {
-            Vector3 targetVector = enemy.attackTarget.transform.position - transform.position;
+            float targetDistance = enemy.GetDistanceToTarget();
 
-            if (targetVector.magnitude < DISTANCE_TO_ATTACK)
+            if (targetDistance < DISTANCE_TO_ATTACK)
             {
                 enemy.ChangeState(enemy.attackState);
             }
-            else if (targetVector.magnitude > DISTANCE_TO_TELEPORT)
+            else if (targetDistance > DISTANCE_TO_TELEPORT)
             {
                 enemy.ChangeState(enemy.teleportState);
             }
             else
             {
-                MoveTo(targetVector.normalized, enemy.lightDetector.IsInsideLight() ? FLYING_SPEED_IN_LIGHT : FLYING_SPEED);
+                enemy.MoveTo(enemy.enemyTarget.transform.position, enemy.lightDetector.IsInsideLight() ? FLYING_SPEED_IN_LIGHT : FLYING_SPEED, true);
             }
         }
     }
@@ -73,5 +76,10 @@ public class NightmareFlyingState : NightmareState
         enemy.audioSource.Play();
 
         Invoke("MakeRandomNoise", Random.Range(5f, 8f));
+    }
+
+    private void OnTargetEnterSafeArea()
+    {
+        enemy.ChangeState(enemy.avoidState);
     }
 }

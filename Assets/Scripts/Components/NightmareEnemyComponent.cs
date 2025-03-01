@@ -7,7 +7,6 @@ public class NightmareEnemyComponent : EnemyComponent
     // Components
     [Header("Components")]
     public HealthComponent healthComp;
-    public Rigidbody2D body;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComponent;
     public Animator animator;
@@ -26,7 +25,6 @@ public class NightmareEnemyComponent : EnemyComponent
 
     // Other properties
     [Header("Enemy properties")]
-    public GameObject attackTarget;
     public float targetTimeInLight = 0;
     public Sprite corpseSprite;
     public int bloodAmount = 800;
@@ -102,21 +100,21 @@ public class NightmareEnemyComponent : EnemyComponent
     private void OnEnterLight()
     {
         animator.SetFloat("AnimSpeed", 0.3f);
+
+        if (currentState == flyingState as IState || currentState == avoidState as IState)
+            SetWingSoundEnabled(true);
     }
 
     private void OnExitLight()
     {
         animator.SetFloat("AnimSpeed", 0.75f);
+        if (currentState == flyingState as IState || currentState == avoidState as IState)
+            SetWingSoundEnabled(true);
     }
 
     public void Disappear()
     {
         Deactivate();
-    }
-
-    public void FlipSprite(bool fliped)
-    {
-        sprite.flipX = fliped;
     }
 
     public void SetWingSoundEnabled(bool newState)
@@ -125,7 +123,7 @@ public class NightmareEnemyComponent : EnemyComponent
 
         if (newState)
         {
-            InvokeRepeating("PlayWingSound", 0f, 0.5f);
+            InvokeRepeating("PlayWingSound", 0f, lightDetector.IsInsideLight() ? 1f : 0.5f);
         }
     }
 
