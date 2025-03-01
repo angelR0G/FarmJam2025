@@ -39,7 +39,7 @@ public class FarmyardComponent : MonoBehaviour
         {
             if (t.HasFood)
             {
-                troughPosition = t.transform.position;
+                troughPosition = t.GetContainerPosition();
                 return true;
             }
         }

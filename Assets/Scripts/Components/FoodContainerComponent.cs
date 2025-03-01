@@ -23,7 +23,11 @@ public class FoodContainerComponent : MonoBehaviour
 
     public void FillContainer(PlayerComponent player)
     {
-        if (hasFood) return;
+        if (hasFood) 
+        {
+            DialogueSystem.Instance.DisplayDialogue(new Dialogue("The trough is full."));
+            return;
+        }
 
         ItemComponent equipedItem = player.inventory.GetEquipedItem();
         if (equipedItem != null && equipedItem.Type == ItemType.Crop)
@@ -31,6 +35,10 @@ public class FoodContainerComponent : MonoBehaviour
             hasFood = true;
             player.inventory.RemoveEquipedItem();
             UpdateContainerState();
+        }
+        else
+        {
+            DialogueSystem.Instance.DisplayDialogue(new Dialogue("I can put crops here to feed the pigs."));
         }
     }
 
@@ -43,6 +51,13 @@ public class FoodContainerComponent : MonoBehaviour
     public void UpdateContainerState()
     {
         sprite.sprite = hasFood ? filledSprite : emptySprite;
-        trigger.enabled = !hasFood;
+    }
+
+    public Vector3 GetContainerPosition()
+    {
+        Vector3 pos = transform.position;
+        pos.y += sprite.size.y / 2;
+
+        return pos;
     }
 }
