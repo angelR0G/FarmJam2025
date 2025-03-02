@@ -63,12 +63,12 @@ public class WardrobeComponent : MonoBehaviour
         dialogSys.DisplayDialogue(new Dialogue("Rise and shine, farmer.", 2, true, 2f));
         dialogSys.QueueDialogue(new Dialogue("I want you to bring me more seeds.", 2, true, 3f));
         dialogSys.QueueDialogue(new Dialogue("I am not talking about common seeds, of course. You know what I mean.", 2, true, 5f));
-        dialogSys.QueueDialogue(new Dialogue("Once you have them, plant them and make them grow. ", 2, true, 4f));
+        dialogSys.QueueDialogue(new Dialogue("Once you have them, plant them and make them grow.", 2, true, 4f));
         dialogSys.QueueDialogue(new Dialogue("Remember that they require a special soil and nutrients to grow.", 2, true, 5f));
-        dialogSys.QueueDialogue(new Dialogue("Everything is prepared in the barn.", 2, true, 3f));
+        dialogSys.QueueDialogue(new Dialogue("The barn is ready. You know what to do to obtain the seeds.", 2, true, 4f));
         dialogSys.QueueDialogue(new Dialogue("Beware the darkness, \"friend\".", 2, true, 4f));
 
-        float dialoguesTime = 26f;
+        float dialoguesTime = 27f;
 
         // Enable player after all dialogues have finished
         Invoke("CloseWardrobe", dialoguesTime);
