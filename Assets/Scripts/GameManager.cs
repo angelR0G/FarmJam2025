@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Light2D))]
 public class GameManager : MonoBehaviour
@@ -51,6 +52,8 @@ public class GameManager : MonoBehaviour
     public int currentMoney = 0;
     private Light2D sunSource;
 
+    [Header("Pause menu")]
+    [SerializeField] private GameObject pauseMenu;
     private void Awake()
     {
         if (Instance != null)
@@ -60,7 +63,7 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
 
         CalculateDayNightCycleTimes();
         ResetTimeToFirstDay();
@@ -165,4 +168,6 @@ public class GameManager : MonoBehaviour
     {
         if (Instance == this) Instance = null;
     }
+
+    
 }

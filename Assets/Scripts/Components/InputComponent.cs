@@ -27,6 +27,7 @@ public class InputComponent : MonoBehaviour
     public UnityEvent equipPreviousItemEvent;
     public UnityEvent unequipItemEvent;
     public UnityEvent dropItemEvent;
+    public UnityEvent openPauseMenu;
 
     public void LateUpdate()
     {
@@ -156,6 +157,15 @@ public class InputComponent : MonoBehaviour
         if (value.isPressed)
         {
             unequipItemEvent.Invoke();
+        }
+    }
+
+    public void OnOpenPause(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            openPauseMenu.Invoke();
+            PauseMenuManager.Instance.OpenPauseMenu();
         }
     }
 }
