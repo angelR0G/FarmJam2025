@@ -57,6 +57,11 @@ public class SanityComponent : MonoBehaviour
         sanity = Math.Min(sanity + s, maxSanity);
     }
 
+    public void RestoreFullSanity()
+    {
+        sanity = maxSanity;
+    }
+
     public int GetSanity() { return sanity; }
     public float GetSanityPercentage() { return Math.Clamp((float)sanity / (float)maxSanity, 0, 1); }
 

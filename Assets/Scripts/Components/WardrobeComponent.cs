@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,9 +15,13 @@ public class WardrobeComponent : MonoBehaviour
     SpriteRenderer sprite;
     Animator animator;
 
-    private bool initialCutsceneShown = false;
+    private bool initialCutsceneShown = true;
     private bool isWardrobeOpen = false;
+
     private PlayerComponent player;
+    private List<ItemId> seedsOffered = new List<ItemId>();
+
+    public GameObject rewardPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +33,7 @@ public class WardrobeComponent : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         PlayerComponent p;
+        CropComponent crop;
         if (collision.TryGetComponent<PlayerComponent>(out p))
         {
             player = p;
@@ -39,13 +45,41 @@ public class WardrobeComponent : MonoBehaviour
             else
             {
                 OpenWardrobe();
+                Invoke("ShowHint", 15f);
+            }
+        }
+
+        if (collision.GetComponent<CarriableComponent>() && collision.TryGetComponent<CropComponent>(out crop))
+        {
+            CancelInvoke("ShowHint");
+
+            // Disable crop's colliders
+            foreach (Collider2D col in crop.GetComponents<Collider2D>())
+                col.enabled = false;
+
+            if (seedsOffered.Contains(crop.collectableCrop))
+            {
+                RepeatedSeedOfferedCutscene(crop);
+            }
+            else
+            {
+                seedsOffered.Add(crop.collectableCrop);
+
+                if (seedsOffered.Count == 4)
+                {
+                    LastSeedOfferedCutscene(crop);
+                }
+                else
+                {
+                    NewSeedOfferedCutscene(crop);
+                }
             }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject == player.gameObject)
+        if (player != null && collision.gameObject == player.gameObject)
         {
             CloseWardrobe();
             player = null;
@@ -77,6 +111,133 @@ public class WardrobeComponent : MonoBehaviour
         initialCutsceneShown = true;
     }
 
+    private void NewSeedOfferedCutscene(CropComponent crop)
+    {
+        player?.SetEnabled(false);
+
+        DialogueSystem dialogSys = DialogueSystem.Instance;
+        dialogSys.DisplayDialogue(new Dialogue("Good job, farmer. You never disappoint me.", 2, true, 4f));
+
+        Sequence sequence = DOTween.Sequence().SetRecyclable(true).SetDelay(4f);
+        sequence.Append(crop.gameObject.transform.DOMove(transform.position, 0.5f).SetRecyclable(true))
+            .AppendCallback(PlayTakeAnimation)
+            .Append(crop.sprite.DOFade(0, 1f).SetRecyclable(true));
+
+        float dialoguesTime = 6f;
+        if (seedsOffered.Count == 1)
+        {
+            sequence.InsertCallback(dialoguesTime, () =>
+            {
+                dialogSys.QueueDialogue(new Dialogue("However, this is just the beginning. My needs are far from over...", 2, true, 4f));
+                dialogSys.QueueDialogue(new Dialogue("Different bodies, different seeds. That's how it works.", 2, true, 3f));
+            });
+            dialoguesTime += 7f;
+        }
+        else if(seedsOffered.Count == 2)
+        {
+            sequence.InsertCallback(dialoguesTime, () => 
+                dialogSys.QueueDialogue(new Dialogue("This is not enough, though. Bring me more.", 2, true, 3f))
+            );
+            dialoguesTime += 3f;
+        }
+        else if(seedsOffered.Count == 3)
+        {
+            sequence.InsertCallback(dialoguesTime, () =>
+                dialogSys.QueueDialogue(new Dialogue("We are almost done. One last seed, and you'll finally have what you seek.", 2, true, 5f))
+            );
+            dialoguesTime += 5f;
+        }
+        sequence.AppendCallback(() => dialogSys.QueueDialogue(new Dialogue("I'll be waiting... don't keep me waiting too long.", 2, true, 3f)));
+        dialoguesTime += 3f;
+
+        // Enable player after all dialogues have finished
+        Invoke("EnablePlayer", dialoguesTime);
+    }
+
+    private void RepeatedSeedOfferedCutscene(CropComponent crop)
+    {
+        player?.SetEnabled(false);
+
+        DialogueSystem dialogSys = DialogueSystem.Instance;
+        dialogSys.DisplayDialogue(new Dialogue("Mmmm... You already brought me this seed, farmer.", 2, true, 4f));
+        dialogSys.QueueDialogue(new Dialogue("I'll take it, but I was expecting new seeds. Different bodies, different seeds. That's how it works.", 2, true, 5f));
+
+        Sequence sequence = DOTween.Sequence().SetRecyclable(true).SetDelay(9f);
+        sequence.Append(crop.gameObject.transform.DOMove(transform.position, 0.5f).SetRecyclable(true))
+            .AppendCallback(PlayTakeAnimation)
+            .Append(crop.sprite.DOFade(0, 1f).SetRecyclable(true));
+
+        float dialoguesTime = 11f;
+        if (player != null)
+        {
+            float health = player.healthComponent.GetHealthPercentage();
+            float sanity = player.sanityComponent.GetSanityPercentage();
+            if (health < 1f || sanity < 1f)
+            {
+                if (player.healthComponent.GetHealthPercentage() <= player.sanityComponent.GetSanityPercentage())
+                {
+                    sequence.InsertCallback(dialoguesTime, () =>
+                    {
+                        dialogSys.QueueDialogue(new Dialogue("You don't look well. Let me help you with that.", 2, true, 4f));
+                        player.healthComponent.RestoreFullHealth();
+                    });
+                    dialoguesTime += 4f;
+                }
+                else
+                {
+                    sequence.InsertCallback(dialoguesTime, () =>
+                    {
+                        dialogSys.QueueDialogue(new Dialogue("It seems like you're losing your mind. Let me help you with that.", 2, true, 5f));
+                        player.sanityComponent.RestoreFullSanity();
+                    });
+                    dialoguesTime += 5f;
+                }
+            }
+        }
+        sequence.AppendCallback(() => dialogSys.QueueDialogue(new Dialogue("Next time, bring me new seeds. I'll be waiting for you.", 2, true, 4f)));
+        dialoguesTime += 4f;
+
+        // Enable player after all dialogues have finished
+        Invoke("EnablePlayer", dialoguesTime);
+    }
+
+    public void LastSeedOfferedCutscene(CropComponent crop)
+    {
+        player?.SetEnabled(false);
+
+        DialogueSystem dialogSys = DialogueSystem.Instance;
+        dialogSys.DisplayDialogue(new Dialogue("Good job, \"friend\". You brought me all the seeds I was looking for.", 2, true, 5f));
+
+        Sequence sequence = DOTween.Sequence().SetRecyclable(true).SetDelay(4f);
+        sequence.Append(crop.gameObject.transform.DOMove(transform.position, 0.5f).SetRecyclable(true))
+            .AppendCallback(PlayTakeAnimation)
+            .Append(crop.sprite.DOFade(0, 1f).SetRecyclable(true));
+
+        float dialoguesTime = 7f;
+        sequence.InsertCallback(dialoguesTime, () =>
+        {
+            dialogSys.QueueDialogue(new Dialogue("Now it's my turn. I'll give you what you've been searching for, what you lost long ago.", 2, true, 6f));
+            dialogSys.QueueDialogue(new Dialogue("Here is your reward.", 2, true, 2f));
+        });
+        dialoguesTime += 8f;
+
+        sequence.InsertCallback(dialoguesTime, () =>
+        {
+            Instantiate(rewardPrefab, transform.position - new Vector3(0, -0.16f), Quaternion.identity);
+        });
+        dialoguesTime += 3f;
+
+        sequence.InsertCallback(dialoguesTime, () =>
+        {
+            dialogSys.QueueDialogue(new Dialogue("Goodbye, farmer. We'll meet again... very soon.", 2, true, 4f));
+            Invoke("CloseWardrobe", 3f);
+        });
+        dialoguesTime += 5f;
+
+        // Enable player after all dialogues have finished
+        Invoke("EnablePlayer", dialoguesTime);
+    }
+
     public void EnablePlayer()
     {
         if (player != null)
@@ -89,9 +250,6 @@ public class WardrobeComponent : MonoBehaviour
 
         isWardrobeOpen = true;
         animator.SetTrigger("Open");
-
-        if (initialCutsceneShown)
-            Invoke("ShowHint", 15f);
     }
 
     private void CloseWardrobe()
@@ -102,6 +260,11 @@ public class WardrobeComponent : MonoBehaviour
         animator.SetTrigger("Close");
 
         CancelInvoke("ShowHint");
+    }
+
+    private void PlayTakeAnimation()
+    {
+        animator.SetTrigger("Take");
     }
 
     private void ShowHint()
