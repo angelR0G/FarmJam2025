@@ -38,7 +38,7 @@ public class NightmareAttackState : NightmareState
 
     public void Attack()
     {
-        Vector2 attackDirection = enemy.attackTarget.transform.position - transform.position;
+        Vector2 attackDirection = enemy.enemyTarget.transform.position - transform.position;
         enemy.attackComponent.UpdateDamageArea(ATTACK_RANGE, ATTACK_WIDTH, Vector2.SignedAngle(Vector2.right, attackDirection));
         enemy.attackComponent.SetDamageAreaActive(true);
     }

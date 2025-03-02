@@ -10,6 +10,12 @@ public class NightmareTeleportState : NightmareState
 
     public override void EnterState()
     {
+        if (enemy.enemyTarget == null || enemy.enemyTarget.IsSafe())
+        {
+            enemy.ChangeState(enemy.avoidState);
+            return;
+        }
+
         enemy.transform.position = GetTeleportPosition();
         enemy.animator.SetTrigger("Teleport");
 
@@ -28,19 +34,14 @@ public class NightmareTeleportState : NightmareState
 
     private Vector3 GetTeleportPosition()
     {
-        List<GameObject> ignoredObjects = new List<GameObject> { enemy.gameObject, enemy.attackTarget };
-        Vector2 teleportDirection = Vector2.right;
+        List<GameObject> ignoredObjects = new List<GameObject> { enemy.gameObject, enemy.enemyTarget.gameObject };
         
-        // Cast to player to get the movement direction
-        PlayerComponent player;
-        if (enemy.attackTarget.TryGetComponent<PlayerComponent>(out player))
-        {
-            teleportDirection = enemy.attackTarget.GetComponent<PlayerComponent>().facingDirection;
-        }
+        // Get target's movement direction
+        Vector2 teleportDirection = enemy.enemyTarget.facingDirection;
 
         // Do a raycast to find the closest collision that blocks teleport
         float teleportDistance = MAX_DISTANCE_FROM_TARGET;
-        RaycastHit2D[] hits = Physics2D.RaycastAll(enemy.attackTarget.transform.position, teleportDirection, MAX_DISTANCE_FROM_TARGET);
+        RaycastHit2D[] hits = Physics2D.RaycastAll(enemy.enemyTarget.transform.position, teleportDirection, MAX_DISTANCE_FROM_TARGET);
         foreach (RaycastHit2D hit in hits)
         {
             if (hit.collider.isTrigger || ignoredObjects.Contains(hit.collider.gameObject)) continue;
@@ -51,6 +52,6 @@ public class NightmareTeleportState : NightmareState
 
         // Calculate the final teleport position
         Vector3 teleportOffset = new Vector3(teleportDirection.x, teleportDirection.y) * (teleportDistance - enemy.enemyCollider.radius);
-        return enemy.attackTarget.transform.position + teleportOffset;
+        return enemy.enemyTarget.transform.position + teleportOffset;
     }
 }

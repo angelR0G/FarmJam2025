@@ -15,7 +15,7 @@ public class StalkerAttackState : StalkerState
 
     public override void EnterState()
     {
-        rushDirection = (enemy.attackTarget.transform.position - transform.position).normalized;
+        rushDirection = (enemy.enemyTarget.transform.position - transform.position).normalized;
         rushDistance = MAX_RUSH_DISTANCE;
 
         enemy.attackComp.UpdateDamageArea(0.1f, enemy.enemyCollider.radius * 2, Vector2.SignedAngle(Vector2.right, rushDirection));

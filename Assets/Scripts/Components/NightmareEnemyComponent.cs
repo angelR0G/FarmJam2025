@@ -6,8 +6,6 @@ public class NightmareEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
-    public HealthComponent healthComp;
-    public Rigidbody2D body;
     public CircleCollider2D enemyCollider;
     public AttackComponent attackComponent;
     public Animator animator;
@@ -26,7 +24,6 @@ public class NightmareEnemyComponent : EnemyComponent
 
     // Other properties
     [Header("Enemy properties")]
-    public GameObject attackTarget;
     public float targetTimeInLight = 0;
     public Sprite corpseSprite;
     public int bloodAmount = 800;
@@ -36,7 +33,6 @@ public class NightmareEnemyComponent : EnemyComponent
     void Start()
     {
         // Get components
-        healthComp = GetComponent<HealthComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
@@ -55,7 +51,7 @@ public class NightmareEnemyComponent : EnemyComponent
         initialState = teleportState;
         ChangeState(teleportState);
 
-        healthComp.onDieCallback = OnDie;
+        healthComponent.onDieCallback = OnDie;
         lightDetector.enterLight.AddListener(OnEnterLight);
         lightDetector.exitLight.AddListener(OnExitLight);
     }
@@ -85,7 +81,7 @@ public class NightmareEnemyComponent : EnemyComponent
         }
         else
         {
-            GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Ambusher, corpseSprite);
+            GameObject corpse = ItemFactory.CreateCorpse(transform.position, bloodAmount, CorpseCreature.Nightmare, corpseSprite);
             corpse.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
             Deactivate(false);
         }
@@ -102,21 +98,21 @@ public class NightmareEnemyComponent : EnemyComponent
     private void OnEnterLight()
     {
         animator.SetFloat("AnimSpeed", 0.3f);
+
+        if (currentState == flyingState as IState || currentState == avoidState as IState)
+            SetWingSoundEnabled(true);
     }
 
     private void OnExitLight()
     {
         animator.SetFloat("AnimSpeed", 0.75f);
+        if (currentState == flyingState as IState || currentState == avoidState as IState)
+            SetWingSoundEnabled(true);
     }
 
     public void Disappear()
     {
         Deactivate();
-    }
-
-    public void FlipSprite(bool fliped)
-    {
-        sprite.flipX = fliped;
     }
 
     public void SetWingSoundEnabled(bool newState)
@@ -125,7 +121,7 @@ public class NightmareEnemyComponent : EnemyComponent
 
         if (newState)
         {
-            InvokeRepeating("PlayWingSound", 0f, 0.5f);
+            InvokeRepeating("PlayWingSound", 0f, lightDetector.IsInsideLight() ? 1f : 0.5f);
         }
     }
 

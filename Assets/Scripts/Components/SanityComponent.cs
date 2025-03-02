@@ -39,11 +39,12 @@ public class SanityComponent : MonoBehaviour
 
     public void LooseSanity(int s)
     {
-        if (sanity - s <= 0)
-        {
-            if (sanity > 0) onInsane.Invoke();
+        if (sanity == 0) return;
 
+        if (s >= sanity)
+        {
             sanity = 0;
+            onInsane.Invoke();
         }
         else
         {

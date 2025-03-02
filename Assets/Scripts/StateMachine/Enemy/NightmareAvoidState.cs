@@ -12,7 +12,7 @@ public class NightmareAvoidState : NightmareState
     private float targetTimeOutsideLight = 0f;
     public override void EnterState()
     {
-        if (enemy.attackTarget == null)
+        if (enemy.enemyTarget == null)
         {
             enemy.Disappear();
         }
@@ -40,14 +40,14 @@ public class NightmareAvoidState : NightmareState
         else
         {
             // Escapes from target until it can disappear
-            if (GetDistanceToTarget() > DISAPPEAR_DISTANCE)
+            if (enemy.GetDistanceToTarget() > DISAPPEAR_DISTANCE)
             {
                 enemy.Disappear();
             }
             else
             {
-                Vector3 avoidVector = transform.position - enemy.attackTarget.transform.position;
-                MoveTo(avoidVector.normalized, enemy.lightDetector.IsInsideLight() ? AVOID_SPEED_IN_LIGHT : AVOID_SPEED);
+                Vector3 avoidVector = transform.position - enemy.enemyTarget.transform.position;
+                enemy.MoveTo(transform.position + avoidVector, enemy.lightDetector.IsInsideLight() ? AVOID_SPEED_IN_LIGHT : AVOID_SPEED, true);
             }
         }
     }

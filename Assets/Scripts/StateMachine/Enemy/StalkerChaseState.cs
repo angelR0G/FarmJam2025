@@ -16,16 +16,28 @@ public class StalkerChaseState : StalkerState
 
     public override void EnterState()
     {
+        if (enemy.enemyTarget == null || enemy.enemyTarget.IsSafe())
+        {
+            enemy.ChangeState(enemy.wanderState);
+            return;
+        }
+
         speed = 0.0f;
         attackCooldown = CHASE_TIME_BEFORE_ATTACK;
 
         enemy.animator.SetTrigger("Chase");
+        enemy.enemyTarget.onEnterSafeArea.AddListener(OnTargetEnterSafeArea);
+    }
+
+    public override void ExitState()
+    {
+        enemy.enemyTarget.onEnterSafeArea.RemoveListener(OnTargetEnterSafeArea);
     }
 
     public override void FixedUpdateState()
     {
-        Vector3 vectorToTarget = enemy.attackTarget.transform.position - transform.position;
-        float distanceToTarget = vectorToTarget.magnitude;
+        Vector3 vectorToTarget = enemy.enemyTarget.transform.position - transform.position;
+        float distanceToTarget = enemy.GetDistanceToTarget();
 
         // Depending on the distance to the target, change its behaviour
         if (attackCooldown <= 0 && distanceToTarget < ATTACK_DISTANCE && CanAmbushPlayer())
@@ -34,7 +46,7 @@ public class StalkerChaseState : StalkerState
         }
         else if (distanceToTarget < CHASE_MAX_DISTANCE)
         {
-            MoveTo(vectorToTarget.normalized);
+            ChaseTarget();
         }
         else
         {
@@ -53,11 +65,13 @@ public class StalkerChaseState : StalkerState
         if (attackCooldown > 0) attackCooldown -= Time.deltaTime;
     }
 
-    private void MoveTo(Vector3 direction)
+    private void ChaseTarget()
     {
+        Vector3 targetDirection = (enemy.enemyTarget.transform.position - transform.position).normalized;
+
         // Obstacle detection
-        Vector3 avoidVector = enemy.GetAvoidanceDirection(direction, speed, new List<GameObject> { enemy.gameObject, enemy.attackTarget });
-        direction = (direction + avoidVector).normalized;
+        Vector3 avoidVector = enemy.GetAvoidanceDirection(targetDirection, speed);
+        targetDirection = (targetDirection + avoidVector).normalized;
 
         float targetSpeed = avoidVector.sqrMagnitude <= 0 ? MAX_SPEED : AVOIDING_OBSTACLE_MAX_SPEED;
 
@@ -67,15 +81,15 @@ public class StalkerChaseState : StalkerState
         else if (speed > targetSpeed)
             speed = Mathf.Max(speed - ACCELERATION * Time.fixedDeltaTime, targetSpeed);
 
-        enemy.body.MovePosition(enemy.transform.position + direction * speed * Time.fixedDeltaTime);
+        enemy.body.MovePosition(enemy.transform.position + targetDirection * speed * Time.fixedDeltaTime);
 
-        if (direction.x > 0) enemy.FlipSprite(true);
-        else if (direction.x < 0) enemy.FlipSprite(false);
+        if (targetDirection.x > 0) enemy.FlipSprite(true);
+        else if (targetDirection.x < 0) enemy.FlipSprite(false);
     }
 
     private bool CanAmbushPlayer(bool useSimplifiedRaycast = false)
     {
-        Vector2 attackDirection = enemy.attackTarget.transform.position - transform.position;
+        Vector2 attackDirection = (enemy.enemyTarget.transform.position - transform.position).normalized;
         RaycastHit2D[] hits;
 
         if (useSimplifiedRaycast)
@@ -87,10 +101,15 @@ public class StalkerChaseState : StalkerState
         {
             if (hit.collider.isTrigger || hit.collider.gameObject == enemy.gameObject) continue;
 
-            if (hit.collider.gameObject != enemy.attackTarget)
+            if (hit.collider.gameObject != enemy.enemyTarget.gameObject)
                 return false;
         }
 
         return true;
+    }
+
+    private void OnTargetEnterSafeArea()
+    {
+        enemy.ChangeState(enemy.wanderState);
     }
 }

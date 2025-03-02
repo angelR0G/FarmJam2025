@@ -180,7 +180,7 @@ public class ShopComponent : MonoBehaviour
     {
         List<ItemSlot> itemsInventory = player.inventory.GetAllItems();
         int uiObjectIndex = 0;
-        for (int i = InventoryComponent.TOOLS_SLOTS; i < itemObjects.Count; i++)
+        for (int i = InventoryComponent.TOOLS_SLOTS; i < player.inventory.storageSize; i++)
         {
             if (itemsInventory[i].item != null && sellItemsValue.ContainsKey(itemsInventory[i].item.Id))
             {

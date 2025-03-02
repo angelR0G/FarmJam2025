@@ -18,12 +18,4 @@ public class AmbusherState : MonoBehaviour, IState
     public virtual void UpdateState() { }
 
     public virtual void FixedUpdateState() { }
-
-    protected PlayerComponent GetPlayerInsideRange(float detectionDistance)
-    {
-        Collider2D player = Physics2D.OverlapCircle(transform.position, detectionDistance, LayerMask.GetMask("Player"));
-        PlayerComponent playerComponent = player?.GetComponent<PlayerComponent>();
-
-        return playerComponent;
-    }
 }

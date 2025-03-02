@@ -84,7 +84,7 @@ public class StalkerWanderState : StalkerState
 
     private void MoveToTarget()
     {
-        if (hasReachedTarget || enemy.healthComp.IsStunned())
+        if (hasReachedTarget || enemy.healthComponent.IsStunned())
             return;
 
         // Check if it is in the target position
@@ -95,11 +95,7 @@ public class StalkerWanderState : StalkerState
         }
         else
         {
-            Vector3 movementVector = targetVector.normalized * Mathf.Min(targetVector.magnitude, WALKING_SPEED);
-            enemy.body.velocity = movementVector;
-
-            if (movementVector.x > 0) enemy.FlipSprite(true);
-            else if (movementVector.x < 0) enemy.FlipSprite(false);
+            enemy.MoveTo(targetPosition, Mathf.Min(targetVector.magnitude, WALKING_SPEED), false);
         }
     }
 
@@ -117,15 +113,13 @@ public class StalkerWanderState : StalkerState
 
     private void CheckPlayerInSight()
     {
-        // Check if the player is in its detection range
-        Collider2D player = Physics2D.OverlapCircle(transform.position, DETECTION_DISTANCE, LayerMask.GetMask("Player"));
+        PlayerComponent player = enemy.GetPlayerInRange(DETECTION_DISTANCE);
 
-        if (player == null || player.GetComponent<PlayerComponent>() == null) return;
-
-        if (!enemy.IsGameObjectInSight(player.gameObject)) return;
-
-        enemy.attackTarget = player.gameObject;
-        enemy.ChangeState(enemy.stalkState);
+        if (player != null && enemy.IsGameObjectInSight(player.gameObject))
+        {
+            enemy.enemyTarget = player;
+            enemy.ChangeState(enemy.stalkState);
+        }
     }
 
     private void MakeRandomNoise()

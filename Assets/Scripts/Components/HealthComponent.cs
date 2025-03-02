@@ -52,6 +52,11 @@ public class HealthComponent : MonoBehaviour
         health = Math.Min(health + h, maxHealth);
     }
 
+    public void RestoreFullHealth()
+    {
+        health = maxHealth;
+    }
+
     public void Kill()
     {
         health = 0;

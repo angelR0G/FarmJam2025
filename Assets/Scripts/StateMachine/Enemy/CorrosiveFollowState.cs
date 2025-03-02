@@ -12,6 +12,13 @@ public class CorrosiveFollowState : CorrosiveState
 
     public override void EnterState()
     {
+        if (enemy.enemyTarget == null || enemy.enemyTarget.IsSafe())
+        {
+            enemy.ChangeState(enemy.returningState);
+            return;
+        }
+
+
         enemy.animator.SetTrigger("StartMoving");
 
         if (enemy.audioSource.isPlaying)
@@ -20,11 +27,18 @@ public class CorrosiveFollowState : CorrosiveState
         {
             enemy.audioSource.PlayOneShot(startFollowingSound);
         }
+
+        enemy.enemyTarget.onEnterSafeArea.AddListener(OnTargetEnterSafeArea);
+    }
+
+    public override void ExitState()
+    {
+        enemy.enemyTarget.onEnterSafeArea.RemoveListener(OnTargetEnterSafeArea);
     }
 
     public override void FixedUpdateState()
     {
-        float distanceToTarget = GetTargetDistance();
+        float distanceToTarget = enemy.GetDistanceToTarget();
 
         if (distanceToTarget < START_EXPLOSION_DISTANCE)
         {
@@ -36,7 +50,12 @@ public class CorrosiveFollowState : CorrosiveState
         }
         else
         {
-            MoveTo(enemy.followTarget.transform.position, FOLLOW_SPEED);
+            enemy.MoveTo(enemy.enemyTarget.transform.position, FOLLOW_SPEED, true);
         }
+    }
+
+    private void OnTargetEnterSafeArea()
+    {
+        enemy.ChangeState(enemy.returningState);
     }
 }

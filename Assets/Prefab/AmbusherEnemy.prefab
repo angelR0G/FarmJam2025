@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 4586587335726813085}
   - component: {fileID: 2650896721615456288}
   - component: {fileID: 2246243118759943314}
+  - component: {fileID: 2966487232068782267}
   m_Layer: 0
   m_Name: AmbusherEnemy
   m_TagString: Untagged
@@ -107,8 +108,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
-  healthComp: {fileID: 0}
   body: {fileID: 0}
+  spriteMask: {fileID: 0}
+  enemyTarget: {fileID: 0}
+  healthComp: {fileID: 0}
   enemyCollider: {fileID: 0}
   attackComponent: {fileID: 0}
   animator: {fileID: 0}
@@ -118,7 +121,6 @@ MonoBehaviour:
   idleState: {fileID: 0}
   attackingState: {fileID: 0}
   dyingState: {fileID: 0}
-  attackTarget: {fileID: 0}
   attackProjectile: {fileID: 140519934315967634}
   corpseSprite: {fileID: -434781688, guid: 441a80157e650ac41a596a9eb05e02d9, type: 3}
   bloodAmount: 120
@@ -351,6 +353,58 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   minDistance: 1
   maxDistance: 4
+  volumeMultiplier: 1
+--- !u!331 &2966487232068782267
+SpriteMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6780782006218790767}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 2
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 15d0c3709176029428a0da2f8cecf0b5, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 0}
+  m_MaskAlphaCutoff: 0.5
+  m_FrontSortingLayerID: 0
+  m_BackSortingLayerID: 0
+  m_FrontSortingLayer: 0
+  m_BackSortingLayer: 0
+  m_FrontSortingOrder: 0
+  m_BackSortingOrder: 0
+  m_IsCustomRangeActive: 0
+  m_SpriteSortPoint: 1
 --- !u!1 &6833512899187708388
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,8 +6,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
 {
     // Components
     [Header("Components")]
-    public HealthComponent healthComp;
-    public Rigidbody2D body;
     public CircleCollider2D enemyCollider;
     public Animator animator;
     public AudioSource audioSource;
@@ -26,7 +24,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
     // Other properties
     [Header("Enemy properties")]
     public Vector3 originPosition;
-    public GameObject followTarget;
     public Sprite corpseSprite;
     public int bloodAmount = 80;
 
@@ -34,7 +31,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
     void Start()
     {
         // Get components
-        healthComp = GetComponent<HealthComponent>();
         body = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<CircleCollider2D>();
@@ -52,7 +48,7 @@ public class CorrosiveEnemyComponent : EnemyComponent
         initialState = idleState;
         ChangeState(idleState);
 
-        healthComp.onDieCallback = Die;
+        healthComponent.onDieCallback = Die;
         originPosition = transform.position;
     }
 
@@ -71,11 +67,6 @@ public class CorrosiveEnemyComponent : EnemyComponent
         if (currentState == (dyingState as IState)) return;
 
         base.ChangeState(newState);
-    }
-
-    public void FlipSprite(bool fliped)
-    {
-        sprite.flipX = fliped;
     }
 
     private void Die()

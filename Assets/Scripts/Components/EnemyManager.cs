@@ -48,7 +48,8 @@ public class EnemyManager : MonoBehaviour
         gameManager.nightEnd += DeactivateMonsters;
         gameManager.hourChanged += EnableNightmareSpawn;
 
-        playerReference.GetComponent<SanityComponent>().onInsane.AddListener(SpawnNightmare);
+        playerReference.sanityComponent.onInsane.AddListener(SpawnNightmareIfPossible);
+        playerReference.onExitSafeArea.AddListener(SpawnNightmareIfPossible);
     }
 
     private void CreateMonstersPool()
@@ -78,7 +79,7 @@ public class EnemyManager : MonoBehaviour
         }
 
         nightmareEnemy = Instantiate(nightmarePrefab, transform).GetComponent<NightmareEnemyComponent>();
-        nightmareEnemy.GetComponent<NightmareEnemyComponent>().attackTarget = playerReference.gameObject;
+        nightmareEnemy.GetComponent<NightmareEnemyComponent>().enemyTarget = playerReference;
         nightmareEnemy.gameObject.SetActive(false);
     }
 
@@ -89,7 +90,7 @@ public class EnemyManager : MonoBehaviour
 
         foreach (StalkerEnemyComponent stalker in stalkersList)
         {
-            randomIndex = GetRandomIndex(stalkersCount, spawnedPositionsIndexes);
+            randomIndex = GetRandomIndex(stalkerSpawns.Count, spawnedPositionsIndexes);
             stalker.Spawn(stalkerSpawns[randomIndex]);
             spawnedPositionsIndexes.Add(randomIndex);
         }
@@ -98,8 +99,9 @@ public class EnemyManager : MonoBehaviour
 
         foreach (CorrosiveEnemyComponent corrosive in corrosivesList)
         {
-            randomIndex = GetRandomIndex(corrosivesCount, spawnedPositionsIndexes);
+            randomIndex = GetRandomIndex(corrosiveSpawns.Count, spawnedPositionsIndexes);
             corrosive.Spawn(corrosiveSpawns[randomIndex]);
+            corrosive.originPosition = corrosiveSpawns[randomIndex];
             spawnedPositionsIndexes.Add(randomIndex);
         }
 
@@ -107,7 +109,7 @@ public class EnemyManager : MonoBehaviour
 
         foreach (AmbusherEnemyComponent ambusher in ambushersList)
         {
-            randomIndex = GetRandomIndex(ambushersCount, spawnedPositionsIndexes);
+            randomIndex = GetRandomIndex(ambusherSpawns.Count, spawnedPositionsIndexes);
             ambusher.Spawn(ambusherSpawns[randomIndex]);
             spawnedPositionsIndexes.Add(randomIndex);
         }
@@ -115,8 +117,9 @@ public class EnemyManager : MonoBehaviour
         nightmareAlreadySpawnedTonight = false;
     }
 
-    private void SpawnNightmare()
+    private void SpawnNightmareIfPossible()
     {
+        if (!playerReference.sanityComponent.IsInsane() || playerReference.IsSafe()) return;
         if (nightmareAlreadySpawnedTonight || !canNightmareSpawn) return;
 
         nightmareEnemy.Spawn(nightmareSpawn);
@@ -169,10 +172,7 @@ public class EnemyManager : MonoBehaviour
         if (hour == 22)
         {
             canNightmareSpawn = true;
-            if (playerReference.GetComponent<SanityComponent>().IsInsane())
-            {
-                SpawnNightmare();
-            }
+            SpawnNightmareIfPossible();
         }
     }
 }
