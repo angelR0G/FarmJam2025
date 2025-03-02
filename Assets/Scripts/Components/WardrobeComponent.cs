@@ -2,7 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
+using UnityEngine.Rendering.Universal;
 
 public class WardrobeComponent : MonoBehaviour
 {
@@ -15,19 +15,23 @@ public class WardrobeComponent : MonoBehaviour
     SpriteRenderer sprite;
     Animator animator;
 
-    private bool initialCutsceneShown = true;
+    private bool initialCutsceneShown = false;
     private bool isWardrobeOpen = false;
+    private bool isOfferingCompleted = false;
 
     private PlayerComponent player;
     private List<ItemId> seedsOffered = new List<ItemId>();
 
     public GameObject rewardPrefab;
+    public Light2D wardrobeLight;
 
     // Start is called before the first frame update
     void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        wardrobeLight.pointLightInnerAngle = 0f;
+        wardrobeLight.pointLightOuterAngle = 0f;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -49,14 +53,15 @@ public class WardrobeComponent : MonoBehaviour
             }
         }
 
-        if (collision.GetComponent<CarriableComponent>() && collision.TryGetComponent<CropComponent>(out crop))
+
+        if (!isOfferingCompleted && collision.GetComponent<CarriableComponent>() && collision.TryGetComponent<CropComponent>(out crop))
         {
             CancelInvoke("ShowHint");
 
             // Disable crop's colliders
             foreach (Collider2D col in crop.GetComponents<Collider2D>())
                 col.enabled = false;
-
+            
             if (seedsOffered.Contains(crop.collectableCrop))
             {
                 RepeatedSeedOfferedCutscene(crop);
@@ -67,6 +72,7 @@ public class WardrobeComponent : MonoBehaviour
 
                 if (seedsOffered.Count == 4)
                 {
+                    isOfferingCompleted = true;
                     LastSeedOfferedCutscene(crop);
                 }
                 else
@@ -223,7 +229,7 @@ public class WardrobeComponent : MonoBehaviour
 
         sequence.InsertCallback(dialoguesTime, () =>
         {
-            Instantiate(rewardPrefab, transform.position - new Vector3(0, -0.16f), Quaternion.identity);
+            Instantiate(rewardPrefab, transform.position + new Vector3(0.16f, -0.08f), Quaternion.identity);
         });
         dialoguesTime += 3f;
 
@@ -250,6 +256,9 @@ public class WardrobeComponent : MonoBehaviour
 
         isWardrobeOpen = true;
         animator.SetTrigger("Open");
+        wardrobeLight.enabled = true;
+        DOTween.To(() => wardrobeLight.pointLightInnerAngle, (v) => wardrobeLight.pointLightInnerAngle = v, 70f, 0.3f).SetDelay(0.1f).SetRecyclable(true);
+        DOTween.To(() => wardrobeLight.pointLightOuterAngle, (v) => wardrobeLight.pointLightOuterAngle = v, 120f, 0.3f).SetDelay(0.1f).SetRecyclable(true);
     }
 
     private void CloseWardrobe()
@@ -258,6 +267,9 @@ public class WardrobeComponent : MonoBehaviour
 
         isWardrobeOpen = false;
         animator.SetTrigger("Close");
+        DOTween.To(() => wardrobeLight.pointLightInnerAngle, (v) => wardrobeLight.pointLightInnerAngle = v, 0f, 0.3f).SetRecyclable(true);
+        DOTween.To(() => wardrobeLight.pointLightOuterAngle, (v) => wardrobeLight.pointLightOuterAngle = v, 0f, 0.3f)
+            .OnComplete(()=> wardrobeLight.enabled = false).SetRecyclable(true);
 
         CancelInvoke("ShowHint");
     }

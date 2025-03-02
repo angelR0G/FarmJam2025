@@ -129,8 +129,6 @@ public class PlayerComponent : MonoBehaviour
 
     public void SetEnabled(bool enabled)
     {
-        IsInteractionEnabled = enabled;
-
         ChangeState(enabled ? walkingState : disabledState);
     }
 

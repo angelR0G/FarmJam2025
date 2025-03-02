@@ -7,5 +7,11 @@ public class PlayerDisabledState : PlayerState
     public override void EnterState()
     {
         player.animator.SetTrigger("StopMoving");
+        player.IsInteractionEnabled = false;
+    }
+
+    public override void ExitState()
+    {
+        player.IsInteractionEnabled = true;
     }
 }
