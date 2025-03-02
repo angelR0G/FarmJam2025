@@ -125,7 +125,10 @@ public class ShopComponent : MonoBehaviour
         GameManager.Instance.UpdateMoney(sellItemsValue[itemId] * quantity);
 
         fromInventory.RemoveItemById(itemId, quantity);
-
+        RenderSellItems();
+        quantity = 1;
+        currentItem = ItemId.Default;
+        RenderQuantity();
     }
 
 
