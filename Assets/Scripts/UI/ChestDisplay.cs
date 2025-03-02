@@ -38,7 +38,7 @@ public class ChestDisplay : MonoBehaviour
     public void TransferItem(int pos, StorageComponent origin, StorageComponent destination)
     {
         ItemSlot slot = origin.GetItemByIndex(pos);
-        if(destination.HasSpaceFor(slot.item.Id, slot.amount)) {
+        if(slot.item != null && destination.HasSpaceFor(slot.item.Id, slot.amount)) {
             destination.AddItem(slot.item.Id, slot.amount);
             origin.RemoveItemByIndex(pos, slot.amount);
         }
