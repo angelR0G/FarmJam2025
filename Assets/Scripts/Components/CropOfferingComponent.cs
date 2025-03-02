@@ -12,6 +12,7 @@ public class CropOfferingComponent : MonoBehaviour
     void Start()
     {
         GetComponent<InteractionTriggerComponent>().interactionCallback = PlacingOffering;
+        indicator.RemoveSprite();
         indicator.SetVisibility(false);
     }
 
@@ -70,6 +71,7 @@ public class CropOfferingComponent : MonoBehaviour
     public void RemoveOffering()
     {
         expectedOffering = ItemId.Default;
+        indicator.RemoveSprite();
         indicator.SetVisibility(false);
     }
 }

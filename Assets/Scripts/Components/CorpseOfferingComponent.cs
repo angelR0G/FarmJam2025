@@ -65,6 +65,7 @@ public class CorpseOfferingComponent : MonoBehaviour
     private void RemoveCorpse()
     {
         corpseOffered = null;
+        cropOfferingAltar.indicator.RemoveSprite();
         cropOfferingAltar.indicator.SetVisibility(false);
     }
 }

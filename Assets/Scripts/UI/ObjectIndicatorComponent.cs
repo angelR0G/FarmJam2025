@@ -9,9 +9,14 @@ public class ObjectIndicatorComponent : MonoBehaviour
     public TextMeshPro quantityText;
     public GameObject indicator;
 
+    public void RemoveSprite()
+    {
+        itemSprite.sprite = null;
+    }
+
     public void SetVisibility(bool newVisibility)
     {
-        indicator.SetActive(newVisibility);
+        indicator.SetActive(newVisibility && itemSprite.sprite != null);
     }
 
     public void DisplayItem(ItemId itemId, int quantity)
