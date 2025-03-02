@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class PlayerDisabledState : PlayerState
 {
-    
+    public override void EnterState()
+    {
+        player.animator.SetTrigger("StopMoving");
+    }
 }
