@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ToolsPickerComponent : MonoBehaviour
 {
+    public UnityEvent onToolsPicked;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +25,12 @@ public class ToolsPickerComponent : MonoBehaviour
         player.inventory.AddItem(ItemId.BeanSeed, 3);
         player.inventory.AddItem(ItemId.PotatoSeed, 3);
         player.inventory.AddItem(ItemId.CarrotSeed, 3);
+
+        DialogueSystem.Instance.DisplayDialogue(new Dialogue("Alright, it's time to get started.", 1, true, 3f));
+        DialogueSystem.Instance.QueueDialogue(new Dialogue("There should be some seeds in the chest outside. I'll use those to begin.", 1, true, 5f));
+        DialogueSystem.Instance.QueueDialogue(new Dialogue("I could check the barn, but I can't do anything there now.", 1, true, 4f));
+        
+        onToolsPicked.Invoke();
 
         Destroy(gameObject);
     }

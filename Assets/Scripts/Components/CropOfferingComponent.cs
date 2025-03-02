@@ -7,10 +7,16 @@ public class CropOfferingComponent : MonoBehaviour
     private ItemId expectedOffering = ItemId.Default;
     private int requiredCropsQuantity = 0;
     public ObjectIndicatorComponent indicator;
+    public SpriteRenderer sprite;
+
+    [Header("Sprites")]
+    public Sprite emptyOfferingSprite;
+    public Sprite cropOfferedSprite;
 
     // Start is called before the first frame update
     void Start()
     {
+        sprite = GetComponent<SpriteRenderer>();
         GetComponent<InteractionTriggerComponent>().interactionCallback = PlacingOffering;
         indicator.RemoveSprite();
         indicator.SetVisibility(false);
@@ -45,6 +51,8 @@ public class CropOfferingComponent : MonoBehaviour
                     indicator.DisplayItem(expectedOffering, requiredCropsQuantity);
                 else
                     indicator.SetVisibility(false);
+
+                sprite.sprite = cropOfferedSprite;
             }
         }
     }
@@ -73,5 +81,6 @@ public class CropOfferingComponent : MonoBehaviour
         expectedOffering = ItemId.Default;
         indicator.RemoveSprite();
         indicator.SetVisibility(false);
+        sprite.sprite = emptyOfferingSprite;
     }
 }

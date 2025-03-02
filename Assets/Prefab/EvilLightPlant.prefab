@@ -49,6 +49,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2925130764653547121, guid: ac11456fc0d062f4fbff2e46c56da05b, type: 3}
+      propertyPath: collectableCrop
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2925130764653547121, guid: ac11456fc0d062f4fbff2e46c56da05b, type: 3}
       propertyPath: cropSprites.Array.data[0]
       value: 
       objectReference: {fileID: 1720807295, guid: 9c2b2159de27bce48986c8ba11fea49d, type: 3}
@@ -75,6 +79,10 @@ PrefabInstance:
     - target: {fileID: 8382104090808674180, guid: ac11456fc0d062f4fbff2e46c56da05b, type: 3}
       propertyPath: m_Name
       value: EvilLightPlant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8936254624992487276, guid: ac11456fc0d062f4fbff2e46c56da05b, type: 3}
+      propertyPath: m_SpriteTilingProperty.pivot.y
+      value: 0.125
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

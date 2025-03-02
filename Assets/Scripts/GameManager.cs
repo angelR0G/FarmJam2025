@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int nightEndHour = 6;
     [SerializeField] private int dawnDuration = 1;
     [SerializeField] private int duskDuration = 1;
+    [SerializeField] private bool startPaused = false;
 
     // Light color
     [SerializeField]
@@ -70,7 +71,6 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
-        //DontDestroyOnLoad(gameObject);
 
         CalculateDayNightCycleTimes();
         ResetTimeToFirstDay();
@@ -78,6 +78,8 @@ public class GameManager : MonoBehaviour
 
         sunSource = GetComponent<Light2D>();
         audioSource = GetComponent<AudioSource>();
+
+        PauseDayNightCycle(startPaused);
     }
 
     private void Update()
@@ -129,19 +131,25 @@ public class GameManager : MonoBehaviour
     {
         if (numHours == nightStartHour - duskDuration)
         {
-            Sequence sequence = DOTween.Sequence().SetRecyclable(true);
+            if (nightAmbience != null)
+            {
+                Sequence sequence = DOTween.Sequence().SetRecyclable(true);
 
-            sequence.Append(audioSource.DOFade(0, 10f).SetRecyclable(true))
-                .AppendCallback(() => { audioSource.clip = nightAmbience; audioSource.Play(); })
-                .Append(audioSource.DOFade(1, 10f).SetRecyclable(true)).SetDelay(duskDuration*hourLength / 2);
+                sequence.Append(audioSource.DOFade(0, 10f).SetRecyclable(true))
+                    .AppendCallback(() => { audioSource.clip = nightAmbience; audioSource.Play(); })
+                    .Append(audioSource.DOFade(1, 10f).SetRecyclable(true)).SetDelay(duskDuration*hourLength / 2);
+            }
         }
         else if (numHours == nightEndHour)
         {
-            Sequence sequence = DOTween.Sequence().SetRecyclable(true);
+            if (dayAmbience != null)
+            {
+                Sequence sequence = DOTween.Sequence().SetRecyclable(true);
 
-            sequence.Append(audioSource.DOFade(0, 10f).SetRecyclable(true))
-                .AppendCallback(() => { audioSource.clip = dayAmbience; audioSource.Play(); })
-                .Append(audioSource.DOFade(1, 10f).SetRecyclable(true)).SetDelay(dawnDuration*hourLength / 2);
+                sequence.Append(audioSource.DOFade(0, 10f).SetRecyclable(true))
+                    .AppendCallback(() => { audioSource.clip = dayAmbience; audioSource.Play(); })
+                    .Append(audioSource.DOFade(1, 10f).SetRecyclable(true)).SetDelay(dawnDuration*hourLength / 2);
+            }
         }
     }
 
