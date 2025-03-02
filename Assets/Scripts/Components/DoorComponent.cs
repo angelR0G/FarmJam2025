@@ -8,6 +8,7 @@ public class DoorComponent : MonoBehaviour
     [Header("Components")]
     public SpriteRenderer spriteComponent;
     public AudioSource audioSource;
+    public Collider2D doorCollider;
 
     [Header("Events")]
     public UnityEvent onEnterPlace;
@@ -28,6 +29,8 @@ public class DoorComponent : MonoBehaviour
     public AudioClip doorOpenSound;
     public AudioClip doorCloseSound;
 
+    [SerializeField]
+    bool isDoorBlocked = false;
     bool isDoorOpened = false;
 
     private void Start()
@@ -35,11 +38,15 @@ public class DoorComponent : MonoBehaviour
         spriteComponent = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
 
+        SetDoorBlocked(isDoorBlocked);
+
         UpdateSprite();
     }
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
+        if (isDoorBlocked) return;
+
         if (collider.gameObject.GetComponent<PlayerComponent>() != null)
         {
             isDoorOpened = true;
@@ -52,6 +59,8 @@ public class DoorComponent : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collider)
     {
+        if (isDoorBlocked) return;
+
         if (collider.gameObject.GetComponent<PlayerComponent>() != null)
         {
             isDoorOpened = false;
@@ -89,5 +98,12 @@ public class DoorComponent : MonoBehaviour
         float distanceToOutside = (outsidePoint.transform.position - playerPos).sqrMagnitude;
 
         return distanceToOutside <= distanceToInside;
+    }
+
+    public void SetDoorBlocked(bool newBlockedState)
+    {
+        isDoorBlocked = newBlockedState;
+
+        doorCollider.excludeLayers = isDoorBlocked ? new LayerMask() : LayerMask.GetMask("Player");
     }
 }

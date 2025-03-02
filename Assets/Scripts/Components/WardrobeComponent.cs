@@ -1,9 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class WardrobeComponent : MonoBehaviour
 {
+    static readonly string[] hints = {
+        "Have you any seed for me?",
+        "Have you forgotten about the seeds?",
+        "Bring me more seeds, \"friend\"."
+    };
+
     SpriteRenderer sprite;
     Animator animator;
 
@@ -31,7 +38,7 @@ public class WardrobeComponent : MonoBehaviour
             }
             else
             {
-
+                OpenWardrobe();
             }
         }
     }
@@ -47,7 +54,6 @@ public class WardrobeComponent : MonoBehaviour
 
     private void PlayInitialCutscene()
     {
-        initialCutsceneShown = true;
 
         player.SetEnabled(false);
 
@@ -57,14 +63,18 @@ public class WardrobeComponent : MonoBehaviour
         dialogSys.DisplayDialogue(new Dialogue("Rise and shine, farmer.", 2, true, 2f));
         dialogSys.QueueDialogue(new Dialogue("I want you to bring me more seeds.", 2, true, 3f));
         dialogSys.QueueDialogue(new Dialogue("I am not talking about common seeds, of course. You know what I mean.", 2, true, 5f));
-        dialogSys.QueueDialogue(new Dialogue("Remember that everything is prepared in the barn.", 2, true, 4f));
+        dialogSys.QueueDialogue(new Dialogue("Once you have them, plant them and make them grow.", 2, true, 4f));
+        dialogSys.QueueDialogue(new Dialogue("Remember that they require a special soil and nutrients to grow.", 2, true, 5f));
+        dialogSys.QueueDialogue(new Dialogue("The barn is ready. You know what to do to obtain the seeds.", 2, true, 4f));
         dialogSys.QueueDialogue(new Dialogue("Beware the darkness, \"friend\".", 2, true, 4f));
 
-        float dialoguesTime = 19f;
+        float dialoguesTime = 27f;
 
-        Invoke("CloseWardrobe", dialoguesTime);
         // Enable player after all dialogues have finished
-        Invoke("EnablePlayer", dialoguesTime);
+        Invoke("CloseWardrobe", dialoguesTime);
+        Invoke("EnablePlayer", dialoguesTime + 1f);
+
+        initialCutsceneShown = true;
     }
 
     public void EnablePlayer()
@@ -79,6 +89,9 @@ public class WardrobeComponent : MonoBehaviour
 
         isWardrobeOpen = true;
         animator.SetTrigger("Open");
+
+        if (initialCutsceneShown)
+            Invoke("ShowHint", 15f);
     }
 
     private void CloseWardrobe()
@@ -87,5 +100,14 @@ public class WardrobeComponent : MonoBehaviour
 
         isWardrobeOpen = false;
         animator.SetTrigger("Close");
+
+        CancelInvoke("ShowHint");
+    }
+
+    private void ShowHint()
+    {
+        string hint = hints[Random.Range(0, hints.Length)];
+
+        DialogueSystem.Instance.DisplayDialogue(new Dialogue(hint));
     }
 }

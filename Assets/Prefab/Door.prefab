@@ -133,14 +133,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c0a577226f7ea41a2d5ea410f3e458, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openedSprite: {fileID: 1237525225, guid: 82319b33b15faa441bf3d2873bc45bb3, type: 3}
-  closedSprite: {fileID: -1605607997, guid: 82319b33b15faa441bf3d2873bc45bb3, type: 3}
   spriteComponent: {fileID: 0}
   audioSource: {fileID: 0}
+  doorCollider: {fileID: 1605510173414277158}
+  onEnterPlace:
+    m_PersistentCalls:
+      m_Calls: []
+  onExitPlace:
+    m_PersistentCalls:
+      m_Calls: []
+  openedSprite: {fileID: 1237525225, guid: 82319b33b15faa441bf3d2873bc45bb3, type: 3}
+  closedSprite: {fileID: -1605607997, guid: 82319b33b15faa441bf3d2873bc45bb3, type: 3}
   insidePoint: {fileID: 6620414760053117325}
   outsidePoint: {fileID: 289494007462427899}
+  fadeTopLayers: 1
   doorOpenSound: {fileID: 8300000, guid: 25350c9bd3ca43e4da188df99a5cfc26, type: 3}
   doorCloseSound: {fileID: 8300000, guid: bc449977be90fd847a9d52f50580d820, type: 3}
+  isDoorBlocked: 0
 --- !u!61 &1605510173414277158
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -770,6 +770,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicator: {fileID: 7795798156259966180}
+  sprite: {fileID: 0}
+  emptyOfferingSprite: {fileID: 1640511385, guid: 23b983fc91e99854aa539c7f7d0b0151, type: 3}
+  cropOfferedSprite: {fileID: -141407990, guid: 23b983fc91e99854aa539c7f7d0b0151, type: 3}
 --- !u!1 &7599475866363608311
 GameObject:
   m_ObjectHideFlags: 0
