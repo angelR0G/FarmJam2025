@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerSacrificingState : PlayerState
 {
     public AltarComponent altar;
+    public AudioClip knifeCutSound;
 
     public override void EnterState()
     {
@@ -13,6 +14,8 @@ public class PlayerSacrificingState : PlayerState
             player.IsInteractionEnabled = false;
             player.animator.SetTrigger("Sacrifice");
             player.onAnimFinished = FinishRitual;
+
+            player.audioSource.clip = knifeCutSound;
         }
         else
         {

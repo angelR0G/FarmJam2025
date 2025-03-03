@@ -453,6 +453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   altar: {fileID: 0}
+  knifeCutSound: {fileID: 8300000, guid: fd76ddc8fab22a943b561e8f9f5a43e0, type: 3}
 --- !u!114 &2761865328311949382
 MonoBehaviour:
   m_ObjectHideFlags: 0
