@@ -13,7 +13,10 @@ public class UIEffects : MonoBehaviour
     private GameObject thunderObject;
     bool isDay = true;
     public static UIEffects Instance;
+
+    Sequence fogSequence;
     Sequence uiEffectSequence;
+
     private void Awake()
     {
         if (Instance != null)
@@ -42,6 +45,8 @@ public class UIEffects : MonoBehaviour
         fadeObject = transform.GetChild(1).transform.gameObject;
         thunderObject = transform.GetChild(2).transform.gameObject;
 
+        fogObject.GetComponent<Image>().material.SetFloat("_Opacity", 0f);
+
         SetVisibleAll(false);
 
         fadeObject.SetActive(true);
@@ -68,17 +73,49 @@ public class UIEffects : MonoBehaviour
     public void StartFog(bool start)
     {
         SetVisibleAll(false);
+        fogObject.SetActive(true);
+
         float startValue = start ? 0.0f : 1.0f;
         float endValue = start ? 1.0f : 0.0f;
         Material fog = fogObject.GetComponent<Image>().material;
-        fog.SetFloat("_Opacity", startValue);
-        fog.SetInteger("_IsDay", Convert.ToInt32(isDay));
-        uiEffectSequence = DOTween.Sequence();
-        uiEffectSequence.AppendCallback(() => fogObject.SetActive(true))
-            .Append(fog.DOFloat(endValue, "_Opacity", 2.0f))
+
+        fog.SetFloat("_IsDay", isDay ? 0f : 1f);
+
+        if (fogSequence != null && fogSequence.IsActive())
+            fogSequence.Kill();
+
+        fogSequence = DOTween.Sequence();
+        fogSequence.Append(fog.DOFloat(endValue, "_Opacity", 2.0f))
             .OnComplete(()=> fogObject.SetActive(start))
-            .OnKill(() => uiEffectSequence = null);
-        fadeObject.SetActive(false);
+            .OnKill(() => fogSequence = null);
+
+        GameManager gameManager = GameManager.Instance;
+        if (start)
+        {
+            gameManager.nightStart += DayFogToNightFog;
+            gameManager.nightEnd += NightFogToDayFog;
+        }
+        else
+        {
+            gameManager.nightStart -= DayFogToNightFog;
+            gameManager.nightEnd -= NightFogToDayFog;
+        }
+    }
+
+    public void DayFogToNightFog(object sender, int hour)
+    {
+        Material fog = fogObject.GetComponent<Image>().material;
+        float duration = GameManager.Instance.GetDuskDuration();
+
+        fog.DOFloat(1, "_IsDay", duration).SetRecyclable(true);
+    }
+
+    public void NightFogToDayFog(object sender, int hour)
+    {
+        Material fog = fogObject.GetComponent<Image>().material;
+        float duration = GameManager.Instance.GetDawnDuration();
+
+        fog.DOFloat(0, "_IsDay", duration).SetRecyclable(true);
     }
 
     public void PerformThunder()

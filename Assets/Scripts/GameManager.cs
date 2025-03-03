@@ -206,6 +206,16 @@ public class GameManager : MonoBehaviour
         return numHours >= nightStartHour || numHours < nightEndHour;
     }
 
+    public float GetDuskDuration()
+    {
+        return duskDuration * hourLength;
+    }
+
+    public float GetDawnDuration()
+    {
+        return dawnDuration * hourLength;
+    }
+
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;
