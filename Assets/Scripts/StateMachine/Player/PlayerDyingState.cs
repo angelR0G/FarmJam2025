@@ -25,6 +25,7 @@ public class PlayerDyingState : PlayerState
         LoseItemsFromInventory();
         GameManager.Instance.currentMoney = Mathf.CeilToInt(GameManager.Instance.currentMoney / 2f);
         MapComponent.Instance.SetTopTilemapsVisibility(false);
+        player.SetStepsSound(MapComponent.Instance.GetStepsSound(true));
 
         player.healthComponent.RestoreFullHealth();
         player.sanityComponent.RestoreFullSanity();

@@ -273,6 +273,17 @@ public class PlayerComponent : MonoBehaviour
         }
     }
 
+    public void SetStepsSound(AudioClip newSound)
+    {
+        walkingState.walkingSound = newSound;
+
+        if (currentState == walkingState)
+        {
+            audioSource.clip = newSound;
+            audioSource.Play();
+        }
+    }
+
     public bool IsSafe()
     {
         return safeAreasCount > 0;

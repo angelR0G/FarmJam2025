@@ -15,6 +15,9 @@ public class MapComponent : MonoBehaviour
     [SerializeField]
     private GameObject shadowCasters;
 
+    public AudioClip outsideStepsSound;
+    public AudioClip insideStepsSound;
+
     public static MapComponent Instance;
 
     private void Awake()
@@ -99,5 +102,10 @@ public class MapComponent : MonoBehaviour
         }
 
         shadowCasters.SetActive(!newVisibility);
+    }
+
+    public AudioClip GetStepsSound(bool isInsideBuilding)
+    {
+        return isInsideBuilding ? insideStepsSound : outsideStepsSound;
     }
 }

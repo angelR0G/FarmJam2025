@@ -355,7 +355,7 @@ MonoBehaviour:
   acceleration: 4
   stopAcceleration: 8
   maxSpeed: 1
-  walkingSound: {fileID: 8300000, guid: 4a6bd2e750041314e8e284197d912ea9, type: 3}
+  walkingSound: {fileID: 8300000, guid: cb87becb2c2757d4bb994f9686f28470, type: 3}
 --- !u!114 &1863546355494935491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,6 +455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   altar: {fileID: 0}
   knifeCutSound: {fileID: 8300000, guid: fd76ddc8fab22a943b561e8f9f5a43e0, type: 3}
+  thunderSound: {fileID: 8300000, guid: 133a78d5586f0a24e92fd5c0e4701f84, type: 3}
 --- !u!114 &2761865328311949382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -907,6 +908,7 @@ MonoBehaviour:
   disabledState: {fileID: 0}
   dyingState: {fileID: 0}
   facingDirection: {x: 0, y: -1}
+  spawnPosition: {x: 0, y: 0, z: 0}
   safeAreasCount: 0
   onEnterSafeArea:
     m_PersistentCalls:

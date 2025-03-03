@@ -59,6 +59,7 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     - _Fade: 0
+    - _IsDay: 1
     - _Opacity: 0
     - _QueueControl: 0
     - _QueueOffset: 0

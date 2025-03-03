@@ -6,6 +6,7 @@ public class PlayerSacrificingState : PlayerState
 {
     public AltarComponent altar;
     public AudioClip knifeCutSound;
+    public AudioClip thunderSound;
 
     public override void EnterState()
     {
@@ -27,6 +28,9 @@ public class PlayerSacrificingState : PlayerState
     {
         player.onAnimFinished = null;
         player.IsInteractionEnabled = true;
+
+        UIEffects.Instance.PerformThunder();
+        player.audioSource.PlayOneShot(thunderSound);
     }
 
     private void FinishRitual()

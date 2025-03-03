@@ -23,7 +23,7 @@ public class DoorComponent : MonoBehaviour
     [SerializeField]
     private GameObject outsidePoint;
     [SerializeField]
-    private bool fadeTopLayers = true;
+    private bool isBuildingDoor = true;
 
     [Header("Sounds")]
     public AudioClip doorOpenSound;
@@ -47,7 +47,7 @@ public class DoorComponent : MonoBehaviour
     {
         if (isDoorBlocked) return;
 
-        if (collider.gameObject.GetComponent<PlayerComponent>() != null)
+        if (collider.gameObject.TryGetComponent<PlayerComponent>(out PlayerComponent player))
         {
             isDoorOpened = true;
 
@@ -55,6 +55,11 @@ public class DoorComponent : MonoBehaviour
                 audioSource.PlayOneShot(doorOpenSound);
 
             UpdateSprite();
+
+            if (isBuildingDoor)
+            {
+                player.SetStepsSound(MapComponent.Instance.GetStepsSound(true));
+            }
         }
     }
 
@@ -62,7 +67,7 @@ public class DoorComponent : MonoBehaviour
     {
         if (isDoorBlocked) return;
 
-        if (collider.gameObject.GetComponent<PlayerComponent>() != null)
+        if (collider.gameObject.TryGetComponent<PlayerComponent>(out PlayerComponent player))
         {
             isDoorOpened = false;
 
@@ -72,13 +77,17 @@ public class DoorComponent : MonoBehaviour
             UpdateSprite();
 
             bool isPlayerOutside = IsOutside(collider.transform.position);
+            MapComponent map = MapComponent.Instance;
 
-            if (fadeTopLayers) {
-                UpdateMapVisibility(isPlayerOutside);
+            if (isBuildingDoor) {
+                map.SetTopTilemapsVisibility(isPlayerOutside);
             }
 
             if (isPlayerOutside)
+            {
                 onExitPlace.Invoke();
+                player.SetStepsSound(map.GetStepsSound(false));
+            }
             else
                 onEnterPlace.Invoke();
         }
@@ -87,11 +96,6 @@ public class DoorComponent : MonoBehaviour
     private void UpdateSprite()
     {
         spriteComponent.sprite = isDoorOpened ? openedSprite : closedSprite;
-    }
-
-    private void UpdateMapVisibility(bool newVisibility)
-    {
-        MapComponent.Instance.SetTopTilemapsVisibility(newVisibility);
     }
 
     private bool IsOutside(Vector3 playerPos)

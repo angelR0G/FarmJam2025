@@ -21,6 +21,7 @@ public class WardrobeComponent : MonoBehaviour
     private bool isWardrobeOpen = false;
     private bool isOfferingCompleted = false;
 
+    private AudioSource audioSource;
     private PlayerComponent player;
     private List<ItemId> seedsOffered = new List<ItemId>();
 
@@ -31,6 +32,7 @@ public class WardrobeComponent : MonoBehaviour
     void Start()
     {
         sprite = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         wardrobeLight.pointLightInnerAngle = 0f;
         wardrobeLight.pointLightOuterAngle = 0f;
@@ -265,6 +267,8 @@ public class WardrobeComponent : MonoBehaviour
         wardrobeLight.enabled = true;
         DOTween.To(() => wardrobeLight.pointLightInnerAngle, (v) => wardrobeLight.pointLightInnerAngle = v, 70f, 0.3f).SetDelay(0.1f).SetRecyclable(true);
         DOTween.To(() => wardrobeLight.pointLightOuterAngle, (v) => wardrobeLight.pointLightOuterAngle = v, 120f, 0.3f).SetDelay(0.1f).SetRecyclable(true);
+
+        audioSource.Play();
     }
 
     private void CloseWardrobe()
@@ -279,6 +283,8 @@ public class WardrobeComponent : MonoBehaviour
 
         DialogueSystem.Instance.textColor = Color.white;
         CancelInvoke("ShowHint");
+
+        audioSource.Play();
     }
 
     private void PlayTakeAnimation()

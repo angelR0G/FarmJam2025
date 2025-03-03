@@ -50,9 +50,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Color DAWN_COLOR = new Color(1f, 0.7158657f, 0.1745283f);
     [SerializeField] private Color DUSK_DOWN = new Color(1f, 0.7158657f, 0.1745283f);
 
-    [Header("Ambient sounds")]
+    [Header("Sounds")]
     public AudioClip dayAmbience;
     public AudioClip nightAmbience;
+    public AudioClip newDaySound;
 
     private bool isDayNightCyclePaused = false;
     public int currentMoney = 0;
@@ -80,6 +81,12 @@ public class GameManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         PauseDayNightCycle(startPaused);
+    }
+
+    private void Start()
+    {
+        if (newDaySound)
+            audioSource.PlayOneShot(newDaySound);
     }
 
     private void Update()
@@ -150,6 +157,12 @@ public class GameManager : MonoBehaviour
                     .AppendCallback(() => { audioSource.clip = dayAmbience; audioSource.Play(); })
                     .Append(audioSource.DOFade(1, 10f).SetRecyclable(true)).SetDelay(dawnDuration*hourLength / 2);
             }
+        }
+
+        if (numHours == nightEndHour + dawnDuration)
+        {
+            if (newDaySound)
+                audioSource.PlayOneShot(newDaySound);
         }
     }
 
