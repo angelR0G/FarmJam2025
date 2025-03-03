@@ -27,6 +27,11 @@ public class PlayerExtractingBloodState : PlayerState
                 player.IsInteractionEnabled = false;
                 player.animator.SetTrigger("ExtractBlood");
                 player.onAnimFinished = OnAnimationFinished;
+
+                // If is destroyable by daylight, increase safe areas count to prevent being destroyed
+                DaylightDestroyComponent daylightDestroyable;
+                if (interactableObject.TryGetComponent<DaylightDestroyComponent>(out daylightDestroyable))
+                    daylightDestroyable.SafeAreasCount++;
                 return;
             }
         }

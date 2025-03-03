@@ -102,6 +102,7 @@ public class PlotComponent : MonoBehaviour
 
             plantedCrop.AddComponent<InteractionTriggerComponent>();
             plantedCrop.AddComponent<CarriableComponent>();
+            plantedCrop.AddComponent<DaylightDestroyComponent>();
 
             plantedCrop.transform.SetParent(transform.parent, true);
 

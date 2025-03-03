@@ -201,6 +201,11 @@ public class GameManager : MonoBehaviour
         gradient.SetKeys(gradientColorKeys, gradientAlphaKeys);
     }
 
+    public bool IsNightTime()
+    {
+        return numHours >= nightStartHour || numHours < nightEndHour;
+    }
+
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;

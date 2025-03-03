@@ -51,7 +51,8 @@ public class DoorComponent : MonoBehaviour
         {
             isDoorOpened = true;
 
-            audioSource.PlayOneShot(doorOpenSound);
+            if (doorOpenSound)
+                audioSource.PlayOneShot(doorOpenSound);
 
             UpdateSprite();
         }
@@ -65,7 +66,8 @@ public class DoorComponent : MonoBehaviour
         {
             isDoorOpened = false;
 
-            audioSource.PlayOneShot(doorCloseSound);
+            if (doorCloseSound)
+                audioSource.PlayOneShot(doorCloseSound);
 
             UpdateSprite();
 

@@ -33,13 +33,16 @@ public class AmbusherAttackingState : AmbusherState
 
     public override void FixedUpdateState()
     {
-        if (enemy.attackProjectile.transform.localPosition.magnitude >= ATTACK_MAX_DISTANCE)
+        if (enemy.attackProjectile.activeSelf)
         {
-            enemy.ChangeState(enemy.idleState);
-        }
-        else
-        {
-            UpdateProjectilePosition();
+            if (enemy.attackProjectile.transform.localPosition.magnitude >= ATTACK_MAX_DISTANCE)
+            {
+                enemy.ChangeState(enemy.idleState);
+            }
+            else
+            {
+                UpdateProjectilePosition();
+            }
         }
     }
 

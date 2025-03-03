@@ -23,8 +23,8 @@ public class ToolsPickerComponent : MonoBehaviour
         player.inventory.AddItem(ItemId.TomatoSeed, 3);
         player.inventory.AddItem(ItemId.PumpkinSeed, 3);
         player.inventory.AddItem(ItemId.BeanSeed, 3);
-        player.inventory.AddItem(ItemId.PotatoSeed, 3);
-        player.inventory.AddItem(ItemId.CarrotSeed, 3);
+        player.inventory.AddItem(ItemId.EvilLettuceSeed, 3);
+        player.inventory.AddItem(ItemId.EvilSpikeSeed, 3);
 
         DialogueSystem.Instance.DisplayDialogue(new Dialogue("Alright, it's time to get started.", 1, true, 3f));
         DialogueSystem.Instance.QueueDialogue(new Dialogue("There should be some seeds in the chest outside. I'll use those to begin.", 1, true, 5f));

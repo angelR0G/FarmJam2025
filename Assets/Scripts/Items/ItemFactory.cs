@@ -33,6 +33,9 @@ public class ItemFactory : MonoBehaviour
         newCorpse.GetComponent<BloodContainer>().blood = bloodAmount;
         newCorpse.GetComponent<SpriteRenderer>().sprite = corpseSprite;
 
+        if (creature != CorpseCreature.Pig)
+            newCorpse.AddComponent<DaylightDestroyComponent>();
+
         return newCorpse;
     }
 

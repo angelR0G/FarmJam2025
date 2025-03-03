@@ -50,6 +50,7 @@ public class PlayerComponent : MonoBehaviour
     public AudioClip painSound;
     public AudioClip pillSound;
 
+    private Sequence interactionKeySequence;
     private List<InteractionTriggerComponent> interactables = new List<InteractionTriggerComponent>(2);
     private bool isInteractionEnabled = true;
 
@@ -234,11 +235,15 @@ public class PlayerComponent : MonoBehaviour
 
         if (interactables.Count == 1)
         {
-            Sequence showKeySequence = DOTween.Sequence();
-            showKeySequence.AppendCallback(() => interactionKeySprite.enabled = true)
+            if (interactionKeySequence != null && interactionKeySequence.IsActive())
+                interactionKeySequence.Kill();
+
+            interactionKeySequence = DOTween.Sequence().SetRecyclable(true);
+            interactionKeySequence.AppendCallback(() => interactionKeySprite.enabled = true)
                 .Append(interactionKeySprite.transform.DOScale(0.125f, 0.4f).SetEase(Ease.OutBack))
                 .Join(interactionKeySprite.transform.DOLocalMoveY(0.3f, 0.4f).SetEase(Ease.OutBack))
-                .Join(interactionKeySprite.DOFade(1f, 0.15f));
+                .Join(interactionKeySprite.DOFade(1f, 0.15f))
+                .OnKill(() => interactionKeySequence = null);
         }
     }
 
@@ -248,12 +253,15 @@ public class PlayerComponent : MonoBehaviour
 
         if (interactables.Count == 0)
         {
-            Sequence hideKeySequence = DOTween.Sequence();
-            
-            hideKeySequence.Append(interactionKeySprite.transform.DOScale(0f, 0.4f).SetEase(Ease.InBack))
+            if (interactionKeySequence != null && interactionKeySequence.IsActive())
+                interactionKeySequence.Kill();
+
+            interactionKeySequence = DOTween.Sequence().SetRecyclable(true);
+            interactionKeySequence.Append(interactionKeySprite.transform.DOScale(0f, 0.4f).SetEase(Ease.InBack))
                 .Join(interactionKeySprite.transform.DOLocalMoveY(0.2f, 0.4f).SetEase(Ease.InBack))
                 .Join(interactionKeySprite.DOFade(0f, 0.15f).SetDelay(0.25f))
-                .AppendCallback(() => interactionKeySprite.enabled = false);
+                .OnComplete(() => interactionKeySprite.enabled = false)
+                .OnKill(() => interactionKeySequence = null);
         }
     }
 
