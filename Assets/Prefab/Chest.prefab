@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8994460226284529264}
-  - component: {fileID: 2506675194074309446}
+  - component: {fileID: 8554237799521478173}
   - component: {fileID: 2656252957931290683}
   - component: {fileID: 3592801634454678801}
   - component: {fileID: 5511807451991004175}
@@ -36,7 +36,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2506675194074309446
+--- !u!114 &8554237799521478173
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,10 +45,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1229519488399935987}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2df127b80d55dd84e948d12b930fc540, type: 3}
+  m_Script: {fileID: 11500000, guid: 32f9b26452a23304dabb616240376fd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   storageSize: 10
+  chestUIObject: {fileID: 0}
+  initialObjects: 
 --- !u!212 &2656252957931290683
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -193,3 +195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e82c516be4fdf143b9375e5c85e0c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onTriggerDestroyed:
+    m_PersistentCalls:
+      m_Calls: []

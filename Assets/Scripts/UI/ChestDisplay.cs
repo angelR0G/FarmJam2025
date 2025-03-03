@@ -13,12 +13,12 @@ public class ChestDisplay : MonoBehaviour
     public void OpenChest(PlayerComponent p, StorageComponent chest)
     {
         player = p;
-
         chestStorage = chest;
 
         player.inputComponent.interactInputEvent.AddListener(CloseShop);
         player.SetEnabled(false);
 
+        UpdateItemSprites();
         SetChestUIEnabled(true);
     }
 
@@ -28,6 +28,9 @@ public class ChestDisplay : MonoBehaviour
         player.SetEnabled(true);
 
         SetChestUIEnabled(false);
+
+        player = null;
+        chestStorage = null;
     }
 
     public void SetChestUIEnabled(bool newState)
@@ -42,18 +45,21 @@ public class ChestDisplay : MonoBehaviour
             destination.AddItem(slot.item.Id, slot.amount);
             origin.RemoveItemByIndex(pos, slot.amount);
         }
-        
+
+        UpdateItemSprites();
     }
 
 
     public void TransferItemFromPlayerToChest(int pos)
     {
-        TransferItem(pos, player.inventory, chestStorage);
+        if (player != null && chestStorage != null)
+            TransferItem(pos, player.inventory, chestStorage);
     }
 
     public void TransferItemFromChestToPlayer(int pos)
     {
-        TransferItem(pos, chestStorage, player.inventory);
+        if (player != null && chestStorage != null)
+            TransferItem(pos, chestStorage, player.inventory);
     }
 
 
@@ -79,7 +85,6 @@ public class ChestDisplay : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         foreach (Transform g in transform.GetChild(0).GetComponentsInChildren<Transform>())
@@ -88,13 +93,8 @@ public class ChestDisplay : MonoBehaviour
             {
                 inventorySlots.Add(g.gameObject);
             }
-
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        UpdateItemSprites();
+        SetChestUIEnabled(false);
     }
 }
