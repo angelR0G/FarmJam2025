@@ -40,6 +40,7 @@ public class PlayerComponent : MonoBehaviour
     // Other variables
     [Header("Player properties")]
     public Vector2 facingDirection = Vector2.down;
+    public Vector3 spawnPosition;
     [SerializeField]
     private int safeAreasCount = 0;
     [Header("Events")]
@@ -116,6 +117,8 @@ public class PlayerComponent : MonoBehaviour
 
         healthComponent.onDamageEvent.AddListener(OnDamaged);
         healthComponent.onDieCallback = () => ChangeState(dyingState);
+
+        spawnPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -138,6 +141,8 @@ public class PlayerComponent : MonoBehaviour
 
     public void ChangeState(PlayerState newState)
     {
+        if (currentState == dyingState) return;
+
         if (currentState != null) currentState.ExitState();
 
         currentState = newState;

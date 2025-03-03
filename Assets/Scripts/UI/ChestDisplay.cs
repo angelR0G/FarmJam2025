@@ -21,7 +21,7 @@ public class ChestDisplay : MonoBehaviour
         chestStorage = chest;
         audioSource = p.audioSource;
 
-        player.inputComponent.interactInputEvent.AddListener(CloseShop);
+        player.inputComponent.interactInputEvent.AddListener(CloseChest);
         player.SetEnabled(false);
 
         UpdateItemSprites();
@@ -30,9 +30,9 @@ public class ChestDisplay : MonoBehaviour
         audioSource.PlayOneShot(openChestSound);
     }
 
-    public void CloseShop()
+    public void CloseChest()
     {
-        player.inputComponent.interactInputEvent.RemoveListener(CloseShop);
+        player.inputComponent.interactInputEvent.RemoveListener(CloseChest);
         player.SetEnabled(true);
 
         SetChestUIEnabled(false);
@@ -109,5 +109,11 @@ public class ChestDisplay : MonoBehaviour
         }
 
         SetChestUIEnabled(false);
+    }
+
+    private void Update()
+    {
+        if (player != null && player.currentState == player.dyingState)
+            CloseChest();
     }
 }

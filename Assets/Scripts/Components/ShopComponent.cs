@@ -26,6 +26,8 @@ public class ShopComponent : MonoBehaviour
     public AudioClip buySound;
     public AudioClip openShopSound;
 
+    private List<ItemId> sellItemsId = new List<ItemId>(6);
+
 
     private static Dictionary<ItemId, int> shopItems = new Dictionary<ItemId, int> {
         {ItemId.WheatSeed, 1 },
@@ -102,6 +104,7 @@ public class ShopComponent : MonoBehaviour
         if (newState)
         {
             audioSource.PlayOneShot(openShopSound);
+            SetCurrentTab(currentTab);
         }
     }
 
@@ -118,17 +121,19 @@ public class ShopComponent : MonoBehaviour
 
         audioSource.PlayOneShot(buySound);
     }
-    public void SellItem(ItemId itemId, int quantity, InventoryComponent fromInventory)
+    public void SellItem(ItemId itemId, int sellQuantity, InventoryComponent fromInventory)
     {
         if (!sellItemsValue.ContainsKey(itemId)) return;
 
-        GameManager.Instance.UpdateMoney(sellItemsValue[itemId] * quantity);
+        GameManager.Instance.UpdateMoney(sellItemsValue[itemId] * sellQuantity);
 
-        fromInventory.RemoveItemById(itemId, quantity);
+        fromInventory.RemoveItemById(itemId, sellQuantity);
         RenderSellItems();
-        quantity = 1;
+        quantity = 0;
         currentItem = ItemId.Default;
         RenderQuantity();
+
+        audioSource.PlayOneShot(buySound);
     }
 
 
@@ -180,6 +185,8 @@ public class ShopComponent : MonoBehaviour
 
     public void RenderSellItems()
     {
+        sellItemsId.Clear();
+
         List<ItemSlot> itemsInventory = player.inventory.GetAllItems();
         int uiObjectIndex = 0;
         for (int i = InventoryComponent.TOOLS_SLOTS; i < player.inventory.storageSize; i++)
@@ -196,6 +203,7 @@ public class ShopComponent : MonoBehaviour
                 itemName.GetComponent<TextMeshProUGUI>().text = itemData.itemName;
                 itemPrice.GetComponent<TextMeshProUGUI>().text = sellItemsValue[itemsInventory[i].item.Id].ToString();
 
+                sellItemsId.Add(itemData.id);
                 uiObjectIndex++;
             }
         }
@@ -262,7 +270,7 @@ public class ShopComponent : MonoBehaviour
                 currentItem = shopItemsList[pos];
                 break;
             case 2:
-                currentItem = player.inventory.GetAllItems()[pos+InventoryComponent.TOOLS_SLOTS].item.Id;
+                currentItem = sellItemsId[pos];
                 break;
         }
 
