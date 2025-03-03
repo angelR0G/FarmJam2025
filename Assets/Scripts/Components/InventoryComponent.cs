@@ -5,7 +5,7 @@ public class InventoryComponent : StorageComponent
 {
     public const int TOOLS_SLOTS = 4;
 
-    private int activeItemIndex = 0;
+    private int activeItemIndex = -1;
     public bool blockInventory = false;
 
     public AudioSource audioSource;
