@@ -27,7 +27,9 @@ public class UIEffects : MonoBehaviour
         fogObject = transform.GetChild(0).transform.gameObject;
         fadeObject = transform.GetChild(1).transform.gameObject;
         fogObject.SetActive(false);
-        fadeObject.SetActive(false);
+        fadeObject.SetActive(true);
+
+        Invoke("PerformFadeOut", 1f);
     }
 
     // Update is called once per frame
@@ -50,32 +52,36 @@ public class UIEffects : MonoBehaviour
         fadeObject.SetActive(false);
     }
 
-    public void PerformFadeIn(float time)
+    public void PerformFadeIn()
     {
         fogObject.SetActive(false);
         fadeObject.SetActive(true);
+
         if (uiEffectSequence != null && uiEffectSequence.IsActive())
             uiEffectSequence.Kill();
+
         float endValue = 1.0f;
         Image fadeImage = fadeObject.GetComponent<Image>();
         uiEffectSequence = DOTween.Sequence();
         uiEffectSequence.AppendCallback(() => fadeObject.SetActive(true))
-            .Append(fadeImage.DOFade(endValue, 0.8f))
-            .OnComplete(()=> fadeObject.SetActive(false))
+            .Append(fadeImage.DOFade(endValue, 1.5f))
+            //.OnComplete(()=> fadeObject.SetActive(false))
             .OnKill(() => uiEffectSequence = null);
         
     }
-    public void PerformFadeOut(float time)
+    public void PerformFadeOut()
     {
         fogObject.SetActive(false);
         fadeObject.SetActive(true);
+
         if (uiEffectSequence != null && uiEffectSequence.IsActive())
             uiEffectSequence.Kill();
+
         float endValue = 0.0f;
         Image fadeImage = fadeObject.GetComponent<Image>();
         uiEffectSequence = DOTween.Sequence();
         uiEffectSequence.AppendCallback(() => fadeObject.SetActive(true))
-            .Append(fadeImage.DOFade(endValue, 0.8f))
+            .Append(fadeImage.DOFade(endValue, 1.5f))
             .OnComplete(() => fadeObject.SetActive(false))
             .OnKill(() => uiEffectSequence = null);
 

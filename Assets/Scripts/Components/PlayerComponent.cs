@@ -35,6 +35,7 @@ public class PlayerComponent : MonoBehaviour
     [HideInInspector] public PlayerExtractingBloodState extractingBloodState = null;
     [HideInInspector] public PlayerSacrificingState sacrificeState = null;
     [HideInInspector] public PlayerDisabledState disabledState = null;
+    [HideInInspector] public PlayerDyingState dyingState = null;
 
     // Other variables
     [Header("Player properties")]
@@ -101,6 +102,7 @@ public class PlayerComponent : MonoBehaviour
         extractingBloodState = statesContainer.GetComponent<PlayerExtractingBloodState>();
         sacrificeState = statesContainer.GetComponent<PlayerSacrificingState>();
         disabledState = statesContainer.GetComponent<PlayerDisabledState>();
+        dyingState = statesContainer.GetComponent<PlayerDyingState>();
     }
 
     // Start is called before the first frame update
@@ -113,6 +115,7 @@ public class PlayerComponent : MonoBehaviour
         inputComponent.interactInputEvent.AddListener(Interact);
 
         healthComponent.onDamageEvent.AddListener(OnDamaged);
+        healthComponent.onDieCallback = () => ChangeState(dyingState);
     }
 
     // Update is called once per frame

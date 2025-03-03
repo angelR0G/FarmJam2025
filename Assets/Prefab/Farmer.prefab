@@ -317,6 +317,7 @@ GameObject:
   - component: {fileID: 1310216179467050628}
   - component: {fileID: 4444417975796763171}
   - component: {fileID: 2761865328311949382}
+  - component: {fileID: 2318476282167086354}
   m_Layer: 0
   m_Name: StatesContainer
   m_TagString: Untagged
@@ -464,6 +465,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2bb53a86a9193fa4fb2873ebffcfd377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2318476282167086354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109259853284597907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de763ce66ac92fb4babfb992c0e3789f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2448403208226745913
@@ -892,6 +905,7 @@ MonoBehaviour:
   extractingBloodState: {fileID: 0}
   sacrificeState: {fileID: 0}
   disabledState: {fileID: 0}
+  dyingState: {fileID: 0}
   facingDirection: {x: 0, y: -1}
   safeAreasCount: 0
   onEnterSafeArea:
