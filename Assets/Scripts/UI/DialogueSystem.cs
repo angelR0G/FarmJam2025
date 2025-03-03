@@ -16,6 +16,7 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField]
     GameObject dialogObject;
     AudioSource audioSource;
+    public Color textColor;
 
     public AudioClip dialogueSound;
 
@@ -57,7 +58,10 @@ public class DialogueSystem : MonoBehaviour
 
         displayedDialogue = dialogueToDisplay;
 
-        dialogObject.GetComponentInChildren<TextMeshProUGUI>().text = dialogueToDisplay.text;
+        TextMeshProUGUI textMesh = dialogObject.GetComponentInChildren<TextMeshProUGUI>();
+        textMesh.text = dialogueToDisplay.text;
+        textMesh.color = textColor;
+
         audioSource.PlayOneShot(dialogueSound);
 
         Invoke("OnDialogueDisplayTimeFinished", displayedDialogue.displayTime);

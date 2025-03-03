@@ -6,11 +6,13 @@ using UnityEngine.Rendering.Universal;
 
 public class WardrobeComponent : MonoBehaviour
 {
-    static readonly string[] hints = {
+    static readonly string[] HINTS = {
         "Have you any seed for me?",
         "Have you forgotten about the seeds?",
         "Bring me more seeds, \"friend\"."
     };
+
+    static readonly Color TEXT_COLOR = new Color(1, 0, 0);
 
     SpriteRenderer sprite;
     Animator animator;
@@ -100,7 +102,8 @@ public class WardrobeComponent : MonoBehaviour
         OpenWardrobe();
 
         DialogueSystem dialogSys = DialogueSystem.Instance;
-        dialogSys.DisplayDialogue(new Dialogue("Rise and shine, farmer.", 2, true, 2f));
+        dialogSys.textColor = TEXT_COLOR;
+        dialogSys.DisplayDialogue(new Dialogue("Rise and shine, farmer.", 2, true, 3f));
         dialogSys.QueueDialogue(new Dialogue("I want you to bring me more seeds.", 2, true, 3f));
         dialogSys.QueueDialogue(new Dialogue("I am not talking about common seeds, of course. You know what I mean.", 2, true, 5f));
         dialogSys.QueueDialogue(new Dialogue("Once you have them, plant them and make them grow.", 2, true, 4f));
@@ -108,7 +111,7 @@ public class WardrobeComponent : MonoBehaviour
         dialogSys.QueueDialogue(new Dialogue("The barn is ready. You know what to do to obtain the seeds.", 2, true, 4f));
         dialogSys.QueueDialogue(new Dialogue("Beware the darkness, \"friend\".", 2, true, 4f));
 
-        float dialoguesTime = 27f;
+        float dialoguesTime = 28f;
 
         // Enable player after all dialogues have finished
         Invoke("CloseWardrobe", dialoguesTime);
@@ -122,6 +125,7 @@ public class WardrobeComponent : MonoBehaviour
         player?.SetEnabled(false);
 
         DialogueSystem dialogSys = DialogueSystem.Instance;
+        dialogSys.textColor = TEXT_COLOR;
         dialogSys.DisplayDialogue(new Dialogue("Good job, farmer. You never disappoint me.", 2, true, 4f));
 
         Sequence sequence = DOTween.Sequence().SetRecyclable(true).SetDelay(4f);
@@ -165,6 +169,7 @@ public class WardrobeComponent : MonoBehaviour
         player?.SetEnabled(false);
 
         DialogueSystem dialogSys = DialogueSystem.Instance;
+        dialogSys.textColor = TEXT_COLOR;
         dialogSys.DisplayDialogue(new Dialogue("Mmmm... You already brought me this seed, farmer.", 2, true, 4f));
         dialogSys.QueueDialogue(new Dialogue("I'll take it, but I was expecting new seeds. Different bodies, different seeds. That's how it works.", 2, true, 5f));
 
@@ -212,6 +217,7 @@ public class WardrobeComponent : MonoBehaviour
         player?.SetEnabled(false);
 
         DialogueSystem dialogSys = DialogueSystem.Instance;
+        dialogSys.textColor = TEXT_COLOR;
         dialogSys.DisplayDialogue(new Dialogue("Good job, \"friend\". You brought me all the seeds I was looking for.", 2, true, 5f));
 
         Sequence sequence = DOTween.Sequence().SetRecyclable(true).SetDelay(4f);
@@ -271,6 +277,7 @@ public class WardrobeComponent : MonoBehaviour
         DOTween.To(() => wardrobeLight.pointLightOuterAngle, (v) => wardrobeLight.pointLightOuterAngle = v, 0f, 0.3f)
             .OnComplete(()=> wardrobeLight.enabled = false).SetRecyclable(true);
 
+        DialogueSystem.Instance.textColor = Color.white;
         CancelInvoke("ShowHint");
     }
 
@@ -281,8 +288,11 @@ public class WardrobeComponent : MonoBehaviour
 
     private void ShowHint()
     {
-        string hint = hints[Random.Range(0, hints.Length)];
+        string hint = HINTS[Random.Range(0, HINTS.Length)];
+        DialogueSystem dialogSys = DialogueSystem.Instance;
 
-        DialogueSystem.Instance.DisplayDialogue(new Dialogue(hint));
+        dialogSys.textColor = TEXT_COLOR;
+        dialogSys.DisplayDialogue(new Dialogue(hint));
+        dialogSys.textColor = Color.white;
     }
 }
