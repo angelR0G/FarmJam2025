@@ -11,6 +11,7 @@ public class InventoryComponent : StorageComponent
     public AudioSource audioSource;
     public AudioClip newItemSound;
     public AudioClip equipItemSound;
+    public AudioClip dropItemSound;
 
     private void Start()
     {
@@ -232,5 +233,7 @@ public class InventoryComponent : StorageComponent
         GameObject droppedItem = ItemFactory.CreatePickableItem(items[activeItemIndex].item.Id, null, items[activeItemIndex].amount);
         droppedItem.transform.position = transform.position;
         RemoveEquipedItem(items[activeItemIndex].amount);
+
+        audioSource.PlayOneShot(dropItemSound);
     }
 }

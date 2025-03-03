@@ -6,20 +6,28 @@ using UnityEngine.UI;
 
 public class ChestDisplay : MonoBehaviour
 {
+    private AudioSource audioSource;
     private PlayerComponent player;
     private StorageComponent chestStorage;
     private List<GameObject> inventorySlots = new List<GameObject>();
+
+    public AudioClip openChestSound;
+    public AudioClip closeChestSound;
+    public AudioClip storeItemSound;
 
     public void OpenChest(PlayerComponent p, StorageComponent chest)
     {
         player = p;
         chestStorage = chest;
+        audioSource = p.audioSource;
 
         player.inputComponent.interactInputEvent.AddListener(CloseShop);
         player.SetEnabled(false);
 
         UpdateItemSprites();
         SetChestUIEnabled(true);
+
+        audioSource.PlayOneShot(openChestSound);
     }
 
     public void CloseShop()
@@ -31,6 +39,8 @@ public class ChestDisplay : MonoBehaviour
 
         player = null;
         chestStorage = null;
+
+        audioSource.PlayOneShot(closeChestSound);
     }
 
     public void SetChestUIEnabled(bool newState)
@@ -53,7 +63,10 @@ public class ChestDisplay : MonoBehaviour
     public void TransferItemFromPlayerToChest(int pos)
     {
         if (player != null && chestStorage != null)
+        {
             TransferItem(pos, player.inventory, chestStorage);
+            audioSource.PlayOneShot(storeItemSound);
+        }
     }
 
     public void TransferItemFromChestToPlayer(int pos)

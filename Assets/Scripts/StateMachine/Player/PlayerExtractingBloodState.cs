@@ -6,6 +6,8 @@ public class PlayerExtractingBloodState : PlayerState
 {
     private BloodContainer corpseBloodContainer;
 
+    public AudioClip extractBloodSound;
+
     public override void EnterState() 
     {
         GameObject interactableObject = GetInteractableObjetAtTheirPosition();
@@ -27,6 +29,9 @@ public class PlayerExtractingBloodState : PlayerState
                 player.IsInteractionEnabled = false;
                 player.animator.SetTrigger("ExtractBlood");
                 player.onAnimFinished = OnAnimationFinished;
+
+                player.audioSource.clip = extractBloodSound;
+                player.audioSource.Play();
 
                 // If is destroyable by daylight, increase safe areas count to prevent being destroyed
                 DaylightDestroyComponent daylightDestroyable;

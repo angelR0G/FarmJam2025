@@ -439,6 +439,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10cc4cca07b611842847c56943a5180e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  extractBloodSound: {fileID: 8300000, guid: f5fba27def648bd41b9503a1242d445d, type: 3}
 --- !u!114 &4444417975796763171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,6 +515,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   newItemSound: {fileID: 8300000, guid: 33cfab529cded6344afa3cf9abcb6f99, type: 3}
   equipItemSound: {fileID: 8300000, guid: e957f660184e1d0439bbc266d440d6e7, type: 3}
+  dropItemSound: {fileID: 8300000, guid: d6e7ee809fa1c0045b0f8acb139fd3ec, type: 3}
 --- !u!82 &1465010726012664903
 AudioSource:
   m_ObjectHideFlags: 0
@@ -852,6 +854,9 @@ MonoBehaviour:
   dropItemEvent:
     m_PersistentCalls:
       m_Calls: []
+  openPauseMenu:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2421984193498706964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -887,6 +892,13 @@ MonoBehaviour:
   sacrificeState: {fileID: 0}
   disabledState: {fileID: 0}
   facingDirection: {x: 0, y: -1}
+  safeAreasCount: 0
+  onEnterSafeArea:
+    m_PersistentCalls:
+      m_Calls: []
+  onExitSafeArea:
+    m_PersistentCalls:
+      m_Calls: []
   painSound: {fileID: 8300000, guid: 5408245d1a8589a4e94b6cc1b65fbcd1, type: 3}
   pillSound: {fileID: 8300000, guid: fe166838fa87b12408d545c4c603625d, type: 3}
 --- !u!212 &4321393230077232236

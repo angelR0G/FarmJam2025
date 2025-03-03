@@ -16,7 +16,7 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField]
     GameObject dialogObject;
     AudioSource audioSource;
-    public Color textColor;
+    public Color textColor = Color.white;
 
     public AudioClip dialogueSound;
 
